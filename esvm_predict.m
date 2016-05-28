@@ -96,9 +96,8 @@ for i = 1:length(test_datas)
               res(neg_score_idx) = 0;
           else
               res = -res;
-              res = res / sum(res);
-              res = fliplr(res);
-              
+              res = ones(1,size(res,1)) ./ res;
+              res = res/sum(res);
           end 
           result.res = res;
           result.i = Index_I;

@@ -1,12 +1,12 @@
 params = esvm_get_default_params;
 class = {'aeroplane', 'bicycle','bird', 'bus'};
-i = 1;
-for id = 341:346
+i = 4;
+for id = 2455:2470
     offset = [0, 591, 1281,2226];
     new_file = sprintf('./%s/%s/%s/%s', params.datasets_params.img_folder, ...
                                params.datasets_params.dataset_dir, class{i},'test');
                                %'train', sprintf('%s.%s', params.datasets_params.file_ext));
-    result = load(sprintf('/home/liangfu/Documents/exampler_svm/cnn_students_1/results_VOC_2/classifications/esvm/%s_1/hog_%06d_score.mat', class{i}, id));
+    result = load(sprintf('/home/liangfu/Documents/exampler_svm/cnn_students_1/results_VOC_2/classifications/esvm_1/%s/hog_%06d_score.mat', class{i}, id));
     result = result.result;
     %score = result.scores{i};
     %[~, Index_I] = max(score);
