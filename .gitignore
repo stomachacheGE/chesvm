@@ -1,0 +1,6 @@
+img/
+results_VOC_2/
+lib/
+libsvm/
+pretrained_cnn/
+matlab_cnn_svm_lite/
