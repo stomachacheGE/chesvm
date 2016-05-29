@@ -5,7 +5,7 @@
           %fprintf(1,'q is %d\n',qq);
           %fprintf(1,'neg_set size is [%d %d]\n', size(neg_set,1),size(neg_set,2));
           clear m;
-          x = 46;
+          x = 11;
           m = models{1}{x};
           m.neg_set = neg_set{qq};
           %m.iteration = 1;
@@ -35,7 +35,7 @@
               filer2 = filer2final;
             end
           %}
-            feat_name = 'cnn';
+            feat_name = 'hog';
             neg_feature_filers = neg_set{qq}.feat_filers;
             neg_img_filers = neg_set{qq}.img_filers;
             neg_features = cell(1,length(neg_feature_filers));
@@ -75,7 +75,7 @@
                                        params.datasets_params.dataset_dir, m.cls_name);
                                        %'train', sprintf('%s.%s', params.datasets_params.file_ext)); 
             figure(1)
-            e_filer = sprintf('%s/%06d.%s',new_file,x-1, params.datasets_params.file_ext);
+            %e_filer = sprintf('%s/%s.%s',new_file,models{1}{x}.img_id, params.datasets_params.file_ext);
             imshow(e_filer);
             %wpos = 100;
     
@@ -94,13 +94,13 @@
                 weights = ones(size(train_features,1),1);
                 weights(1) = w1_vals(j);
 
-                svm_model = fitcsvm(train_features, train_labels, 'PolynomialOrder', ...
-                                [], 'BoxConstraint', 2^c_vals(i), 'KernelFunction', 'rbf', 'KernelScale','auto',...
-                               'Standardize', 1,'ClassNames', [-1; 1], 'Weights', weights);
+               % svm_model = fitcsvm(train_features, train_labels, 'PolynomialOrder', ...
+               %                 [], 'BoxConstraint', 2^c_vals(i), 'KernelFunction', 'rbf', 'KernelScale','auto',...
+               %                'Standardize', 1,'ClassNames', [-1; 1], 'Weights', weights);
                 
-                %svm_model = fitcsvm(train_features, train_labels, 'KernelFunction', 'linear', 'PolynomialOrder', ...
-                %[], 'KernelScale', 1, 'BoxConstraint', 10^c_vals(i),...
-               %'Standardize', 1,'ClassNames', [-1; 1], 'Weights', weights);
+                svm_model = fitcsvm(train_features, train_labels, 'KernelFunction', 'linear', 'PolynomialOrder', ...
+                [], 'KernelScale', 1, 'BoxConstraint', 10^c_vals(i),...
+               'Standardize', 1,'ClassNames', [-1; 1], 'Weights', weights);
 
 
                 datas = cellfun(@(x)x.feature, train_datas{1},'UniformOutput',false);
@@ -127,7 +127,7 @@
                 for mm=1:3
                     for n=1:4
                         which = (mm-1)*4+n;
-                        filer = sprintf('%s/%06d.%s',new_file, indexes(which)-1, params.datasets_params.file_ext);
+                        filer =train_datas{1}{indexes(which)}.img_filer;
                         img_temp = imread(filer);
                         img_temp = imresize(img_temp,[56 80]);
                         subplot(3,4,which); subimage(img_temp);

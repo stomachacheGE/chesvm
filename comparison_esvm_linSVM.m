@@ -1,3 +1,4 @@
+%{
 clear;
 
 addpath(genpath(pwd));
@@ -11,8 +12,8 @@ params = esvm_get_default_params;
 
 datasets_info = esvm_get_datasets_info(params.datasets_params);
 
-use_feature = 'cnn';
-%use_feature = 'hog';
+%use_feature = 'cnn';
+use_feature = 'hog';
 use_algorithm = 'esvm';
 
 feature_files = cell(1,length(datasets_info));
@@ -22,7 +23,7 @@ feature_files = cell(1,length(datasets_info));
 %data = esvm_construct_data(train_datas, datasets_info, params);
 
 [models, neg_set] = esvm_train_initialization(train_datas, use_feature);
-
+%}
 %% Train Exemplar SVM models 
 qq = 1;
 

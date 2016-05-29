@@ -57,7 +57,7 @@ else
                                        'UniformOutput', false);
         datasets{i}.train_image_ids = cellfun(@(x) x(1:end-length(params.file_ext)-1), train_image_names,...
                                         'UniformOutput', false); 
-        
+        %{
         %randomize orderings
         myRandomize;
         ordering = randperm(length(train_image_names));
@@ -67,6 +67,7 @@ else
         datasets{i}.train_image_files = datasets{i}.train_image_files(ordering(num_val:end));
         datasets{i}.val_image_ids = datasets{i}.train_image_ids(ordering(1:num_val));
         datasets{i}.train_image_ids = datasets{i}.train_image_ids(ordering(num_val:end));
+        %}
 
         %then deal with test images
         test_img_dir = dir(fullfile('.', params.img_folder, ...
