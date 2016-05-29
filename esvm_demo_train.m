@@ -17,17 +17,20 @@ use_algorithm = 'esvm';
 
 feature_files = cell(1,length(datasets_info));
 
-[train_datas, test_datas] = esvm_initialize_features(datasets_info,use_feature,use_algorithm,params);
+[train_datas, val_datas, test_datas] = esvm_initialize_features(datasets_info,use_feature,use_algorithm,params);
 
 %data = esvm_construct_data(train_datas, datasets_info, params);
 
 if strcmp(use_algorithm,'svm')
-    linearSVMmodel = esvm_train_svm(train_datas, use_feature, params);
+    linearSVMmodel = esvm_train_svm(train_datas, val_datas, use_feature, params);
     prediction = esvm_predict_svm(linearSVMmodel, test_datas);
 else
     [models, neg_set] = esvm_train_initialization(train_datas, use_feature);
     new_models = esvm_train_exemplars(models, train_datas, neg_set, use_algorithm, use_feature,params);
-    prediction = esvm_predict(new_models,test_datas, use_feature, params);
+    val_matrix = esvm_perform_validation(new_models, val_datas);
+    esvm_predict(new_models,test_datas, use_feature, params,val);
+    prediction = esvm_apply_sigmoid(new_models, test_datas, feat_name, params, val_matrix)
+
 end
 
 

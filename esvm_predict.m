@@ -1,4 +1,4 @@
-function prediction = esvm_predict(models, test_datas, feat_name, params)
+function prediction = esvm_predict(models, test_datas, feat_name, params, val_matrix)
 
 
 
@@ -51,7 +51,7 @@ for i = 1:length(test_datas)
           for m = 1:length(models)
 
              res_per_class = zeros(size(models{m}));
-             
+             sig_res_per_class = zeros(size(models{m}));
              for n = 1:length(models{m}) 
                   %model = models{m}{n};
                   model = load(models{m}{n});
@@ -70,7 +70,9 @@ for i = 1:length(test_datas)
                   end  
                   %res_per_class(n) = model.w * x_test' - model.b;
                   [~, res] = predict(model.svm_model, x_test);
-                  res_per_class(n) = res(1,2) + model.self_bias;
+                  
+                  res_per_class(n) = res(1,2);
+                  sig_res_per_class(n) = 1 / (1 + exp(- val_matrix{m}{n}(1) * res(1,2) + val_matrix{m}{n}(2)));
                   model_counter = model_counter + 1;
 
                     if mod(model_counter,50) == 0

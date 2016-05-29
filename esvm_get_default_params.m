@@ -64,7 +64,7 @@ default_params.training_params.hog_extractor = @esvm_extract_hog_feature;
 % % automatically converts the result to a descriptor in the RAW feature
 % % space)
 % default_params.DO_PCA = 0;
-% % The degree of the PCA.
+% % The degree of the PCA.esvm_get_datasets_info
 % default_params.PCA_K = 300;
 % % If enabled, only do PCA from the positives (so the subspace is what
 % % spans the positive examples)
@@ -84,7 +84,7 @@ default_params.datasets_params.dataset_dir  = 'VOC_2007_cropped';
 default_params.datasets_params.file_ext = 'jpg'; % image data type
 %default_params.datasets_params.file_ext = 'png'; % image data type
 %default_params.datasets_params.results_folder = 'results_maritime';
-default_params.datasets_params.results_folder = 'results_VOC_2';
+default_params.datasets_params.results_folder = 'results_VOC_3_validation';
 %default_params.datasets_params.results_folder = 'results_maritime_using_linsvm_for_esvm_wo_w1';
 %default_params.datasets_params.results_folder = 'results_4_categories';
 default_params.datasets_params.rename = false;

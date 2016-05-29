@@ -1,4 +1,4 @@
-function [train_datas, test_datas]= esvm_initialize_features(datasets_info, feat_name, algo_name ,params)
+function [train_datas, val_datas, test_datas]= esvm_initialize_features(datasets_info, feat_name, algo_name ,params)
 
 
 datasets_params = params.datasets_params;
@@ -31,14 +31,15 @@ for j=1:length(datasets_info)
         end
     end
 
-    img_files = [datasets_info{j}.train_image_files datasets_info{j}.test_image_files];
-    img_ids = [datasets_info{j}.train_image_ids datasets_info{j}.test_image_ids];
+    img_files = [datasets_info{j}.train_image_files datasets_info{j}.val_image_files datasets_info{j}.test_image_files];
+    img_ids = [datasets_info{j}.train_image_ids datasets_info{j}.val_image_ids datasets_info{j}.test_image_ids];
 
     counter = 0;
     
     train_datas{j} = cell(1, length(datasets_info{j}.train_image_ids));
     test_datas{j} = cell(1, length(datasets_info{j}.test_image_ids));
-
+    val_datas{j} = cell(1, length(datasets_info{j}.val_image_ids));
+    
     for i=1:length(img_ids)
         
         if strcmp(feat_name, 'hog')
@@ -97,13 +98,18 @@ for j=1:length(datasets_info)
             end
         end
         
-        
-        if i <= length(datasets_info{j}.train_image_ids)
+        len_train = length(datasets_info{j}.train_image_ids);
+        len_val = length(datasets_info{j}.val_image_ids);
+        len_test = length(datasets_info{j}.test_image_ids);
+        if i <= len_train
             data.img_filer = datasets_info{j}.train_image_files{i};
             train_datas{j}{i} = data;
+        elseif (len_train < i) &&(i <= len_train +len_val)
+            data.img_filer = datasets_info{j}.val_image_files{i-len_train};
+            val_datas{j}{i-len_train} = data;
         else
-            data.img_filer = datasets_info{j}.test_image_files{i-length(datasets_info{j}.train_image_ids)};
-            test_datas{j}{i-length(datasets_info{j}.train_image_ids)} = data;
+            data.img_filer = datasets_info{j}.test_image_files{i-len_train-len_val};
+            test_datas{j}{i-len_train-len_val} = data;
         end
 
 
