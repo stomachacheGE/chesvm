@@ -103,8 +103,8 @@ for qq = 1:length(models)
             end
           %}
           
-            neg_feature_filers = train_set{qq}.feat_filers;
-            neg_img_filers = train_set{qq}.img_filers;
+            neg_feature_filers = train_set{qq}{i}.feat_filers;
+            neg_img_filers = train_set{qq}{i}.img_filers;
             neg_features = cell(1,length(neg_feature_filers));
             
 

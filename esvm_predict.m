@@ -1,4 +1,4 @@
-function prediction = esvm_predict(models, test_datas, feat_name, params, val_matrix)
+function prediction = esvm_predict(models, test_datas, feat_name, params)
 
 
 
@@ -34,13 +34,61 @@ end
 
 counter = 0;
 
+filer_1 = sprintf('%s/%s_models_in_matrix', esvm_res_dir, feat_name);
+if ~exist(filer_1,'file')
+    
+    Mus_cell = cell(1,length(models));
+    Sigmas_cell = cell(1,length(models));
+    Biases_cell = cell(1,length(models));
+    Betas_cell = cell(1,length(models));
+    
+    for i=1:length(models)
+        num_per_class = length(models{i});
+        Mus = cell(num_per_class,1);
+        Sigmas = cell(num_per_class,1);
+        Biases = cell(num_per_class,1);
+        Betas = cell(num_per_class,1);
+        for j=1:length(models{i})
+            m = load(models{i}{j});
+            model = m.m.svm_model;
+            Mus{j} = model.Mu;
+            Sigmas{j} = model.Sigma;
+            Biases{j} = model.Bias;
+            Betas{j} = model.Beta';
+        end
+
+        Mus = [vertcat(Mus{:})];
+        Sigmas = [vertcat(Sigmas{:})];
+        Betas = [vertcat(Betas{:})];
+        Biases = [vertcat(Biases{:})];
+
+        Mus_cell{i} = Mus;
+        Sigmas_cell{i} = Sigmas;
+        Biases_cell{i} = Biases;
+        Betas_cell{i} = Betas;
+        
+        all_in_one.Mus_cell = Mus_cell;
+        all_in_one.Sigmas_cell = Sigmas_cell;
+        all_in_one.Biases_cell = Biases_cell;
+        all_in_one.Betas_cell = Betas_cell;
+        
+        save(filer_1, 'all_in_one');
+    end
+else
+    temp = load('filer_1');
+    temp = temp.all_in_one;
+    Mus_cell = temp.Mus_cell;
+    Biases_cell = temp.Biases_cell;
+    Sigmas_cell = temp.Sigmas_cell;
+    Betas_cell = temp.Betas_cell;
+end
+
 for i = 1:length(test_datas)
   
   cls_res_dir = fullfile(esvm_res_dir, test_datas{i}{1}.cls_name);
 
   for j = 1:length(test_datas{i})
       
-      model_counter = 0;
       
       res = zeros(size(models));
       
@@ -49,37 +97,13 @@ for i = 1:length(test_datas)
       if ~exist(filer,'file')
           temp = cell(length(models),1);
           for m = 1:length(models)
-
-             res_per_class = zeros(size(models{m}));
-             sig_res_per_class = zeros(size(models{m}));
-             for n = 1:length(models{m}) 
-                  %model = models{m}{n};
-                  model = load(models{m}{n});
-                  model = model.m;
-                  if strcmp(feat_name,'cnn');
-                      x_test = test_datas{i}{j}.feature;
-                      %fprintf(1,'loading cnn feature\n');
-                      %x = x.data.feature;
-                  else
-                      %img = imread(test_datas{i}{j}.img_filer);
-                     % img = imresize(double(img), model.img_size);
-                      %fprintf(1,'%d size img is [%d %d] \n',index, size(img,1),size(img,2));
-                      %[x_test, ~] = params.features_params.hog_extractor(img);
-                      %fprintf(1,'loading hog feature\n');
-                      x_test = test_datas{i}{j}.feature;
-                  end  
-                  %res_per_class(n) = model.w * x_test' - model.b;
-                  [~, res] = predict(model.svm_model, x_test);
-                  
-                  res_per_class(n) = res(1,2);
-                  sig_res_per_class(n) = 1 / (1 + exp(- val_matrix{m}{n}(1) * res(1,2) + val_matrix{m}{n}(2)));
-                  model_counter = model_counter + 1;
-
-                    if mod(model_counter,50) == 0
-                    fprintf(1,'Predicting test image %s on models: %d/%d \n',  ...
-                                                    test_datas{i}{j}.img_id,model_counter, num_models);
-                    end
-             end   
+            res_per_class = zeros(size(models{m}));
+            input = test_datas{i}{j}.feature;
+            standarized_inputs = (repmat(input, size(Mus_cell{m},1), 1) - Mus_cell{m} ) ./ Sigmas_cell{m};
+            %replace NaN entry with 0
+            [row, col] = find(isnan(standarized_inputs));
+            standarized_inputs(row,col) = 0;
+            res_per_class = sum(standarized_inputs  .* Betas_cell{m}, 2) + Biases_cell{m};
 
              [res(m), Index_J_temp(m)] = max(res_per_class);
              %[sorted,~] = sort(res_per_class);

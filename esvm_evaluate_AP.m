@@ -1,4 +1,4 @@
-function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_feature, params)
+function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_feature, params, cal)
 
     datasets_params = params.datasets_params;
 
@@ -56,9 +56,17 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
     end
 
     if strcmp(use_algorithm, 'svm')
-        ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+        if cal
+            ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
+        else
+            ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+        end
     else
-        ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+        if cal
+            ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
+        else
+            ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+        end
     end
     
 
@@ -88,12 +96,22 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
             cls_name = test_datas{idx}{1}.cls_name;
 
-            if strcmp(use_algorithm, 'svm')       
+            if strcmp(use_algorithm, 'svm')   
+                if ~cal
                 res_filer = sprintf('%s/%s_%s_res.txt',...
                         lin_svm_res_dir,cls_name, use_feature);
+                else
+                res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
+                        lin_svm_res_dir,cls_name, use_feature);   
+                end
             else
+                if ~cal
                 res_filer = sprintf('%s/%s_%s_res.txt',...
                         esvm_res_dir,cls_name, use_feature);
+                else
+                res_filer = sprintf('%s/%s_%s_calibrtaion_res.txt',...
+                        esvm_res_dir,cls_name, use_feature);
+                end
             end
 
             if ~exist(res_filer,'file')
@@ -149,7 +167,7 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
 end
 
-function [rec,prec,ap] = VOCevalcls(cls, feat_name, result_dir, ground_truth_dir,draw)
+function [rec,prec,ap] = VOCevalcls(cls, feat_name, result_dir, ground_truth_dir, cal, draw)
 
 % load test set
 
@@ -157,7 +175,11 @@ gt_filer = sprintf('%s/%s_gt.txt',ground_truth_dir,cls);
 [gtids,gt]=textread(gt_filer,'%s %d');
 
 % load results
-res_filer = sprintf('%s/%s_%s_res.txt',result_dir,cls,feat_name);
+if ~cal
+  res_filer = sprintf('%s/%s_%s_res.txt',result_dir,cls,feat_name);
+else
+  res_filer = sprintf('%s/%s_%s_calibration_res.txt',result_dir,cls,feat_name);
+end
 [ids,confidence]=textread(res_filer,'%s %f');
 
 % map results to ground truth images

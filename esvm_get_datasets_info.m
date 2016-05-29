@@ -5,8 +5,8 @@ data_dir = fullfile('.', params.img_folder, params.dataset_dir);
 if exist([data_dir '/datasets_info.mat'], 'file')
     load([data_dir '/datasets_info.mat']);
     for i = 1:length(datasets)
-    fprintf(1,'Find image class %s, #train:%d; #val:%d, #test:%d \n', datasets{i}.cls_name,...
-                                          length(datasets{i}.train_image_ids),  length(datasets{i}.val_image_ids), length(datasets{i}.test_image_ids));
+    fprintf(1,'Find image class %s, #train:%d; #test:%d \n', datasets{i}.cls_name,...
+                                          length(datasets{i}.train_image_ids), length(datasets{i}.test_image_ids));
     end
 else
     
@@ -57,18 +57,6 @@ else
                                        'UniformOutput', false);
         datasets{i}.train_image_ids = cellfun(@(x) x(1:end-length(params.file_ext)-1), train_image_names,...
                                         'UniformOutput', false); 
-        %{
-        %randomize orderings
-        myRandomize;
-        ordering = randperm(length(train_image_names));
-        %take 1/10 as validation
-        num_val = length(ordering) / 10;
-        datasets{i}.val_image_files = datasets{i}.train_image_files(ordering(1:num_val));
-        datasets{i}.train_image_files = datasets{i}.train_image_files(ordering(num_val:end));
-        datasets{i}.val_image_ids = datasets{i}.train_image_ids(ordering(1:num_val));
-        datasets{i}.train_image_ids = datasets{i}.train_image_ids(ordering(num_val:end));
-        %}
-
         %then deal with test images
         test_img_dir = dir(fullfile('.', params.img_folder, ...
                                        params.dataset_dir, cls_name,...
@@ -101,19 +89,9 @@ else
                                        'UniformOutput', false);
         datasets{i}.test_image_ids = cellfun(@(x) x(1:end-length(params.file_ext)-1), test_image_names,...
                                         'UniformOutput', false); 
-                                    
-        %randomize orderings
-        myRandomize;
-        ordering = randperm(length(test_image_names));
-        num_val = length(datasets{i}.val_image_files);
-        datasets{i}.val_image_files = horzcat(datasets{i}.val_image_files,datasets{i}.test_image_files(ordering(1:num_val)));
-        datasets{i}.train_image_files = datasets{i}.test_image_files(ordering(num_val:end));
-        datasets{i}.val_image_ids = horzcat(datasets{i}.val_image_ids,datasets{i}.test_image_ids(ordering(1:num_val)));
-        datasets{i}.train_image_ids = datasets{i}.test_image_ids(ordering(num_val:end));
 
-        fprintf(1,'Find image class %s, #train:%d; #val:%d, #test:%d \n', datasets{i}.cls_name,...
-                                          length(datasets{i}.train_image_ids),  length(datasets{i}.val_image_ids), length(datasets{i}.test_image_ids));
-
+        fprintf(1,'Find image class %s, #train:%d; #test:%d \n', datasets{i}.cls_name,...
+                                          length(datasets{i}.train_image_ids), length(datasets{i}.test_image_ids));
 
     end
     
