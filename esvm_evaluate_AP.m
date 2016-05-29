@@ -109,7 +109,7 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
                 res_filer = sprintf('%s/%s_%s_res.txt',...
                         esvm_res_dir,cls_name, use_feature);
                 else
-                res_filer = sprintf('%s/%s_%s_calibrtaion_res.txt',...
+                res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
                         esvm_res_dir,cls_name, use_feature);
                 end
             end
@@ -132,9 +132,9 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
 
             if strcmp(use_algorithm, 'svm')       
-                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, 'true');       
+                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, cal, 'true');       
             else
-                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir, 'true');
+                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir,cal, 'true');
             end
             ap_res{q}.cls_name = cls_name;
                   
@@ -158,9 +158,9 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
             cls_name = temp.cls{q};
             if strcmp(use_algorithm, 'svm')       
-                [~,~,~] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, 'true');       
+                [~,~,~] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, cal, 'true');       
             else
-                [~,~,~] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir, 'true');
+                [~,~,~] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir, cal, 'true');
             end
         end
     end

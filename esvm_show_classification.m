@@ -14,7 +14,7 @@ dataset_folder = sprintf('./%s/%s', params.datasets_params.img_folder, ...
                            params.datasets_params.dataset_dir);
 img_foler = sprintf('./%s/%s/%s/test', params.datasets_params.img_folder, ...
                            params.datasets_params.dataset_dir, classes{cls_idx});                      
-esvm_res_dir = sprintf('./%s/classifications/esvm_1',params.datasets_params.results_folder);
+esvm_res_dir = sprintf('./%s/classifications/esvm',params.datasets_params.results_folder);
 
 id = offset(cls_idx) + length(datasets_info{cls_idx}.train_image_ids) + idx - 1;
 
