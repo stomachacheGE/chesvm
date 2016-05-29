@@ -1,4 +1,4 @@
-function [models, cal_sets, neg_sets] = esvm_train_initialization(datas, feat_name)
+function [models, neg_sets] = esvm_train_initialization(datas, feat_name)
 
     models = cell(1,length(datas));
     tmp_neg_sets = cell(1,length(datas));
@@ -56,7 +56,7 @@ function [models, cal_sets, neg_sets] = esvm_train_initialization(datas, feat_na
                  model.hog_size = data.hog_size;
             end
             models{i}{j} = model;
-            
+            %{
             myRandomize;
             ordering = randperm(length(tmp_neg_sets{i}.img_filers));
             %take 1/10 of tmo_neg_sets for 
@@ -70,11 +70,15 @@ function [models, cal_sets, neg_sets] = esvm_train_initialization(datas, feat_na
             cal_sets{i}{j}.img_filers = cat(2, pos_img_for_cal, neg_img_for_cal);
             cal_sets{i}{j}.num_neg = num_neg;
             %cal_sets{i}{j}.gt = [ones(1, length(pos_for_cal)) zeros(1,length(neg_for_cal))];
-            
+           
             neg_sets{i}{j}.feat_filers = tmp_neg_sets{i}.feat_filers(ordering(num_neg+1:end));
             neg_sets{i}{j}.img_filers = tmp_neg_sets{i}.img_filers(ordering(num_neg+1:end));
             neg_sets{i}{j}.img_sizes = tmp_neg_sets{i}.img_sizes(ordering(num_neg+1:end));
+             %}
         end
+            neg_sets{i}.feat_filers = tmp_neg_sets{i}.feat_filers;
+            neg_sets{i}.img_filers = tmp_neg_sets{i}.img_filers;
+            neg_sets{i}.img_sizes = tmp_neg_sets{i}.img_sizes;
     end
     
     

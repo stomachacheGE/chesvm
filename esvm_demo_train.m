@@ -25,10 +25,10 @@ if strcmp(use_algorithm,'svm')
     linearSVMmodel = esvm_train_svm(train_datas, use_feature, params);
     prediction = esvm_predict_svm(linearSVMmodel, test_datas);
 else
-    [models, cal_sets, neg_set] = esvm_train_initialization(train_datas, use_feature);
+    [models, neg_set] = esvm_train_initialization(train_datas, use_feature);
     new_models = esvm_train_exemplars(models, train_datas, neg_set, use_algorithm, use_feature,params);
-    %prediction = esvm_predict(new_models,test_datas, use_feature, params);
-    cal_matrix = esvm_perform_calibration(new_models, cal_sets, use_feature, params);
+    prediction = esvm_predict(new_models,test_datas, use_feature, params);
+    cal_matrix = esvm_perform_calibration(new_models, train_datas, use_feature, params);
     prediction_1 = esvm_apply_sigmoid(cal_matrix, test_datas, use_feature, params);
 
 end
