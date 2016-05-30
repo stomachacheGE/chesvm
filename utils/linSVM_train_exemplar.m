@@ -69,9 +69,9 @@ function m = linSVM_train_exemplar(m, features, labels, params)
     %                                                 wpos));
      weights = ones(size(features,1),1);
      weights(1) = params.training_params.train_positives_constant;
-     c = params.training_params.train_svm_c
+     c = params.training_params.train_svm_c;
      m.svm_model = fitcsvm(features, labels,'PolynomialOrder', ...
-                                [],'BoxConstraint', c, 'KernelFunction', 'linear', 'KernelScale',1,...
+                                [],'BoxConstraint', 2^c, 'KernelFunction', 'linear', 'KernelScale',1,...
                                'Standardize', 1,'ClassNames', [-1; 1], 'Weights', weights);
      %m.svm_model = fitcsvm(features, labels,'PolynomialOrder', ...
      %                           [],'BoxConstraint', 2^(-3), 'KernelFunction', 'rbf', 'KernelScale','auto',...
@@ -137,6 +137,6 @@ if length(svs) == 0
   %error('Something went wrong');
 end
 %}
-fprintf(1,' %d of negative training data are falsly classified with this model\n',length(svs));
+%fprintf(1,' %d of negative training data are falsly classified with this model\n',length(svs));
 
 end

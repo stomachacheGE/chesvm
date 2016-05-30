@@ -1,5 +1,5 @@
 img/
-results_VOC_2/
+results*/
 lib/
 libsvm/
 pretrained_cnn/

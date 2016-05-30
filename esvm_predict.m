@@ -35,6 +35,7 @@ end
 counter = 0;
 
 filer_1 = sprintf('%s/%s_models_in_matrix', esvm_res_dir, feat_name);
+
 if ~exist(filer_1,'file')
     fprintf(1,'Extracting models into one file...');
     Mus_cell = cell(1,length(models));
@@ -76,7 +77,7 @@ if ~exist(filer_1,'file')
     end
 else
     fprintf(1,'Loading all-in-one models from file...');
-    temp = load('filer_1');
+    temp = load(filer_1);
     temp = temp.all_in_one;
     Mus_cell = temp.Mus_cell;
     Biases_cell = temp.Biases_cell;
