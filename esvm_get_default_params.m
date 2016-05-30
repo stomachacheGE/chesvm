@@ -26,10 +26,10 @@ default_params.training_params.train_max_images_per_iteration = 100;
 
 %The constant which tells us the weight in front of the positives
 %during SVM learning
-default_params.training_params.train_positives_constant = 50;
+default_params.training_params.train_positives_constant = 60;
 
 %ICCV11 constant for SVM learning
-default_params.training_params.train_svm_c = 10; %% regularize more with .0001;
+default_params.training_params.train_svm_c = -3; %% regularize  with 2 ^(-3);
 
 
 %The svm update equation
@@ -84,7 +84,7 @@ default_params.datasets_params.dataset_dir  = 'VOC_2007_cropped';
 default_params.datasets_params.file_ext = 'jpg'; % image data type
 %default_params.datasets_params.file_ext = 'png'; % image data type
 %default_params.datasets_params.results_folder = 'results_maritime';
-default_params.datasets_params.results_folder = 'results_VOC_3_validation';
+default_params.datasets_params.results_folder = 'results_VOC_4';
 %default_params.datasets_params.results_folder = 'results_maritime_using_linsvm_for_esvm_wo_w1';
 %default_params.datasets_params.results_folder = 'results_4_categories';
 default_params.datasets_params.rename = false;

@@ -68,9 +68,10 @@ function m = linSVM_train_exemplar(m, features, labels, params)
     %svm_model = svmtrain(labels,features, sprintf(('-s 0 -t 0 -c 0.0003 -w1 %.9f -q'),...
     %                                                 wpos));
      weights = ones(size(features,1),1);
-     weights(1) = 60;
+     weights(1) = params.training_params.train_positives_constant;
+     c = params.training_params.train_svm_c
      m.svm_model = fitcsvm(features, labels,'PolynomialOrder', ...
-                                [],'BoxConstraint', 2^(-3), 'KernelFunction', 'linear', 'KernelScale',1,...
+                                [],'BoxConstraint', c, 'KernelFunction', 'linear', 'KernelScale',1,...
                                'Standardize', 1,'ClassNames', [-1; 1], 'Weights', weights);
      %m.svm_model = fitcsvm(features, labels,'PolynomialOrder', ...
      %                           [],'BoxConstraint', 2^(-3), 'KernelFunction', 'rbf', 'KernelScale','auto',...
@@ -125,7 +126,8 @@ function m = linSVM_train_exemplar(m, features, labels, params)
   
 
 r = m.w*features(2:end,:)' - m.b;
-%}
+
+  
 [~, r] = predict(m.svm_model, features(2:end,:));
 r = r(:,2);
 svs = find(r >= 0.0000);
@@ -134,7 +136,7 @@ if length(svs) == 0
   fprintf(1,' ERROR: number of negative support vectors is 0!\n');
   %error('Something went wrong');
 end
-
+%}
 fprintf(1,' %d of negative training data are falsly classified with this model\n',length(svs));
 
 end

@@ -11,9 +11,11 @@ params = esvm_get_default_params;
 
 datasets_info = esvm_get_datasets_info(params.datasets_params);
 
-%use_feature = 'cnn';
-use_feature = 'hog';
+use_feature = 'cnn';
+%use_feature = 'hog';
 use_algorithm = 'esvm';
+calibration = true;
+hard_negative = false;
 
 feature_files = cell(1,length(datasets_info));
 
@@ -26,15 +28,21 @@ if strcmp(use_algorithm,'svm')
     prediction = esvm_predict_svm(linearSVMmodel, test_datas);
 else
     [models, neg_set] = esvm_train_initialization(train_datas, use_feature);
-    new_models = esvm_train_exemplars(models, train_datas, neg_set, use_algorithm, use_feature,params);
+    if hard_negative
+        new_models = esvm_train_exemplars_hn(models, train_datas, neg_set, use_algorithm, use_feature,params);
+    else
+        new_models = esvm_train_exemplars(models, train_datas, neg_set, use_algorithm, use_feature,params);
+    end
+    
     prediction = esvm_predict(new_models,test_datas, use_feature, params);
-    cal_matrix = esvm_perform_calibration(new_models, train_datas, use_feature, params);
-    prediction_1 = esvm_apply_sigmoid(cal_matrix, test_datas, use_feature, params);
-
+    
+    if calibration 
+        cal_matrix = esvm_perform_calibration(new_models, train_datas, use_feature, params);
+        prediction = esvm_apply_sigmoid(cal_matrix, test_datas, use_feature, params);
+    end
 end
 
-
-ap_res = esvm_evaluate_AP(prediction_1, test_datas, use_algorithm, use_feature, params, true);
+ap_res = esvm_evaluate_AP(prediction, test_datas, use_algorithm, use_feature, params, calibration);
 
 for i = 1:length(ap_res)
     fprintf(1, 'Class %s has an average precision of %f \n', upper(ap_res{i}.cls_name), ap_res{i}.ap);
