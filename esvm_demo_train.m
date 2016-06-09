@@ -1,4 +1,4 @@
-clear;
+%clear;
 
 addpath(genpath(pwd));
 % get and add current path
@@ -11,8 +11,8 @@ params = esvm_get_default_params;
 
 datasets_info = esvm_get_datasets_info(params.datasets_params);
 
-use_feature = 'cnn';
-%use_feature = 'hog';
+%use_feature = 'cnn';
+use_feature = 'hog';
 use_algorithm = 'esvm';
 calibration = true;
 hard_negative = false;
