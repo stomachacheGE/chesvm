@@ -1,4 +1,4 @@
-function esvm_train(feature, calibration,algorithm)
+function esvm_train(feature, calibration,algorithm, hard_negative)
 
 % get and add current path
 %fp = fileparts(which(mfilename));
@@ -14,13 +14,11 @@ use_feature = feature;
 %use_feature = 'hog';
 use_algorithm = algorithm;
 calibration = calibration;
-hard_negative = false;
+hard_negative = hard_negative;
 
-feature_files = cell(1,length(datasets_info));
 
-[train_datas, test_datas] = esvm_initialize_features(datasets_info,use_feature,use_algorithm,params);
-
-%data = esvm_construct_data(train_datas, datasets_info, params);
+[train_datas, test_datas] = esvm_initialize_features(datasets_info, ...
+                                                     use_feature,use_algorithm,params);
 
 if strcmp(use_algorithm,'svm')
     linearSVMmodel = esvm_train_svm(train_datas, use_feature, params);
@@ -28,9 +26,9 @@ if strcmp(use_algorithm,'svm')
 else
     [models, neg_set] = esvm_train_initialization(train_datas, use_feature);
     if hard_negative
-        new_models = esvm_train_exemplars_hn(models, train_datas, neg_set, use_algorithm, use_feature,params);
+        new_models = esvm_train_exemplars_hn(models, neg_set, use_feature,params);
     else
-        new_models = esvm_train_exemplars(models, train_datas, neg_set, use_algorithm, use_feature,params);
+        new_models = esvm_train_exemplars(models, neg_set, use_algorithm, use_feature,params);
     end
     
     prediction = esvm_predict(new_models,test_datas, use_feature, params);
@@ -41,11 +39,15 @@ else
     end
 end
 
-ap_res = esvm_evaluate_AP(prediction, test_datas, use_algorithm, use_feature, params, calibration);
+ap_res = esvm_evaluate_AP(prediction, test_datas, use_algorithm, ...
+                          use_feature, params, calibration);
 
 for i = 1:length(ap_res)
-    fprintf(1, 'Class %s has an average precision of %f \n', upper(ap_res{i}.cls_name), ap_res{i}.ap);
+    fprintf(1, 'Class %s has an average precision of %f \n', ...
+                upper(ap_res{i}.cls_name), ap_res{i}.ap);
 end
+
+
 %model.w * test_datas{1}{59}.feature' - model.b;
 
 end

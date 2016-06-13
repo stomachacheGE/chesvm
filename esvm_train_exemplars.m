@@ -1,4 +1,4 @@
-function new_models = esvm_train_exemplars(models, train_datas, train_set, algo_name, feat_name, params)
+function new_models = esvm_train_exemplars(models, train_set, algo_name, feat_name, params)
 % Train models with hard negatives mined from train_set
 % [models]: a cell array of initialized exemplar models
 % [train_set]: a virtual set of images to mine from
@@ -135,7 +135,7 @@ for qq = 1:length(models)
             train_labels = vertcat(1, neg_labels) ;
             
             m = linSVM_train_exemplar(m, train_features, train_labels, params);
-            
+            %{
             datas = cellfun(@(x)x.feature, train_datas{qq},'UniformOutput',false);
             datas_1 = [vertcat(datas{:})];
             %normalize train_features
@@ -149,7 +149,7 @@ for qq = 1:length(models)
             predicted_scores = scores_both(:,2);
             [sorted_scores, ~] = sort(predicted_scores, 'descend');
             m.self_bias = sorted_scores(1) - sorted_scores(2);
-
+            %}
       
             
             %HACK: remove train_set which causes save issue when it is a

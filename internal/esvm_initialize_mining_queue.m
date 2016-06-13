@@ -1,13 +1,8 @@
 function mining_queue = esvm_initialize_mining_queue(imageset, ordering)
 %Initialize the mining queue with ordering (random by default)
-%function mining_queue = esvm_initialize_mining_queue(imageset, ordering)
-% Copyright (C) 2011-12 by Tomasz Malisiewicz
-% All rights reserved.
-% 
-% This file is part of the Exemplar-SVM library and is made
-% available under the terms of the MIT license (see COPYING file).
-% Project homepage: https://github.com/quantombone/exemplarsvm
 
+% This file is modified based on Exemplar-SVM library.
+% You can find its project here: https://github.com/quantombone/exemplarsvm
 
 if ~exist('ordering','var')
   fprintf(1,'Randomizing mining queue\n');

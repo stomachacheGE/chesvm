@@ -18,157 +18,50 @@ function [hn, mining_queue, mining_stats] = ...
 %   hn{:}.xs "features"
 %   hn{:}.bbs "bounding boxes"
 %
-% Copyright (C) 2011-12 by Tomasz Malisiewicz
-% All rights reserved.
-% 
-% This file is part of the Exemplar-SVM library and is made
-% available under the terms of the MIT license (see COPYING file).
-% Project homepage: https://github.com/quantombone/exemplarsvm
-%{
-if ~exist('mining_params','var')
-  mining_params = esvm_get_default_params;
-end
-%}
+% This file is modified based on Exemplar-SVM library.
+% You can find its project here: https://github.com/quantombone/exemplarsvm
 
 number_of_violating_images = 0;
-%number_of_windows = zeros(length(models),1);
+
 
 violating_images = zeros(0,1);
 empty_images = zeros(0,1);
 
-mining_params.detect_save_features = 1;
-
 numpassed = 0;
-
 
   if ~isfield(model,'total_mines')
     model.total_mines = 0;
   end
 
-hn = zeros(size(model.w,2),0);
+%if model does not have a field w, initialize this model
+if ~isfield(model,'w')        
+  model.w = model.x - mean(model.x(:));
+  model.b = 0;
+  model.svm_model.Mu = zeros(1,size(model.x,2));
+  model.svm_model.Sigma = ones(1,size(model.x,2));
+end
+
+
+hn = zeros(size(model.x,2),0);
 %s = array(1,length(mining_queue));
 
 for i = 1:length(mining_queue)
   index = mining_queue{i}.index;
-  if strcmp(feat_name,'cnn');
-      x = load(imageset.feat_filers{index});
-      %fprintf(1,'loading cnn feature\n');
-      x = x.data.feature;
-  else
-      x = load(imageset.feat_filers{index});
-      x = x.data.feature;
-      %{
-      img = imread(imageset.img_filers{index});
-      img = imresize(double(img), model.img_size);
-      %fprintf(1,'%d size img is [%d %d] \n',index, size(img,1),size(img,2));
-      [x, ~] = mining_params.hog_extractor(img);
-      %fprintf(1,'loading hog feature\n');
-      %}
-  end
+  x = load(imageset.feat_filers{index});
+  x = x.data.feature;
   
-  %I = convert_to_I(imageset{index});
-
-  %HACK ROTATE UPSIDE DOWN
-  %fprintf(1,'HACK: rotate upside down negatives\n');
-  %I = imrotate(I,180);
-
-  %starter = tic;
-  % if isfield(mining_params,'wtype') && strcmp(mining_params.wtype, ...
-  %                                              'dfun')
-
-  %   [rs,t] = localizemeHOG_dfun(I, models, mining_params);
-  
-  %   %plot(rs.bbs{1}(:,end))
-  %   %keyboard
-  % else
-  %[rs,t] = esvm_detect(I, model, mining_params);
-
-  %{
-  if isfield(model{1}.mining_params,'SOFT_NEGATIVE_MINING') && ...
-        (model{1}.mining_params.SOFT_NEGATIVE_MINING==1)
-    for j=1:length(rs.bbs)
-      if size(rs.bbs{j},1) > 0
-        top_det = rs.bbs{j}(1,:);
-        os = getosmatrix_bb(rs.bbs{j},top_det);
-        goods = find(os<model{j}.mining_params.SOFT_NEGATIVE_MINING_OS);
-        rs.bbs{j} = rs.bbs{j}(goods,:);
-        rs.xs{j} = rs.xs{j}(goods);
-      end
-    end
-  end
-  %}
-  
-  %fprintf(1,'size w is [%d %d] \n',size(model.w,1),size(model.w,2));
-  %fprintf(1,'size x is [%d %d] \n',size(x,1),size(x,2));  
-  s = model.w * x' - model.b;
+  standarized_x = (x - model.svm_model.Mu) ./ model.svm_model.Sigma;
+  s = model.w * standarized_x' + model.b;
 
   numpassed = numpassed + 1;
 
-    %{
-  curid_integer = index;  
-  for q = 1:length(rs.bbs)
-    if ~isempty(rs.bbs{q})
-      rs.bbs{q}(:,11) = curid_integer;
-    end
-  end
-  
-
- 
-  %% Make sure we only keep 3 times the number of violating windows
-  clear scores
-  scores{1} = [];
-  for q = 1:length(model)
-    if ~isempty(rs.bbs{q})
-      s = rs.bbs{q}(:,end);
-      nviol = sum(s >= -1);
-      [aa,bb] = sort(s,'descend');
-      bb = bb(1:min(length(bb),...
-                    ceil(nviol*mining_params.train_keep_nsv_multiplier)));
-      
-
-      rs.xs{q} = rs.xs{q}(bb);    
-      scores{q} = cat(2,s);
-    end
-  end
-  
-  addon ='';
-  supersize = sum(cellfun(@(x)length(x),scores));
-  if supersize > 0
-    addon=sprintf(', max = %.3f',max(cellfun(@(x)max_or_this(x,-1000),scores)));
-  end
-  total = sum(cellfun(@(x)x.num_visited,mining_queue));
-  fprintf(1,'Found %04d windows, image:%05d (#seen=%05d/%05d%s)\n',...
-          supersize, index, ...
-          length(imageset)-length(mining_queue)+i, length(imageset), addon);
-  %}
-  
-  %increment how many times we processed this image
   mining_queue{i}.num_visited = mining_queue{i}.num_visited + 1;
 
-  %{
-  number_of_windows = number_of_windows + cellfun(@(x)length(x),scores)';
-  
-  clear curxs curbbs
-  for q = 1:length(model)
-    curxs{q} = [];
-    curbbs{q} = [];
-    if isempty(rs.xs{q})
-      continue
-    end
-    
-    goods = cellfun(@(x)prod(size(x)),rs.xs{q})>0;
-    curxs{q} = cat(2,curxs{q},rs.xs{q}{goods});
-    curbbs{q} = cat(1,curbbs{q},rs.bbs{q}(goods,:));
-  end
-  %}
-  %Ndets = cellfun(@(x)size(x,2),curxs);
-  %if no detections, just skip image because there is nothing to store
   if s <= -1
     empty_images(end+1) = index;
-    %continue
   end
   
-  %an image is violating if it contains some violating windows,
+  %an image is violating if its prediction score less than -1,
   %else it is an empty image
   if s >=-1
     if (mining_queue{i}.num_visited==1)
@@ -178,17 +71,9 @@ for i = 1:length(mining_queue)
     hn(:,end+1) = x';
   end
   
-  %{
-  for a = 1:length(model)
-    xs{a}{i} = curxs{a};
-    bbs{a}{i} = curbbs{a};
-  end
-  %}
-  
   if (numpassed + model.total_mines >= ...
       mining_params.train_max_mined_images) || ...
               (numpassed >= mining_params.train_max_images_per_iteration)
-      %  (max(number_of_windows) >= mining_params.train_max_windows_per_iteration) || ...
 
     fprintf(1,['Stopping mining because we have' ...
                                                 ' %d new violators\n'],...
@@ -198,10 +83,6 @@ for i = 1:length(mining_queue)
 end
 
 if isempty(hn) 
-  %If no detections from from anymodels, return an empty matrix
-
-  %hn = zeros((size(x,2)),0);
-
 
   mining_stats.num_violating = 0;
   mining_stats.num_empty = 0;
@@ -210,9 +91,6 @@ if isempty(hn)
   return;
 end
 
-
-
-%}
 fprintf(1,'# Violating images: %d, #Non-violating images: %d\n', ...
         length(violating_images), length(empty_images));
 
@@ -231,14 +109,14 @@ if strcmp(mining_params.queue_mode,'onepass') == 1
                                    empty_images);
 elseif strcmp(mining_params.queue_mode,'cycle-violators') == 1
   %% MINING QUEUE update by cycling violators to end of queue
-  %mining_queue = update_mq_cycle_violators(mining_queue, violating_images, ...
-  %                                 empty_images);
+  mining_queue = update_mq_cycle_violators(mining_queue, violating_images, ...
+                                   empty_images);
 elseif strcmp(mining_params.queue_mode,'front-violators') == 1
   %% MINING QUEUE UPDATE by removing already seen images, and
   %front-placing violators (used in CVPR11)
-  %mining_queue = update_mq_front_violators(mining_queue, ...
-  %                                         violating_images, ...
-  %                                         empty_images);
+  mining_queue = update_mq_front_violators(mining_queue, ...
+                                           violating_images, ...
+                                           empty_images);
 else
   error(sprintf('Invalid queue mode: %s\n', ...
                 mining_params.queue_mode));
