@@ -1,4 +1,4 @@
-function prediction = esvm_apply_sigmoid(cal_matrix, test_datas, feat_name, params)
+function prediction = esvm_apply_sigmoid(cal_matrix, test_datas, feat_name, hard_negative, params)
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
 esvm_res_dir = fullfile(classifi_res_dir, 'esvm');
@@ -22,7 +22,7 @@ for i = 1:length(test_datas)
 
   for j = 1:length(test_datas{i})
       
-      if hard_negetive
+      if hard_negative
           filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
           filer_1 = sprintf('%s/%s_%s_score_sigmoid.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
       else
