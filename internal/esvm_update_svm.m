@@ -18,21 +18,22 @@ mining_params = m.mining_params;
 xs = m.svxs;
 
 %NOTE: MAXSIZE should perhaps be inside of the default_params script?
-MAXSIZE = 3500;
-if size(xs,2) >= MAXSIZE
-  HALFSIZE = MAXSIZE/2;
-  %NOTE: random is better than top 5000
-  r = m.w*xs;
-  [tmp,r] = sort(r,'descend');
-  r1 = r(1:HALFSIZE);
-  
-  r = HALFSIZE+randperm(length(r((HALFSIZE+1):end)));
-  r = r(1:HALFSIZE);
-  r = [r1 r];
-  xs = xs(:,r);
-end
+%{
+    MAXSIZE = 3500;
+    if size(xs,2) >= MAXSIZE
+      HALFSIZE = MAXSIZE/2;
+      %NOTE: random is better than top 5000
+      r = m.w*xs;
+      [tmp,r] = sort(r,'descend');
+      r1 = r(1:HALFSIZE);
 
+      r = HALFSIZE+randperm(length(r((HALFSIZE+1):end)));
+      r = r(1:HALFSIZE);
+      r = [r1 r];
+      xs = xs(:,r);
+    end
 
+%}
   
 superx = cat(2,m.x',xs)';
 supery = cat(1,ones(size(m.x',2),1),-1*ones(size(xs,2),1));
@@ -88,6 +89,10 @@ end
 %fprintf(1,'dimension of x is [%d %d]\n', size(m.x,1),size(m.x,2));
 %maxpos = max(wex*m.x' - b);
 standarized_x = (m.x - m.svm_model.Mu) ./ m.svm_model.Sigma;
+%replace any entry which is finite with 0
+[row, col] = find(~isfinite(standarized_x));
+standarized_x(row,col) = 0;
+    
 maxpos = standarized_x * svm_weights' + b;
 fprintf(1,' --- Max positive is %.3f\n',maxpos);
 fprintf(1,'SVM iteration took %.3f sec, ',toc(starttime));
@@ -98,12 +103,15 @@ m.b = b;
 repmat_Mu = repmat(m.svm_model.Mu',1,size(m.svxs,2));
 repmat_Sigma = repmat(m.svm_model.Sigma',1, size(m.svxs,2));
 standarized_svxs = (m.svxs - repmat_Mu) ./ repmat_Sigma;
+%replace any entry which is finite with 0
+[row, col] = find(~isfinite(standarized_svxs));
+standarized_svxs(row,col) = 0;
     
 r = m.w*standarized_svxs + m.b;
 svs = find(r >= -1.0000);
 
 if length(svs) == 0
-  fprintf(1,'Note: number of negative support vectors is 0! \n');
+  fprintf(1,' Note - number of negative support vectors is 0! \n');
   m.no_negatives_found = true;
 else
   m.svxs = m.svxs(:,svs);

@@ -34,10 +34,10 @@ end
 
 counter = 0;
 
-filer_1 = sprintf('%s/%s_models_in_matrix', esvm_res_dir, feat_name);
+filer_1 = sprintf('%s/%s_models_in_matrix.mat', esvm_res_dir, feat_name);
 
 if ~exist(filer_1,'file')
-    fprintf(1,'Extracting models into one file...');
+    fprintf(1,'Extracting models into one file... \n');
     Mus_cell = cell(1,length(models));
     Sigmas_cell = cell(1,length(models));
     Biases_cell = cell(1,length(models));
@@ -76,7 +76,7 @@ if ~exist(filer_1,'file')
         save(filer_1, 'all_in_one');
     end
 else
-    fprintf(1,'Loading all-in-one models from file...');
+    fprintf(1,'Loading all-in-one models from file... \n');
     temp = load(filer_1);
     temp = temp.all_in_one;
     Mus_cell = temp.Mus_cell;
@@ -102,8 +102,8 @@ for i = 1:length(test_datas)
             res_per_class = zeros(size(models{m}));
             input = test_datas{i}{j}.feature;
             standarized_inputs = (repmat(input, size(Mus_cell{m},1), 1) - Mus_cell{m} ) ./ Sigmas_cell{m};
-            %replace NaN entry with 0
-            [row, col] = find(isnan(standarized_inputs));
+            %replace any entry which is finite with 0
+            [row, col] = find(~isfinite(standarized_inputs));
             standarized_inputs(row,col) = 0;
             res_per_class = sum(standarized_inputs  .* Betas_cell{m}, 2) + Biases_cell{m};
 

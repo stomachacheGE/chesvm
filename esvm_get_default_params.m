@@ -22,14 +22,14 @@ default_params.training_params.train_max_negatives_in_cache = 2000;
 
 %Maximum number of violating images before SVM is trained with current cache
 %default_params.training_params.train_max_images_per_iteration = 400;
-default_params.training_params.train_max_images_per_iteration = 100;
+default_params.training_params.train_max_images_per_iteration = 200;
 
 %The constant which tells us the weight in front of the positives
 %during SVM learning
 default_params.training_params.train_positives_constant = 60;
 
 %ICCV11 constant for SVM learning
-default_params.training_params.train_svm_c = -3; %% regularize  with 2 ^(-3);
+default_params.training_params.train_svm_c = -3; %% regularize with 2 ^(-3);
 
 
 %The svm update equation
@@ -46,7 +46,7 @@ default_params.training_params.training_function = @esvm_update_svm;
 % The last two modes require a termination condition such as
 % (train_max_mined_images) so that learning doesn't loop
 % indefinitely
-default_params.training_params.queue_mode = 'cycle-violators';
+default_params.training_params.queue_mode = 'onepass';
 default_params.training_params.hog_extractor = @esvm_extract_hog_feature;
 
 % if non-zero, sets weight of positives such that positives and

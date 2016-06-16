@@ -1,5 +1,5 @@
-function [model, hn, mining_queue, mining_stats] = ...
-    esvm_mine_negatives(model, mining_queue, imageset, mining_params)
+function [hn, mining_queue, mining_stats] = ...
+    esvm_mine_negatives(model, mining_queue, imageset, feat_name, mining_params)
 % Compute detections "aka Hard-Negatives" hn for the images in the
 % stream/queue [imageset/mining_queue] when given K classifiers [models]
 % 
@@ -89,7 +89,7 @@ if isempty(hn)
   mining_stats.num_empty = numpassed;
   mining_stats.total_mines = numpassed;
   fprintf(1,'No Violating images found for this iteration \n');
-  model.no_negatives_found = true;
+  m.no_negatives_found = true;
 else
 
 fprintf(1,'# Violating images: %d, #Non-violating images: %d\n', ...

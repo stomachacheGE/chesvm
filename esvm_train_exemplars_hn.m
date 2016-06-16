@@ -100,7 +100,7 @@ for qq = 1:length(models)
             m = rmfield(m,'neg_set');
             save(filer2,'m');
             m = msave;
-
+            
             %delete old files
             if m.iteration > 1
               for q = 1:m.iteration-1
@@ -126,9 +126,9 @@ for qq = 1:length(models)
                                         num_models,m.img_id, m.cls_name);
           end
           
-          clear m;
+          %clear m;
           %load m from model file
-          load(filer2final);
+          %load(filer2final);
       end
       
       counter = counter + 1;

@@ -14,9 +14,7 @@ function [m] = esvm_mine_train_iteration(m, feat_name, training_function)
 if ~isfield(m,'wtrace')
   m.wtrace{1} = m.x - mean(m.x(:));
   m.btrace{1} = 0;
-  m.mutrace{1} = zeros(1,size(m.x,2));
-  m.sigmatrace{1} = ones(1,size(m.x,2));
-
+  m.mutrace{1} = 
 end
 
 if length(m.mining_queue) == 0
@@ -55,8 +53,6 @@ m = training_function(m);
 % Append new w to trace
 m.wtrace{end+1} = m.w;
 m.btrace{end+1} = m.b;
-m.mutrace{end+1} = m.svm_model.Mu;
-m.sigmatrace{end+1} = m.svm_model.Sigma;
 end
 
 function m = add_new_detections(m, hn)

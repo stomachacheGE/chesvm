@@ -6,6 +6,7 @@ function esvm_train(feature, calibration,algorithm, hard_negative)
 %cd(fp);
 %format short; % output short
 
+
 params = esvm_get_default_params;
 
 datasets_info = esvm_get_datasets_info(params.datasets_params);
@@ -48,6 +49,5 @@ for i = 1:length(ap_res)
 end
 
 
-%model.w * test_datas{1}{59}.feature' - model.b;
 
 end

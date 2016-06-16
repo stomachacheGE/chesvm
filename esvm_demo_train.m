@@ -1,4 +1,4 @@
-%clear;
+clear;
 
 addpath(genpath(pwd));
 
@@ -9,7 +9,7 @@ datasets_info = esvm_get_datasets_info(params.datasets_params);
 %use_feature = 'cnn';
 use_feature = 'hog';
 use_algorithm = 'esvm';
-calibration = true;
+calibration = false;
 hard_negative = true;
 
 [train_datas, test_datas] = esvm_initialize_features(datasets_info, ...
