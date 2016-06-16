@@ -1,4 +1,4 @@
-function prediction = esvm_predict(models, test_datas, feat_name, params)
+function prediction = esvm_predict(models, test_datas, feat_name, hard_negative, params)
 
 
 
@@ -33,8 +33,11 @@ for i = 1:length(models)
 end
 
 counter = 0;
-
-filer_1 = sprintf('%s/%s_models_in_matrix.mat', esvm_res_dir, feat_name);
+if hard_negative
+    filer_1 = sprintf('%s/%s_models_in_matrix.mat', esvm_res_dir, feat_name);
+else
+    filer_1 = sprintf('%s/%s_models_in_matrix_wo_hn.mat', esvm_res_dir, feat_name);
+end
 
 if ~exist(filer_1,'file')
     fprintf(1,'Extracting models into one file... \n');
@@ -94,7 +97,11 @@ for i = 1:length(test_datas)
       
       res = zeros(size(models));
       
-      filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+      if hard_negative
+          filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+      else
+          filer = sprintf('%s/%s_%s_score_wo_hn.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+      end
       
       if ~exist(filer,'file')
           temp = cell(length(models),1);

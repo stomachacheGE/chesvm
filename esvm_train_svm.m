@@ -56,7 +56,7 @@ if ~exist(model_filer,'file')
     fprintf('Use %s feature with dimension: [%d %d] \n', feat_name, feat_size(1), feat_size(2));
     % Cross-validation with 5-fold (note the obtion -v 5)
     %C_vals=log2space(7,10,5);
-     C_vals = 2.^[-6 -5 -3 -2 -1 0 2];
+     C_vals = 2.^[-6 -5 -3 -2 -1 0 2 4 6];
     clear i;
     for i=1:length(C_vals);
         opt_string=['-t 0  -v 5 -c ' num2str(2^C_vals(i))];

@@ -22,9 +22,13 @@ for i = 1:length(test_datas)
 
   for j = 1:length(test_datas{i})
       
-      
-      filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-      filer_1 = sprintf('%s/%s_%s_score_sigmoid.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+      if hard_negetive
+          filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+          filer_1 = sprintf('%s/%s_%s_score_sigmoid.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+      else
+          filer = sprintf('%s/%s_%s_score_wo_hn.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+          filer_1 = sprintf('%s/%s_%s_score_sigmoid_wo_hn.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+      end
       
       if ~exist(filer_1, 'file')
           

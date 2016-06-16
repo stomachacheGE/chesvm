@@ -1,4 +1,4 @@
-function new_models = esvm_train_exemplars(models, train_set, algo_name, feat_name, params)
+function new_models = esvm_train_exemplars(models, train_set, feat_name, params)
 % Train models with hard negatives mined from train_set
 % [models]: a cell array of initialized exemplar models
 % [train_set]: a virtual set of images to mine from
@@ -6,7 +6,7 @@ function new_models = esvm_train_exemplars(models, train_set, algo_name, feat_na
 
 
 models_dir = fullfile('.', params.datasets_params.results_folder,'models');
-
+algo_name = 'esvm';
 
 if ~exist(models_dir, 'dir')
     mkdir(models_dir);

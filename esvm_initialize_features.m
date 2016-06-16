@@ -65,13 +65,9 @@ for j=1:length(datasets_info)
                 data.feature = double(esvm_extract_cnn_feature(img, convnet, cnn_params.layer));
             else
                 hog_params = feat_params.hog_params;
-                if strcmp(algo_name, 'svm')
-                    img = imresize(double(img),[hog_params.height hog_params.width]);
-                    [data.feature data.hog_size] = esvm_extract_hog_feature(img, feat_params.hog_params);
-                else
-                    img = imresize(double(img),[hog_params.height hog_params.width]);
-                    [data.feature data.hog_size] = esvm_extract_hog_feature(double(img), feat_params.hog_params);                     
-                end
+                img = imresize(double(img),[hog_params.height hog_params.width]);
+                [data.feature data.hog_size] = esvm_extract_hog_feature(double(img), feat_params.hog_params);                     
+
             end
 
             data.cls_name = cls;

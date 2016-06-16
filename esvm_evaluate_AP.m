@@ -1,4 +1,4 @@
-function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_feature, params, cal)
+function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_feature, cal, hard_negative, params)
 
     datasets_params = params.datasets_params;
 
@@ -54,19 +54,34 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
             fclose(fid);      
         end
     end
-
-    if strcmp(use_algorithm, 'svm')
-        if cal
-            ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
+    if hard_negative
+        if strcmp(use_algorithm, 'svm')
+            if cal
+                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
+            else
+                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+            end
         else
-            ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+            if cal
+                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
+            else
+                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+            end
         end
     else
-        if cal
-            ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
+        if strcmp(use_algorithm, 'svm')
+            if cal
+                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_calibration_wo_hn.txt'];
+            else
+                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_wo_hn.txt'];
+            end
         else
-            ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '.txt'];
-        end
+            if cal
+                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_calibration_wo_hn.txt'];
+            else
+                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_wo_hn.txt'];
+            end
+        end        
     end
     
 
@@ -95,23 +110,42 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
             end
 
             cls_name = test_datas{idx}{1}.cls_name;
-
-            if strcmp(use_algorithm, 'svm')   
-                if ~cal
-                res_filer = sprintf('%s/%s_%s_res.txt',...
-                        lin_svm_res_dir,cls_name, use_feature);
+            if hard_negative
+                if strcmp(use_algorithm, 'svm')   
+                    if ~cal
+                    res_filer = sprintf('%s/%s_%s_res.txt',...
+                            lin_svm_res_dir,cls_name, use_feature);
+                    else
+                    res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
+                            lin_svm_res_dir,cls_name, use_feature);   
+                    end
                 else
-                res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
-                        lin_svm_res_dir,cls_name, use_feature);   
+                    if ~cal
+                    res_filer = sprintf('%s/%s_%s_res.txt',...
+                            esvm_res_dir,cls_name, use_feature);
+                    else
+                    res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
+                            esvm_res_dir,cls_name, use_feature);
+                    end
                 end
             else
-                if ~cal
-                res_filer = sprintf('%s/%s_%s_res.txt',...
-                        esvm_res_dir,cls_name, use_feature);
+                 if strcmp(use_algorithm, 'svm')   
+                    if ~cal
+                    res_filer = sprintf('%s/%s_%s_res_wo_hn.txt',...
+                            lin_svm_res_dir,cls_name, use_feature);
+                    else
+                    res_filer = sprintf('%s/%s_%s_calibration_res_wo_hn.txt',...
+                            lin_svm_res_dir,cls_name, use_feature);   
+                    end
                 else
-                res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
-                        esvm_res_dir,cls_name, use_feature);
-                end
+                    if ~cal
+                    res_filer = sprintf('%s/%s_%s_res_wo_hn.txt',...
+                            esvm_res_dir,cls_name, use_feature);
+                    else
+                    res_filer = sprintf('%s/%s_%s_calibration_res_wo_hn.txt',...
+                            esvm_res_dir,cls_name, use_feature);
+                    end
+                 end   
             end
 
             if ~exist(res_filer,'file')
@@ -132,9 +166,9 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
 
             if strcmp(use_algorithm, 'svm')       
-                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, cal, 'true');       
+                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, hard_negative, lin_svm_res_dir, ground_truth_dir, cal, 'true');       
             else
-                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir,cal, 'true');
+                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, hard_negative, esvm_res_dir, ground_truth_dir,cal, 'true');
             end
             ap_res{q}.cls_name = cls_name;
                   
@@ -167,7 +201,7 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
 end
 
-function [rec,prec,ap] = VOCevalcls(cls, feat_name, result_dir, ground_truth_dir, cal, draw)
+function [rec,prec,ap] = VOCevalcls(cls, feat_name, hard_negative, result_dir, ground_truth_dir, cal, draw)
 
 % load test set
 
@@ -175,10 +209,18 @@ gt_filer = sprintf('%s/%s_gt.txt',ground_truth_dir,cls);
 [gtids,gt]=textread(gt_filer,'%s %d');
 
 % load results
-if ~cal
-  res_filer = sprintf('%s/%s_%s_res.txt',result_dir,cls,feat_name);
+if hard_negative
+    if ~cal
+      res_filer = sprintf('%s/%s_%s_res.txt',result_dir,cls,feat_name);
+    else
+      res_filer = sprintf('%s/%s_%s_calibration_res.txt',result_dir,cls,feat_name);
+    end
 else
-  res_filer = sprintf('%s/%s_%s_calibration_res.txt',result_dir,cls,feat_name);
+    if ~cal
+      res_filer = sprintf('%s/%s_%s_res_wo_hn.txt',result_dir,cls,feat_name);
+    else
+      res_filer = sprintf('%s/%s_%s_calibration_res_wo_hn.txt',result_dir,cls,feat_name);
+    end
 end
 [ids,confidence]=textread(res_filer,'%s %f');
 

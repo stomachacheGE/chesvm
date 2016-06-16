@@ -1,4 +1,4 @@
-function cal_mat = esvm_perform_calibration(models, cal_sets, feat_name, params)
+function cal_mat = esvm_perform_calibration(models, cal_sets, feat_name, hard_negative, params)
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
 esvm_res_dir = fullfile(classifi_res_dir, 'esvm');
@@ -11,7 +11,11 @@ if ~exist(esvm_res_dir,'dir')
     mkdir(esvm_res_dir);
 end
 
-filer = sprintf('%s/%s_esvm_calibration_matrix.mat',esvm_res_dir, feat_name);
+if hard_negative
+    filer = sprintf('%s/%s_esvm_calibration_matrix.mat',esvm_res_dir, feat_name);
+else
+    filer = sprintf('%s/%s_esvm_calibration_matrix_wo_hn.mat',esvm_res_dir, feat_name);
+end
 
 if ~exist(filer,'file')
 
