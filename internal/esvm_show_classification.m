@@ -1,4 +1,4 @@
-function esvm_show_classification(cls_idx, idx, feat_name, datasets_info, params)
+function esvm_show_classification(cls_idx, idx, feat_name, hard_negative, datasets_info, params)
 
 classes = cellfun(@(x) x.cls_name, datasets_info, 'UniformOutput', false);
 
@@ -26,7 +26,12 @@ figure(20);
 width = params.features_params.hog_params.width;
 height = params.features_params.hog_params.height;
 cls_res_dir = fullfile(esvm_res_dir, classes{cls_idx});
-res_filer = sprintf('%s/%s_%06d_score.mat',cls_res_dir, feat_name, id);
+if hard_negative
+    res_filer = sprintf('%s/%s_%06d_score.mat',cls_res_dir, feat_name, id);
+else
+    res_filer = sprintf('%s/%s_%06d_score_wo_hn.mat',cls_res_dir, feat_name, id);
+end
+
 result = load(res_filer);
 result = result.result;
 Index_I = result.i;
