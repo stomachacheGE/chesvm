@@ -1,4 +1,4 @@
-function cal_mat = esvm_perform_calibration(models, train_set, neg_set, feat_name, hard_negative, params)
+function cal_mat = esvm_perform_calibration(models, train_set, cal_set, feat_name, hard_negative, params)
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
 esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
@@ -33,18 +33,7 @@ if ~exist(filer,'file')
         cal_pos_features = cellfun(@(x)x.feature, train_set{i}, 'UniformOutput', false);
         cal_pos_features = [vertcat(cal_pos_features{:})];
         
-        num_pos = size(cal_pos_features,1);
-        
-        myRandomize;
-        ordering = randperm(length(neg_set{i}.feat_filers));
-        
-        cal_neg_feat_filers = neg_set{i}.feat_filers(ordering(1:num_pos));
-        cal_neg_features = cell(num_pos,1);
-        for c = 1:num_pos-1
-            temp = load(cal_neg_feat_filers{c});
-            cal_neg_features{c} = temp.data.feature;
-        end
-        cal_neg_features = [vertcat(cal_neg_features{:})];
+
         
         for j=1:length(models{i})
 
@@ -65,29 +54,47 @@ if ~exist(filer,'file')
             num_neg = int16(train_set{i}{j}.num_neg);
             cal_features = cal_features(1:size(cal_features,1)-num_neg,:);
              %}
-            [~, pos_scores] = predict(m.svm_model, cal_pos_features);
-            pos_scores = pos_scores(:,2)';
+            [~, all_pos_scores] = predict(m.svm_model, cal_pos_features);
+            all_pos_scores = all_pos_scores(:,2)';
 
-            [pos_scores, indexes] = sort(pos_scores, 'descend');
+            [sorted_pos_scores, indexes] = sort(all_pos_scores, 'descend');
             %exclude the biggest score, which is the exemplar itself
-            indexes = indexes(2:int16(length(pos_scores)/5));
-            pos_scores = pos_scores(2:int16(length(pos_scores)/5));
             
+            num_pos = length(sorted_pos_scores);
+            num_neg = length(cal_set{i}{j}.neg_filer);
+            idx = int16(1:num_neg);
+            idxs = int16(floor(num_pos / num_neg)) * idx;           
+            pos_scores = sorted_pos_scores(idxs);
+            if strcmp(feat_name,'cnn')
             pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
             
-            
+
+ 
+            cal_neg_feat_filers = cal_set{i}{j}.neg_filer;
+            cal_neg_features = cell(num_neg,1);
+            for c = 1:num_neg
+                temp = load(cal_neg_feat_filers{c});
+                cal_neg_features{c} = temp.data.feature;
+            end
+            cal_neg_features = [vertcat(cal_neg_features{:})];
+
             [~, neg_scores] = predict(m.svm_model, cal_neg_features);
             neg_scores = neg_scores(:,2)';
 
             [neg_scores, neg_indexes] = sort(neg_scores, 'ascend');
-            %exclude the biggest score, which is the exemplar itself
-            neg_indexes = neg_indexes(1:int16(length(neg_scores)/5)-1);
-            neg_scores = neg_scores(1:int16(length(neg_scores)/5)-1);
             
-            neg_prob = 0.5 - 0.5 * abs(neg_scores(end) - neg_scores) / (neg_scores(end) - neg_scores(1));
+            neg_prob = 0.3 * (1 - 1 * abs(neg_scores(end) - neg_scores) / (neg_scores(end) - neg_scores(1)));
             
             scores = horzcat(pos_scores, neg_scores);
             prob = horzcat(pos_prob, neg_prob);
+            else
+                
+            
+            pos_prob = 1 - abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
+            prob = pos_prob;
+            scores = pos_scores;
+            end
+            
             %{
             [~, scores] = predict(m.svm_model, cal_features);
             scores = scores(:,2)';

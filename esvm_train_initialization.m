@@ -1,4 +1,4 @@
-function [models, neg_sets] = esvm_train_initialization(datas, feat_name)
+function [models, cal_sets, neg_sets] = esvm_train_initialization(datas, feat_name)
 
     models = cell(1,length(datas));
     tmp_neg_sets = cell(1,length(datas));
@@ -36,8 +36,8 @@ function [models, neg_sets] = esvm_train_initialization(datas, feat_name)
         
         models{i} = cell(1,length(datas{i}));
         neg_sets{i} = cell(1,length(datas{i}));
-        cal_sets{i} = cell(1,length(datas{i}));
-        
+
+           
         for j=1:length(datas{i})
             
             data = datas{i}{j};
@@ -56,29 +56,20 @@ function [models, neg_sets] = esvm_train_initialization(datas, feat_name)
                  model.hog_size = data.hog_size;
             end
             models{i}{j} = model;
-            %{
+            
+                    
             myRandomize;
             ordering = randperm(length(tmp_neg_sets{i}.img_filers));
             %take 1/10 of tmo_neg_sets for 
-            num_neg = int16(length(tmp_neg_sets{i}.img_filers) / 20);
-            neg_for_cal = tmp_neg_sets{i}.feat_filers(ordering(1:num_neg));
-            pos_for_cal = cellfun(@(x)x.feat_filer, datas{i}, 'UniformOutput', false);
-            %pos_for_cal = [horzcat(pos_for_cal{:})];
-            cal_sets{i}{j}.feat_filers = cat(2, pos_for_cal, neg_for_cal);
-            neg_img_for_cal = tmp_neg_sets{i}.img_filers(ordering(1:num_neg));
-            pos_img_for_cal = cellfun(@(x)x.img_filer, datas{i}, 'UniformOutput', false);
-            cal_sets{i}{j}.img_filers = cat(2, pos_img_for_cal, neg_img_for_cal);
-            cal_sets{i}{j}.num_neg = num_neg;
-            %cal_sets{i}{j}.gt = [ones(1, length(pos_for_cal)) zeros(1,length(neg_for_cal))];
-           
-            neg_sets{i}{j}.feat_filers = tmp_neg_sets{i}.feat_filers(ordering(num_neg+1:end));
-            neg_sets{i}{j}.img_filers = tmp_neg_sets{i}.img_filers(ordering(num_neg+1:end));
-            neg_sets{i}{j}.img_sizes = tmp_neg_sets{i}.img_sizes(ordering(num_neg+1:end));
-             %}
+            num_cal_class = int16(length(datas{i}) / 10);
+            cal_sets{i}{j}.neg_filer = tmp_neg_sets{i}.feat_filers(ordering(1:num_cal_class));
+            neg_sets{i}{j}.feat_filers = tmp_neg_sets{i}.feat_filers(ordering(num_cal_class+1:end));
+            neg_sets{i}{j}.img_filers = tmp_neg_sets{i}.img_filers(ordering(num_cal_class+1:end));
+            neg_sets{i}{j}.img_sizes = tmp_neg_sets{i}.img_sizes(ordering(num_cal_class+1:end));
         end
-            neg_sets{i}.feat_filers = tmp_neg_sets{i}.feat_filers;
-            neg_sets{i}.img_filers = tmp_neg_sets{i}.img_filers;
-            neg_sets{i}.img_sizes = tmp_neg_sets{i}.img_sizes;
+
+            
+
     end
     
     

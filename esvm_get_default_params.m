@@ -22,7 +22,7 @@ default_params.training_params.train_max_negatives_in_cache = 2000;
 
 %Maximum number of violating images before SVM is trained with current cache
 %default_params.training_params.train_max_images_per_iteration = 400;
-default_params.training_params.train_max_images_per_iteration = 200;
+default_params.training_params.train_max_images_per_iteration = 50;
 
 %The constant which tells us the weight in front of the positives
 %during SVM learning

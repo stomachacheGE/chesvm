@@ -63,7 +63,7 @@ for qq = 1:length(models)
           fprintf(1,'Strat to train model %d/%d, model_id = %s, class = %s \n',...
                                 counter, num_models,m.img_id, m.cls_name);
           % Add training set and training set's mining queue 
-          m.neg_set = neg_set{qq};
+          m.neg_set = neg_set{qq}{i};
           m.mining_queue = esvm_initialize_mining_queue(m.neg_set);
 
           % Add mining_params, and params.dataset_params to this exemplar

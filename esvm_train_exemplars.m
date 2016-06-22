@@ -75,7 +75,7 @@ for qq = 1:length(models)
           % Add training set and training set's mining queue 
           %fprintf(1,'q is %d\n',qq);
           %fprintf(1,'train_set size is [%d %d]\n', size(train_set,1),size(train_set,2));
-          m.train_set = train_set{qq};
+          m.train_set = train_set{qq}{i};
           %m.mining_queue = esvm_initialize_mining_queue(m.train_set);
 
           % Add mining_params, and params.dataset_params to this exemplar
@@ -116,8 +116,8 @@ for qq = 1:length(models)
             neg_img_filers = train_set{qq}{i}.img_filers;
             neg_features = cell(1,length(neg_feature_filers));
             %}
-            neg_feature_filers = train_set{qq}.feat_filers;
-            neg_img_filers = train_set{qq}.img_filers;
+            neg_feature_filers = train_set{qq}{i}.feat_filers;
+            neg_img_filers = train_set{qq}{i}.img_filers;
             neg_features = cell(1,length(neg_feature_filers));
 
             for filer_i = 1:length(neg_feature_filers)
