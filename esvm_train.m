@@ -35,7 +35,7 @@ else
     prediction = esvm_predict(new_models,test_datas, use_feature, hard_negative, params);
     
     if calibration 
-        cal_matrix = esvm_perform_calibration(new_models, train_datas, use_feature, hard_negative, params);
+        cal_matrix = esvm_perform_calibration(new_models, train_datas, neg_set, use_feature, hard_negative, params);
         prediction = esvm_apply_sigmoid(cal_matrix, test_datas, use_feature, hard_negative, params);
     end
 end

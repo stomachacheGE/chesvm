@@ -3,10 +3,21 @@ function prediction = esvm_predict(models, test_datas, feat_name, hard_negative,
 
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
-esvm_res_dir = fullfile(classifi_res_dir, 'esvm');
+models_dir = fullfile('.', params.datasets_params.results_folder,'models');
+esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
+
+if hard_negative
+    esvm_res_dir = fullfil(esvm_res_root_dir, 'hard_negative', 'wo_calibration');
+else
+    esvm_res_dir = fullfil(esvm_res_root_dir, 'wo_hard_negative', 'wo_calibration');
+end
 
 if ~exist(classifi_res_dir,'dir')
     mkdir(classifi_res_dir);
+end
+
+if ~exist(esvm_res_root_dir,'dir')
+    mkdir(esvm_res_root_dir);
 end
 
 if ~exist(esvm_res_dir,'dir')
@@ -34,9 +45,9 @@ end
 
 counter = 0;
 if hard_negative
-    filer_1 = sprintf('%s/%s_models_in_matrix.mat', esvm_res_dir, feat_name);
+    filer_1 = sprintf('%s/%s_models_in_matrix.mat', models_dir, feat_name);
 else
-    filer_1 = sprintf('%s/%s_models_in_matrix_wo_hn.mat', esvm_res_dir, feat_name);
+    filer_1 = sprintf('%s/%s_models_in_matrix_wo_hn.mat', models_dir, feat_name);
 end
 
 if ~exist(filer_1,'file')
@@ -97,11 +108,8 @@ for i = 1:length(test_datas)
       
       res = zeros(size(models));
       
-      if hard_negative
-          filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-      else
-          filer = sprintf('%s/%s_%s_score_wo_hn.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-      end
+      filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
+
       
       if ~exist(filer,'file')
           temp = cell(length(models),1);
