@@ -80,13 +80,13 @@ default_params.datasets_params.img_folder = 'img'; % parent folder of all the da
 %default_params.datasets_params.dataset_dir  = 'vais_export_EO_pair_03-03'; % VAIS EO images from pairs
 % dataset_dir = 'vais_export_IR_pair_03-03'; % VAIS IR images from pairs
 %default_params.datasets_params.dataset_dir  = 'VOC_2007_cropped';
-default_params.datasets_params.dataset_dir  = 'maritime_cropped';
+default_params.datasets_params.dataset_dir  = 'maritime_cropped_3';
 % Dateset file type
 default_params.datasets_params.file_ext = 'jpg'; % image data type
 %default_params.datasets_params.file_ext = 'png'; % image data type
 %default_params.datasets_params.results_folder = 'results_maritime';
 %default_params.datasets_params.results_folder = 'results_VOC_5';
-default_params.datasets_params.results_folder = 'results_maritime';
+default_params.datasets_params.results_folder = 'results_maritime_new_calibration_3';
 %default_params.datasets_params.results_folder = 'results_maritime_using_linsvm_for_esvm_wo_w1';
 %default_params.datasets_params.results_folder = 'results_4_categories';
 default_params.datasets_params.rename = false;

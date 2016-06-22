@@ -5,13 +5,22 @@ function new_models = esvm_train_exemplars(models, train_set, feat_name, params)
 % [params]: localization and training parameters
 
 
-models_dir = fullfile('.', params.datasets_params.results_folder,'models');
+models_root_dir = fullfile('.', params.datasets_params.results_folder,'models');
+models_hn_dir = fullfile(models_root_dir, 'wo_hard_negative');
+models_dir = fullfile(models_hn_dir, feat_name);
 algo_name = 'esvm';
+
+if ~exist(models_root_dir, 'dir')
+    mkdir(models_root_dir);
+end
+
+if ~exist(models_hn_dir, 'dir')
+    mkdir(models_hn_dir);
+end
 
 if ~exist(models_dir, 'dir')
     mkdir(models_dir);
 end
-
 
 new_models = cell(size(models));
 %{
@@ -58,7 +67,7 @@ for qq = 1:length(models)
 
       
       %filer2fill = sprintf('%s/%%s_%s_%s_%s_%s_wo_hn.mat',cls_models_dir,feat_name,algo_name,m.cls_name,m.img_id);
-      filer2final = sprintf('%s/%s_%s_%s_%s_wo_hn.mat',cls_models_dir,feat_name,algo_name,m.cls_name,m.img_id);
+      filer2final = sprintf('%s/%s_%s_%s_%s.mat',cls_models_dir,feat_name,algo_name,m.cls_name,m.img_id);
       
       if ~exist(filer2final,'file')
           fprintf(1,'Strat to train model using linear svm %d/%d, model_id = %s, class = %s \n', counter, ...

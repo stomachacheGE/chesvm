@@ -4,89 +4,99 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
     classifi_res_dir = fullfile('.', datasets_params.results_folder,'classifications');
     ground_truth_dir = fullfile(classifi_res_dir, 'ground_truth');
-    lin_svm_res_dir = fullfile(classifi_res_dir, 'linsvm');
-    esvm_res_dir = fullfile(classifi_res_dir, 'esvm');
+    lin_svm_root_res_dir = fullfile(classifi_res_dir, 'linsvm');
+    esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
+
     
     if ~exist(classifi_res_dir, 'dir')
         mkdir(classifi_res_dir)
     end
 
     if ~exist(ground_truth_dir, 'dir')
-
-        %mkdir(classifi_res_dir);
         mkdir(ground_truth_dir);
-        mkdir(lin_svm_res_dir);
-        mkdir(esvm_res_dir);
-
-        labels = unique(cellfun(@(x) x{1}.label, test_datas));
-
-        fprintf(1,'Writing Classification Ground-truth Files.\n');
-       %% create ground_truth .txt files
-        %initialize ground-truth pairs with -1
-        for i =1: length(labels);
-
-            %find the corresponding class name of this label
-            idx = 1;
-            while(idx <= length(test_datas))
-                if test_datas{idx}{1}.label == labels(i)
-                    break;
-                else
-                    idx = idx + 1;
-                end
-            end
-
-            cls_name = test_datas{idx}{1}.cls_name;
-            %store the gt .txt file to disk
-            gt_filer = sprintf('%s/%s_gt.txt',...
-                        ground_truth_dir,cls_name);
-            
-            fid = fopen(gt_filer,'w');
-
-            for mm = 1:length(test_datas)
-                for j = 1:length(test_datas{mm})
-                  if test_datas{mm}{j}.label == i
-                      fprintf(fid,'%s 1 \n',test_datas{mm}{j}.img_id);
-                  else
-                      fprintf(fid,'%s -1 \n',test_datas{mm}{j}.img_id);
-                  end
-                end
-            end
-            fclose(fid);      
-        end
     end
+    
+    if ~exist(lin_svm_root_res_dir,'dir')
+        mkdir(lin_svm_root_res_dir);
+    end
+
     if hard_negative
-        if strcmp(use_algorithm, 'svm')
-            if cal
-                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
-            else
-                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '.txt'];
-            end
-        else
-            if cal
-                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_calibration.txt'];
-            else
-                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '.txt'];
-            end
-        end
+        esvm_res_hn_dir = fullfile(esvm_res_root_dir, 'hard_negative');
     else
-        if strcmp(use_algorithm, 'svm')
-            if cal
-                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_calibration_wo_hn.txt'];
-            else
-                ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '_wo_hn.txt'];
-            end
-        else
-            if cal
-                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_calibration_wo_hn.txt'];
-            else
-                ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '_wo_hn.txt'];
-            end
-        end        
+        esvm_res_hn_dir = fullfile(esvm_res_root_dir, 'wo_hard_negative');
     end
     
-
-       
+    if cal
+        esvm_res_cal_dir = fullfile(esvm_res_hn_dir, 'calibration');
+    else
+        esvm_res_cal_dir = fullfile(esvm_res_hn_dir, 'wo_calibration');
+    end
     
+    esvm_res_dir = fullfile(esvm_res_cal_dir, use_feature);
+    lin_svm_res_dir = fullfile(lin_svm_root_res_dir, use_feature);
+    
+    if strcmp(use_algorithm,'esvm')
+        if ~exist(esvm_res_hn_dir,'dir')
+            mkdir(esvm_res_hn_dir);
+        end
+
+        if ~exist(esvm_res_cal_dir,'dir')
+            mkdir(esvm_res_cal_dir);
+        end
+
+        if ~exist(esvm_res_dir,'dir')
+            mkdir(esvm_res_dir);
+        end
+    
+    else
+        if ~exist(lin_svm_res_dir,'dir')
+            mkdir(lin_svm_res_dir);
+        end
+    end
+    labels = unique(cellfun(@(x) x{1}.label, test_datas));
+
+    fprintf(1,'Writing Classification Ground-truth Files.\n');
+   %% create ground_truth .txt files
+    %initialize ground-truth pairs with -1
+    for i =1: length(labels);
+
+        %find the corresponding class name of this label
+        idx = 1;
+        while(idx <= length(test_datas))
+            if test_datas{idx}{1}.label == labels(i)
+                break;
+            else
+                idx = idx + 1;
+            end
+        end
+
+        cls_name = test_datas{idx}{1}.cls_name;
+        %store the gt .txt file to disk
+        gt_filer = sprintf('%s/%s_gt.txt',...
+                    ground_truth_dir,cls_name);
+
+        fid = fopen(gt_filer,'w');
+
+        for mm = 1:length(test_datas)
+            for j = 1:length(test_datas{mm})
+              if test_datas{mm}{j}.label == i
+                  fprintf(fid,'%s 1 \n',test_datas{mm}{j}.img_id);
+              else
+                  fprintf(fid,'%s -1 \n',test_datas{mm}{j}.img_id);
+              end
+            end
+        end
+        fclose(fid);      
+    end
+
+
+    if strcmp(use_algorithm, 'svm')
+        ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+    else
+        ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '.txt'];
+    end     
+
+      
     %if ap result file does not exist, evaluate and store the results
     if ~exist(ap_res_filer,'file')
         
@@ -110,43 +120,16 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
             end
 
             cls_name = test_datas{idx}{1}.cls_name;
-            if hard_negative
-                if strcmp(use_algorithm, 'svm')   
-                    if ~cal
-                    res_filer = sprintf('%s/%s_%s_res.txt',...
-                            lin_svm_res_dir,cls_name, use_feature);
-                    else
-                    res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
-                            lin_svm_res_dir,cls_name, use_feature);   
-                    end
-                else
-                    if ~cal
-                    res_filer = sprintf('%s/%s_%s_res.txt',...
-                            esvm_res_dir,cls_name, use_feature);
-                    else
-                    res_filer = sprintf('%s/%s_%s_calibration_res.txt',...
-                            esvm_res_dir,cls_name, use_feature);
-                    end
-                end
+
+            if strcmp(use_algorithm, 'svm')   
+
+                res_filer = sprintf('%s/%s_%s_res.txt',...
+                        lin_svm_res_dir,cls_name, use_feature);
             else
-                 if strcmp(use_algorithm, 'svm')   
-                    if ~cal
-                    res_filer = sprintf('%s/%s_%s_res_wo_hn.txt',...
-                            lin_svm_res_dir,cls_name, use_feature);
-                    else
-                    res_filer = sprintf('%s/%s_%s_calibration_res_wo_hn.txt',...
-                            lin_svm_res_dir,cls_name, use_feature);   
-                    end
-                else
-                    if ~cal
-                    res_filer = sprintf('%s/%s_%s_res_wo_hn.txt',...
-                            esvm_res_dir,cls_name, use_feature);
-                    else
-                    res_filer = sprintf('%s/%s_%s_calibration_res_wo_hn.txt',...
-                            esvm_res_dir,cls_name, use_feature);
-                    end
-                 end   
+                res_filer = sprintf('%s/%s_%s_res.txt',...
+                        esvm_res_dir,cls_name, use_feature);
             end
+        
 
             if ~exist(res_filer,'file')
 
@@ -166,9 +149,9 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
 
             if strcmp(use_algorithm, 'svm')       
-                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, hard_negative, lin_svm_res_dir, ground_truth_dir, cal, 'true');       
+                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, 'true');       
             else
-                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, hard_negative, esvm_res_dir, ground_truth_dir,cal, 'true');
+                [~,~,ap_res{q}.ap] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir, 'true');
             end
             ap_res{q}.cls_name = cls_name;
                   
@@ -192,36 +175,25 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
             cls_name = temp.cls{q};
             if strcmp(use_algorithm, 'svm')       
-                [~,~,~] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, cal, 'true');       
+                [~,~,~] = VOCevalcls(cls_name, use_feature, lin_svm_res_dir, ground_truth_dir, 'true');       
             else
-                [~,~,~] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir, cal, 'true');
+                [~,~,~] = VOCevalcls(cls_name, use_feature, esvm_res_dir, ground_truth_dir, 'true');
             end
         end
     end
 
 end
 
-function [rec,prec,ap] = VOCevalcls(cls, feat_name, hard_negative, result_dir, ground_truth_dir, cal, draw)
+function [rec,prec,ap] = VOCevalcls(cls, feat_name, result_dir, ground_truth_dir, draw)
 
+draw = false;
 % load test set
 
 gt_filer = sprintf('%s/%s_gt.txt',ground_truth_dir,cls);
 [gtids,gt]=textread(gt_filer,'%s %d');
 
-% load results
-if hard_negative
-    if ~cal
-      res_filer = sprintf('%s/%s_%s_res.txt',result_dir,cls,feat_name);
-    else
-      res_filer = sprintf('%s/%s_%s_calibration_res.txt',result_dir,cls,feat_name);
-    end
-else
-    if ~cal
-      res_filer = sprintf('%s/%s_%s_res_wo_hn.txt',result_dir,cls,feat_name);
-    else
-      res_filer = sprintf('%s/%s_%s_calibration_res_wo_hn.txt',result_dir,cls,feat_name);
-    end
-end
+res_filer = sprintf('%s/%s_%s_res.txt',result_dir,cls,feat_name);
+
 [ids,confidence]=textread(res_filer,'%s %f');
 
 % map results to ground truth images

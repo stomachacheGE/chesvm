@@ -9,8 +9,18 @@ function new_models = ...
 %Return:
 %[new_models]: a cell array of the filename of generated models
 
-models_dir = fullfile('.', params.datasets_params.results_folder,'models');
+models_root_dir = fullfile('.', params.datasets_params.results_folder,'models');
+models_hn_dir = fullfile(models_root_dir, 'hard_negative');
+models_dir = fullfile(models_hn_dir, feat_name);
 algo_name = 'esvm';
+
+if ~exist(models_root_dir, 'dir')
+    mkdir(models_root_dir);
+end
+
+if ~exist(models_hn_dir, 'dir')
+    mkdir(models_hn_dir);
+end
 
 if ~exist(models_dir, 'dir')
     mkdir(models_dir);

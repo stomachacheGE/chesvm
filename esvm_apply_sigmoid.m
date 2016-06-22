@@ -1,13 +1,35 @@
 function prediction = esvm_apply_sigmoid(cal_matrix, test_datas, feat_name, hard_negative, params)
 
-classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
-esvm_res_dir = fullfile(classifi_res_dir, 'esvm');
 
+classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
+esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
+
+if hard_negative
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'hard_negative', 'calibration');
+    esvm_res_dir_wo_cal = fullfile(esvm_res_root_dir, 'hard_negative', 'wo_calibration');
+else
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'wo_hard_negative', 'calibration');
+    esvm_res_dir_wo_cal = fullfile(esvm_res_root_dir, 'wo_hard_negative', 'wo_calibration');
+end
+
+if ~exist(esvm_res_cal_dir)
+    mkdir(esvm_res_cal_dir)
+end
+
+esvm_res_dir_wo_cal = fullfile(esvm_res_dir_wo_cal, feat_name);
+esvm_res_dir = fullfile(esvm_res_cal_dir, feat_name); 
+
+if ~exist(esvm_res_dir)
+    mkdir(esvm_res_dir)
+end
 
 filer = sprintf('%s/%s_esvm_calibration_matrix.mat',esvm_res_dir, feat_name);
+
 if ~exist(filer,'file')
     fprintf(1,'Cannot find calibration matrix for feature %s \n', feat_name);
+    return
 end
+
 %get number of test images
 num_test_images = 0;
 for i = 1:length(test_datas)
@@ -19,16 +41,17 @@ counter = 0;
 for i = 1:length(test_datas)
   
   cls_res_dir = fullfile(esvm_res_dir, test_datas{i}{1}.cls_name);
+  cls_res_dir_wo_cal = fullfile(esvm_res_dir_wo_cal, test_datas{i}{1}.cls_name);
+  
+  if ~exist(cls_res_dir)
+      mkdir(cls_res_dir)
+  end
 
   for j = 1:length(test_datas{i})
       
-      if hard_negative
-          filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-          filer_1 = sprintf('%s/%s_%s_score_sigmoid.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-      else
-          filer = sprintf('%s/%s_%s_score_wo_hn.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-          filer_1 = sprintf('%s/%s_%s_score_sigmoid_wo_hn.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-      end
+
+      filer = sprintf('%s/%s_%s_score.mat',cls_res_dir_wo_cal, feat_name, test_datas{i}{j}.img_id);
+      filer_1 = sprintf('%s/%s_%s_score_sigmoid.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
       
       if ~exist(filer_1, 'file')
           

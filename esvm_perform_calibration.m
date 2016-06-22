@@ -4,12 +4,19 @@ classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifi
 esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
 
 if hard_negative
-    esvm_res_dir = fullfil(esvm_res_root_dir, 'hard_negative', 'wo_calibration');
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'hard_negative', 'calibration');
 else
-    esvm_res_dir = fullfil(esvm_res_root_dir, 'wo_hard_negative', 'wo_calibration');
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'wo_hard_negative', 'calibration');
 end
 
+esvm_res_dir = fullfile(esvm_res_cal_dir, feat_name);
+
 filer = sprintf('%s/%s_esvm_calibration_matrix.mat',esvm_res_dir, feat_name);
+
+if ~exist(esvm_res_dir, 'dir')
+    mkdir(esvm_res_dir)
+end
+
 
 if ~exist(filer,'file')
 

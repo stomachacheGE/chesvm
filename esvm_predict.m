@@ -7,11 +7,13 @@ models_dir = fullfile('.', params.datasets_params.results_folder,'models');
 esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
 
 if hard_negative
-    esvm_res_dir = fullfil(esvm_res_root_dir, 'hard_negative', 'wo_calibration');
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'hard_negative', 'wo_calibration');
 else
-    esvm_res_dir = fullfil(esvm_res_root_dir, 'wo_hard_negative', 'wo_calibration');
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'wo_hard_negative', 'wo_calibration');
 end
 
+esvm_res_dir = fullfile(esvm_res_cal_dir, feat_name);
+    
 if ~exist(classifi_res_dir,'dir')
     mkdir(classifi_res_dir);
 end
@@ -20,6 +22,11 @@ if ~exist(esvm_res_root_dir,'dir')
     mkdir(esvm_res_root_dir);
 end
 
+if ~exist(esvm_res_cal_dir,'dir')
+    mkdir(esvm_res_cal_dir);
+end
+
+
 if ~exist(esvm_res_dir,'dir')
     mkdir(esvm_res_dir);
 end
@@ -27,6 +34,7 @@ end
 for i = 1:length(test_datas)
   
   cls_res_dir = fullfile(esvm_res_dir, test_datas{i}{1}.cls_name);
+  
   if ~exist(cls_res_dir, 'dir')
         mkdir(cls_res_dir);
   end

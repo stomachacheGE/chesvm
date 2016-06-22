@@ -19,17 +19,22 @@ for j=1:length(datasets_info)
     
     cls = datasets_info{j}.cls_name;
     feat_res_dir = fullfile('.', datasets_params.results_folder,'features');
-    res_dir = fullfile('.', datasets_params.results_folder,'features', cls);
+    res_feat_dir = fullfile('.', datasets_params.results_folder,'features', feat_name);
+    res_dir = fullfile('.', datasets_params.results_folder,'features', feat_name, cls);
 
 
     if ~exist(feat_res_dir, 'dir')
         mkdir(feat_res_dir);
-        mkdir(res_dir);
-    else
-        if ~exist(res_dir,'dir')
-           mkdir(res_dir);
-        end
     end
+    
+    if ~exist(res_feat_dir, 'dir')
+    mkdir(res_feat_dir);
+    end
+
+    if ~exist(res_dir,'dir')
+       mkdir(res_dir);
+    end
+
 
     img_files = [datasets_info{j}.train_image_files datasets_info{j}.test_image_files];
     img_ids = [datasets_info{j}.train_image_ids datasets_info{j}.test_image_ids];
@@ -41,12 +46,10 @@ for j=1:length(datasets_info)
 
     for i=1:length(img_ids)
         
-        if strcmp(feat_name, 'hog')
+
             %filer = fullfile(res_dir, sprintf('%s-%s-not-resized.mat',feat_name,img_ids{i}));
-            filer = fullfile(res_dir, sprintf('%s-%s-80-56.mat',feat_name,img_ids{i}));
-        else
-            filer = fullfile(res_dir, sprintf('%s-%s.mat',feat_name,img_ids{i}));
-        end
+        filer = fullfile(res_dir, sprintf('%s-%s.mat',feat_name,img_ids{i}));
+
         
         %filers = fullfile(res_dir, sprintf('cnn-%s-not-resized.mat',img_ids{i}));
         %if exist(filers,'file')
