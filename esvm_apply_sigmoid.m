@@ -102,7 +102,7 @@ for i = 1:length(test_datas)
           result.i = Index_I;
           result.j = Index_J_temp(Index_I);
           result.scores = temp;
-         % save(filer_1,'result');
+          save(filer_1,'result');
       else 
           file = load(filer_1);
           result = file.result;

@@ -62,10 +62,11 @@ if ~exist(filer,'file')
             
             num_pos = length(sorted_pos_scores);
             num_neg = length(cal_set{i}{j}.neg_filer);
+            if strcmp(feat_name,'cnn')
             idx = int16(1:num_neg);
             idxs = int16(floor(num_pos / num_neg)) * idx;           
             pos_scores = sorted_pos_scores(idxs);
-            if strcmp(feat_name,'cnn')
+            
             pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
             
 
@@ -89,7 +90,7 @@ if ~exist(filer,'file')
             prob = horzcat(pos_prob, neg_prob);
             else
                 
-            
+            pos_scores = sorted_pos_scores(2:num_neg+1);
             pos_prob = 1 - abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
             prob = pos_prob;
             scores = pos_scores;
