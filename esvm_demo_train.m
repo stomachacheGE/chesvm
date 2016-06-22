@@ -8,7 +8,7 @@ datasets_info = esvm_get_datasets_info(params.datasets_params);
 
 %use_feature = 'cnn';
 use_feature = 'hog';
-use_algorithm = 'esvm';
+use_algorithm = 'svm';
 calibration = true;
 hard_negative = true;
 
