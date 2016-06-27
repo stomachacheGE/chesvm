@@ -54,20 +54,20 @@ if ~exist(filer,'file')
             num_neg = int16(train_set{i}{j}.num_neg);
             cal_features = cal_features(1:size(cal_features,1)-num_neg,:);
              %}
-            [~, all_pos_scores] = predict(m.svm_model, cal_pos_features);
-            all_pos_scores = all_pos_scores(:,2)';
+            %[~, all_pos_scores] = predict(m.svm_model, cal_pos_features);
+            %all_pos_scores = all_pos_scores(:,2)';
 
-            [sorted_pos_scores, indexes] = sort(all_pos_scores, 'descend');
+            %[sorted_pos_scores, indexes] = sort(all_pos_scores, 'descend');
             %exclude the biggest score, which is the exemplar itself
             
-            num_pos = length(sorted_pos_scores);
+            %num_pos = length(sorted_pos_scores);
             num_neg = length(cal_set{i}{j}.neg_filer);
-            if strcmp(feat_name,'cnn')
-            idx = int16(1:num_neg);
-            idxs = int16(floor(num_pos / num_neg)) * idx;           
-            pos_scores = sorted_pos_scores(idxs);
+            %if strcmp(feat_name,'cnn')
+            %idx = int16(1:num_neg);
+            %idxs = int16(floor(num_pos / num_neg)) * idx;           
+            %pos_scores = sorted_pos_scores(idxs);
             
-            pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
+            %pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
             
 
  
@@ -79,35 +79,34 @@ if ~exist(filer,'file')
             end
             cal_neg_features = [vertcat(cal_neg_features{:})];
 
+            [~, all_pos_scores] = predict(m.svm_model, cal_pos_features);
+            all_pos_scores = all_pos_scores(:,2)';
+
+            [sorted_pos_scores, indexes] = sort(all_pos_scores, 'descend');
+            %exclude the biggest score, which is the exemplar itself
+           
             [~, neg_scores] = predict(m.svm_model, cal_neg_features);
             neg_scores = neg_scores(:,2)';
-
+            
             [neg_scores, neg_indexes] = sort(neg_scores, 'ascend');
+     
+            
+            [~, del_idxs] = find(sorted_pos_scores<max(neg_scores));
+            sorted_pos_scores(del_idxs) = [];
+            pos_scores = sorted_pos_scores;
+            %pos_scores = [repmat(pos_scores(1),1,5) pos_scores];
+            %duplicate = length(neg_scores) - length(pos_scores);
+            %pos_scores
+            
+             pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
+             
+
             
             neg_prob = 0.3 * (1 - 1 * abs(neg_scores(end) - neg_scores) / (neg_scores(end) - neg_scores(1)));
             
             scores = horzcat(pos_scores, neg_scores);
             prob = horzcat(pos_prob, neg_prob);
-            else
-                
-            pos_scores = sorted_pos_scores(2:num_neg+1);
-            pos_prob = 1 - abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
-            prob = pos_prob;
-            scores = pos_scores;
-            end
             
-            %{
-            [~, scores] = predict(m.svm_model, cal_features);
-            scores = scores(:,2)';
-
-            [~, indexes] = sort(scores, 'descend');
-            
-            num_neg = int16(train_set{i}{j}.num_neg);
-            same_cls_scores = scores(indexes(1:int16(num_neg)));
-            not_same_cls_scores = scores(end:-1:length(scores)-num_neg+1);
-            scores = cat(2, same_cls_scores, not_same_cls_scores);
-            ground_truth = [ones(1,length(same_cls_scores)) zeros(1,length(not_same_cls_scores))];
-            %}
             m.sigmoid_coef = fit_sigmoid(scores, prob);
             cls_cal_mat{j} = m.sigmoid_coef; 
             counter = counter + 1;

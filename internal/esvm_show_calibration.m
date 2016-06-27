@@ -1,4 +1,4 @@
-%function esvm_show_calibration(new_models, train_datas, neg_set, cls_idx, idx, feat_name, hard_negative, params)
+function esvm_show_calibration( cls_idx, idx, feat_name, new_models, train_datas, cal_set)
 
 
             i = cls_idx;
@@ -20,7 +20,7 @@
             cal_features = cal_features(1:size(cal_features,1)-num_neg,:);
             %}
         
-        cls_cal_mat = cell(1,length(models{i}));
+        cls_cal_mat = cell(1,length(new_models{i}));
         cal_pos_features = cellfun(@(x)x.feature, train_datas{i}, 'UniformOutput', false);
         cal_pos_features = [vertcat(cal_pos_features{:})];
         
@@ -54,19 +54,20 @@
 
             [sorted_pos_scores, indexes] = sort(all_pos_scores, 'descend');
             %exclude the biggest score, which is the exemplar itself
-            num_pos = length(sorted_pos_scores);
-            idx = int16(1:num_neg);
-            idxs = int16(floor(num_pos / num_neg)) * idx;           
-            pos_scores = sorted_pos_scores(idxs);
-            
-
-            if strcmp(feat_name,'cnn')
-            pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
+           
             
             
             [~, neg_scores] = predict(m.svm_model, cal_neg_features);
             neg_scores = neg_scores(:,2)';
-
+            
+            [~, del_idxs] = find(sorted_pos_scores<max(neg_scores));
+            sorted_pos_scores(del_idxs) = [];
+            pos_scores = sorted_pos_scores;
+            %pos_scores = [repmat(pos_scores(1),1,5) pos_scores];
+            %duplicate = length(neg_scores) - length(pos_scores);
+            %pos_scores
+             pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
+             
             [neg_scores, neg_indexes] = sort(neg_scores, 'ascend');
             
             neg_prob = 0.3 * (1 - 1 * abs(neg_scores(end) - neg_scores) / (neg_scores(end) - neg_scores(1)));
@@ -85,14 +86,10 @@
             scores = cat(2, same_cls_scores, not_same_cls_scores);
             ground_truth = [ones(1,length(same_cls_scores)) zeros(1,length(not_same_cls_scores))];
             %}
-            else
+            %else
                 
-            
-            pos_prob = 1 - abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
-            prob = pos_prob;
-            scores = pos_scores;
-            end
+
             m.sigmoid_coef = fit_sigmoid(scores, prob);
     
 
-%
+
