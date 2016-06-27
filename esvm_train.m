@@ -39,13 +39,12 @@ else
     end
 end
 
-ap_res = esvm_evaluate_AP(prediction, test_datas, use_algorithm, ...
+res = esvm_evaluate_ACC(prediction, test_datas, use_algorithm, ...
                           use_feature, calibration, hard_negative, params);
 
-
-for i = 1:length(ap_res)
-    fprintf(1, 'Class %s has an average precision of %f \n', ...
-                upper(ap_res{i}.cls_name), ap_res{i}.ap);
+for i = 1:length(res.classes)
+    fprintf(1, 'Class %s has an accuraccy of %f \n', ...
+                upper(res.classes{i}), res.acc_per_cls(i));
 end
 
 
