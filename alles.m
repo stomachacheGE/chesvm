@@ -7,6 +7,7 @@ esvm_train('hog',true,'esvm',true);
 
 esvm_train('cnn',false,'svm',true);
 esvm_train('cnn',false,'esvm',false);
-esvm_train('cnn',false,'esvm',true);
+
 esvm_train('cnn',true,'esvm',false);
 esvm_train('cnn',true,'esvm',true);
+esvm_train('cnn',false,'esvm',true);
