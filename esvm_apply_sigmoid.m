@@ -65,7 +65,7 @@ for i = 1:length(test_datas)
 
              res_per_class = 1 ./ (1 + exp(- cal_matrix{m}(:,1) .* scores{m} + cal_matrix{m}(:,2)));
 
-             [~, Index_J_temp(m)] = max(res_per_class);
+             %[~, Index_J_temp(m)] = max(res_per_class);
              %sorted_res_per_class = sort(res_per_class, 'descend');
              %num_exemplar_per_class = size(cal_matrix{i},1);
              %num_to_count = int16(num_exemplar_per_class / 40);
@@ -80,22 +80,22 @@ for i = 1:length(test_datas)
              %res(m) = mean(sorted(1:10));
          
              
-            if strcmp(feat_name,'hog')
-                [~, ~, outliers{m}] = deleteoutliers(res_per_class, 0.0001);
-                res(m) = mean(res_per_class);  
-            else
+%             if strcmp(feat_name,'hog')
+%                 [~, ~, outliers{m}] = deleteoutliers(res_per_class, 0.0001);
+%                 res(m) = mean(res_per_class);  
+%             else
                 [res(m), Index_J_temp(m)] = max(res_per_class);
-            end
+            %end
             
             temp{m} = res_per_class;
           end
           
-          if strcmp(feat_name,'hog')
-              num_outliers = cellfun(@(x) mean(x), outliers, 'UniformOutput', false);
-              num_outliers = [horzcat(num_outliers{:})];
-              [~,max_idx] = max(num_outliers);
-              res(max_idx) = max(temp{max_idx});
-          end
+%           if strcmp(feat_name,'hog')
+%               num_outliers = cellfun(@(x) mean(x), outliers, 'UniformOutput', false);
+%               num_outliers = [horzcat(num_outliers{:})];
+%               [~,max_idx] = max(num_outliers);
+%               res(max_idx) = max(temp{max_idx});
+%           end
           %normalize sum of scores to 1
           %res_max = max(res);
           pos_score_idx = find(res>0);
