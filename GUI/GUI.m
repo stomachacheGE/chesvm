@@ -59,7 +59,7 @@ handles.output = hObject;
 %addpath(genpath(pwd))
 
 % Load data set info 
-params = esvm_get_default_params;
+params = esvm_get_default_params_1;
 datasets_info = esvm_get_datasets_info(params.datasets_params);
 classes = cellfun(@(x) x.cls_name, datasets_info, 'UniformOutput', false);
 handles.datasets_info = datasets_info;

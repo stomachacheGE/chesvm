@@ -59,12 +59,12 @@ res = zeros(1,length(Mus_cell));
     [res(m), Index_J_temp(m)] = max(res_per_class);
     if calibration
         res_per_class = 1 ./ (1 + exp(- cal_matrix{m}(:,1) .* res_per_class + cal_matrix{m}(:,2)));
-        if strcmp(feat_name,'hog')
-            [~, ~, outliers{m}] = deleteoutliers(res_per_class, 0.0001);
-            res(m) = mean(res_per_class);  
-        else
+%         if strcmp(feat_name,'hog')
+%             [~, ~, outliers{m}] = deleteoutliers(res_per_class, 0.0001);
+%             res(m) = mean(res_per_class);  
+%         else
             [res(m), Index_J_temp(m)] = max(res_per_class);
-        end
+%         end
        
     end
     
@@ -76,12 +76,12 @@ res = zeros(1,length(Mus_cell));
      temp{m} = res_per_class;
   end
   
-  if calibration && strcmp(feat_name, 'hog')
-          num_outliers = cellfun(@(x) mean(x), outliers, 'UniformOutput', false);
-          num_outliers = [horzcat(num_outliers{:})];
-          [~,max_idx] = max(num_outliers);
-          res(max_idx) = max(temp{max_idx});
-  end
+%   if calibration && strcmp(feat_name, 'hog')
+%           num_outliers = cellfun(@(x) mean(x), outliers, 'UniformOutput', false);
+%           num_outliers = [horzcat(num_outliers{:})];
+%           [~,max_idx] = max(num_outliers);
+%           res(max_idx) = max(temp{max_idx});
+%   end
   %normalize sum of scores to 1
   %res_max = max(res);
   pos_score_idx = find(res>0);
@@ -99,7 +99,7 @@ res = zeros(1,length(Mus_cell));
   scores = temp;
   [~, res_idxs] = sort(res, 'descend'); 
   predictions = cell(1,4);
-  
+
   for i=1:4
       cls_score = scores{res_idxs(i)};
       [sorted_cls_score, score_idxs] = sort(cls_score,'descend');

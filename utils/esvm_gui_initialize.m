@@ -1,7 +1,7 @@
 function [hog_model_hn, hog_model_wo_hn, hog_cal_matrix_hn, hog_cal_matrix_wo_hn,...
           cnn_model_hn, cnn_model_wo_hn, cnn_cal_matrix_hn, cnn_cal_matrix_wo_hn] = esvm_gui_initialize
 
-    params = esvm_get_default_params;
+    params = esvm_get_default_params_1;
     classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
     models_dir = fullfile('.', params.datasets_params.results_folder,'models');
     esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
