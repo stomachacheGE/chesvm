@@ -1,5 +1,5 @@
 function new_models = ...
-    esvm_train_exemplars_hn(models, neg_set, feat_name, params)
+    esvm_train_exemplars_hn(models, neg_set, cal_set, feat_name, params)
 % Train models with hard negatives mined from neg_set
 % [models]: a cell array of initialized exemplar models
 % [neg_set]: a virtual set of images to mine from
@@ -68,8 +68,9 @@ for qq = 1:length(models)
 
           % Add mining_params, and params.dataset_params to this exemplar
           m.mining_params = params.training_params;
-
-
+          if ~isfield(m,'cal_set')
+            m.cal_set = cal_set{qq}{i}.neg_filer;
+          end
           % Append '-svm' to the mode to create the models name
           m.models_name = sprintf('%s_%s_%s_%s.mat',feat_name,algo_name,m.cls_name,m.img_id);
           m.iteration = 1;
@@ -108,6 +109,7 @@ for qq = 1:length(models)
             %cell array of function pointers
             msave = m;
             m = rmfield(m,'neg_set');
+            m.svm_model = rmfiled(m.svm_model,'X');
             save(filer2,'m');
             m = msave;
             

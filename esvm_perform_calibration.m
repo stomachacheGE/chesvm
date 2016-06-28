@@ -1,4 +1,4 @@
-function cal_mat = esvm_perform_calibration(models, train_set, cal_set, feat_name, hard_negative, params)
+function cal_mat = esvm_perform_calibration(models, train_set, feat_name, hard_negative, params)
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
 esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
@@ -61,7 +61,7 @@ if ~exist(filer,'file')
             %exclude the biggest score, which is the exemplar itself
             
             %num_pos = length(sorted_pos_scores);
-            num_neg = length(cal_set{i}{j}.neg_filer);
+            num_neg = length(m.neg_filer);
             %if strcmp(feat_name,'cnn')
             %idx = int16(1:num_neg);
             %idxs = int16(floor(num_pos / num_neg)) * idx;           
@@ -71,7 +71,7 @@ if ~exist(filer,'file')
             
 
  
-            cal_neg_feat_filers = cal_set{i}{j}.neg_filer;
+            cal_neg_feat_filers = m.neg_filer;
             cal_neg_features = cell(num_neg,1);
             for c = 1:num_neg
                 temp = load(cal_neg_feat_filers{c});
@@ -97,7 +97,7 @@ if ~exist(filer,'file')
             %pos_scores = [repmat(pos_scores(1),1,5) pos_scores];
             %duplicate = length(neg_scores) - length(pos_scores);
             %pos_scores
-            
+           
              pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
              
 

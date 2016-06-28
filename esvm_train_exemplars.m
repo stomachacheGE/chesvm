@@ -1,4 +1,4 @@
-function new_models = esvm_train_exemplars(models, train_set, feat_name, params)
+function new_models = esvm_train_exemplars(models, train_set, cal_set, feat_name, params)
 % Train models with hard negatives mined from train_set
 % [models]: a cell array of initialized exemplar models
 % [train_set]: a virtual set of images to mine from
@@ -77,7 +77,9 @@ for qq = 1:length(models)
           %fprintf(1,'train_set size is [%d %d]\n', size(train_set,1),size(train_set,2));
           m.train_set = train_set{qq}{i};
           %m.mining_queue = esvm_initialize_mining_queue(m.train_set);
-
+          if ~isfield(m,'cal_set')
+            m.cal_set = cal_set{qq}{i}.neg_filer;
+          end
           % Add mining_params, and params.dataset_params to this exemplar
           %m.mining_params = params.training_params;
 
@@ -165,6 +167,7 @@ for qq = 1:length(models)
             %cell array of function pointers
             msave = m;
             m = rmfield(m,'train_set');
+            m.svm_model = rmfiled(m.svm_model,'X');
             save(filer2final,'m');
             m = msave;
 

@@ -22,15 +22,15 @@ else
     [models, cal_set, neg_set] = esvm_train_initialization(train_datas, use_feature);
     
     if hard_negative
-        new_models = esvm_train_exemplars_hn(models, neg_set, use_feature, params);
+        new_models = esvm_train_exemplars_hn(models, neg_set, cal_set, use_feature, params);
     else
-        new_models = esvm_train_exemplars(models, neg_set, use_feature, params);
+        new_models = esvm_train_exemplars(models, neg_set, cal_set, use_feature, params);
     end
     
     prediction = esvm_predict(new_models,test_datas, use_feature, hard_negative, params);
     
     if calibration 
-        cal_matrix = esvm_perform_calibration(new_models, train_datas, cal_set, use_feature, hard_negative, params);
+        cal_matrix = esvm_perform_calibration(new_models, train_datas, use_feature, hard_negative, params);
         prediction = esvm_apply_sigmoid(cal_matrix, test_datas, use_feature, hard_negative, params);
     end
 end
