@@ -61,7 +61,7 @@ if ~exist(filer,'file')
             %exclude the biggest score, which is the exemplar itself
             
             %num_pos = length(sorted_pos_scores);
-            num_neg = length(m.neg_filer);
+            num_neg = length(m.cal_set);
             %if strcmp(feat_name,'cnn')
             %idx = int16(1:num_neg);
             %idxs = int16(floor(num_pos / num_neg)) * idx;           
@@ -71,7 +71,7 @@ if ~exist(filer,'file')
             
 
  
-            cal_neg_feat_filers = m.neg_filer;
+            cal_neg_feat_filers = m.cal_set;
             cal_neg_features = cell(num_neg,1);
             for c = 1:num_neg
                 temp = load(cal_neg_feat_filers{c});

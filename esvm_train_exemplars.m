@@ -167,7 +167,7 @@ for qq = 1:length(models)
             %cell array of function pointers
             msave = m;
             m = rmfield(m,'train_set');
-            m.svm_model = rmfiled(m.svm_model,'X');
+            m.svm_model = compact(m.svm_model);
             save(filer2final,'m');
             m = msave;
 
