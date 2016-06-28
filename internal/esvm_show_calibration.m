@@ -1,4 +1,4 @@
-function esvm_show_calibration( cls_idx, idx, feat_name, new_models, train_datas, cal_set)
+function esvm_show_calibration( cls_idx, idx, feat_name, new_models, train_datas)
 
 
             i = cls_idx;
@@ -24,9 +24,9 @@ function esvm_show_calibration( cls_idx, idx, feat_name, new_models, train_datas
         cal_pos_features = cellfun(@(x)x.feature, train_datas{i}, 'UniformOutput', false);
         cal_pos_features = [vertcat(cal_pos_features{:})];
         
-        num_neg = length(cal_set{i}{j}.neg_filer);
+        num_neg = length(m.cal_set);
 
-        cal_neg_feat_filers = cal_set{i}{j}.neg_filer;
+        cal_neg_feat_filers = m.cal_set;
         cal_neg_features = cell(num_neg,1);
         for c = 1:num_neg
             temp = load(cal_neg_feat_filers{c});
