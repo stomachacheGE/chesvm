@@ -92,12 +92,15 @@ if ~exist(filer,'file')
      
             
             [~, del_idxs] = find(sorted_pos_scores<max(neg_scores));
-            sorted_pos_scores(del_idxs) = [];
             pos_scores = sorted_pos_scores;
+            pos_scores(del_idxs) = [];
             %pos_scores = [repmat(pos_scores(1),1,5) pos_scores];
             %duplicate = length(neg_scores) - length(pos_scores);
             %pos_scores
-           
+            if numel(pos_scores) == 0 || numel(pos_scores) == 1
+                pos_scores = sorted_pos_scores(1:2);
+                neg_scores = neg_scores(1:end-2);
+            end
              pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
              
 

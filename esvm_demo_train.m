@@ -2,7 +2,7 @@ clear;
 
 addpath(genpath(pwd));
 
-params = esvm_get_default_params;
+params = esvm_get_default_params_1;
 
 datasets_info = esvm_get_datasets_info(params.datasets_params);
 
