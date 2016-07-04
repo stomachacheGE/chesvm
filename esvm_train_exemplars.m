@@ -22,6 +22,9 @@ if ~exist(models_dir, 'dir')
     mkdir(models_dir);
 end
 
+filer_1 = sprintf('%s/%s_models_in_matrix_wo_hn.mat', models_root_dir, feat_name);
+
+
 new_models = cell(size(models));
 %{
 randomize chunk orderings
@@ -69,7 +72,7 @@ for qq = 1:length(models)
       %filer2fill = sprintf('%s/%%s_%s_%s_%s_%s_wo_hn.mat',cls_models_dir,feat_name,algo_name,m.cls_name,m.img_id);
       filer2final = sprintf('%s/%s_%s_%s_%s.mat',cls_models_dir,feat_name,algo_name,m.cls_name,m.img_id);
       
-      if ~exist(filer2final,'file')
+      if ~exist(filer2final,'file') && ~exist(filer_1,'file')
           fprintf(1,'Strat to train model using linear svm %d/%d, model_id = %s, class = %s \n', counter, ...
                                         num_models,m.img_id, m.cls_name);
           % Add training set and training set's mining queue 
