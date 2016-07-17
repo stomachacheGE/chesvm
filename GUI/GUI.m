@@ -74,7 +74,8 @@ handles.calibration = false;
 
 % Load model and calibration matrix
 [handles.hog_model_hn, handles.hog_model_wo_hn, handles.hog_cal_matrix_hn, handles.hog_cal_matrix_wo_hn,...
- handles.cnn_model_hn, handles.cnn_model_wo_hn, handles.cnn_cal_matrix_hn, handles.cnn_cal_matrix_wo_hn] = esvm_gui_initialize();
+ handles.cnn_model_hn, handles.cnn_model_wo_hn, handles.cnn_cal_matrix_hn, handles.cnn_cal_matrix_wo_hn,...
+ handles.cnnhog_model_hn, handles.cnnhog_model_wo_hn, handles.cnnhog_cal_matrix_hn, handles.cnnhog_cal_matrix_wo_hn] = esvm_gui_initialize();
 
 
 format(handles.predicted_img);
@@ -142,6 +143,8 @@ switch feat_value
         feat_name = 'hog';
     case 2
         feat_name = 'cnn';
+    case 3
+        feat_name = 'cnnhog';
 end
 handles.feat_name = feat_name;
 guidata(hObject, handles);
@@ -155,7 +158,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
      set(hObject,'BackgroundColor','white');
 end
 
-set(hObject, 'String', {'HoG', 'CNN'});
+set(hObject, 'String', {'HoG', 'CNN', 'HoG-CNN'});
 
 % --- Executes on button press in checkbox1.
 function checkbox1_Callback(hObject, eventdata, handles)
@@ -260,6 +263,9 @@ for i=1:length(predictions)
         which = (i-1) * 4 + j;
         prediction = predictions{i}{j};
         img = imread(prediction.img_filer);
+        if i == 1
+            fprintf('%s \n',prediction.img_filer);
+        end
         img = imresize(img, [height width]);
         tag_score = sprintf('score_%d',which);
         tag_predict = sprintf('predict_%d',which);

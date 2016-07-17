@@ -26,6 +26,12 @@ elseif (strcmp(feat_name,'cnn') && hard_negative)
 elseif (strcmp(feat_name,'cnn') && ~hard_negative)
     temp = handles.cnn_model_wo_hn;
     cal_matrix = handles.cnn_cal_matrix_wo_hn;
+elseif (strcmp(feat_name,'cnnhog') && hard_negative)
+    temp = handles.cnnhog_model_hn;
+    cal_matrix = handles.cnnhog_cal_matrix_hn;
+elseif (strcmp(feat_name,'cnnhog') && ~hard_negative)
+    temp = handles.cnnhog_model_wo_hn;
+    cal_matrix = handles.cnnhog_cal_matrix_wo_hn;
 end
 
 Mus_cell = temp.Mus_cell;
@@ -38,10 +44,18 @@ img = imread(test_img);
 if strcmp(feat_name,'cnn')
     cnn_params = feat_params.cnn_params;
     feature = double(esvm_extract_cnn_feature(img, handles.convnet, cnn_params.layer));
-else
+elseif strcmp(feat_name,'hog')
     hog_params = feat_params.hog_params;
     img = imresize(double(img),[hog_params.height hog_params.width]);
     [feature, ~] = esvm_extract_hog_feature(double(img), feat_params.hog_params); 
+elseif strcmp(feat_name,'cnnhog')
+    cnn_params = feat_params.cnn_params;
+    cnn_feature = double(esvm_extract_cnn_feature(img, handles.convnet, cnn_params.layer));
+    hog_params = feat_params.hog_params;
+    img = imresize(double(img),[hog_params.height hog_params.width]);
+    [hog_feature, ~] = esvm_extract_hog_feature(double(img), feat_params.hog_params);   
+    feature = horzcat(cnn_feature, hog_feature);
+            
 end
                       
 res = zeros(1,length(Mus_cell));
