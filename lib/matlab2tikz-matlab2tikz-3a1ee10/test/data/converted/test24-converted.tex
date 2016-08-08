@@ -1,0 +1,56 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}[%
+arrow1/.style={->,color=mycolor1,solid}
+]
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+xmin=   0,
+xmax=   3,
+tick align=outside,
+xmajorgrids,
+ymin=   0,
+ymax=   4,
+ymajorgrids,
+zmin= -10,
+zmax=   2,
+zmajorgrids,
+view={  70}{  18},
+axis background/.style={fill=white},
+axis x line*=bottom,
+axis y line*=left,
+axis z line*=left
+]
+\addplot3 [arrow1] coordinates{(   0,   0,   0) (0.219428,0.329142,0.921596)};
+\addplot3 [arrow1] coordinates{( 0.2, 0.3,0.84) (0.419428,0.629142,1.58605)};
+\addplot3 [arrow1] coordinates{( 0.4, 0.6,1.36) (0.619428,0.929142,1.75497)};
+\addplot3 [arrow1] coordinates{( 0.6, 0.9,1.56) (0.819428,1.22914,1.60389)};
+\addplot3 [arrow1] coordinates{( 0.8, 1.2,1.44) (1.01943,1.52914,1.1328)};
+\addplot3 [arrow1] coordinates{(   1, 1.5,   1) (1.21943,1.82914,0.341717)};
+\addplot3 [arrow1] coordinates{( 1.2, 1.8,0.24) (1.41943,2.12914,-0.769368)};
+\addplot3 [arrow1] coordinates{( 1.4, 2.1,-0.84) (1.61943,2.42914,-2.20045)};
+\addplot3 [arrow1] coordinates{( 1.6, 2.4,-2.24) (1.81943,2.72914,-3.95154)};
+\addplot3 [arrow1] coordinates{( 1.8, 2.7,-3.96) (2.01943,3.02914,-6.02262)};
+\addplot3 [arrow1] coordinates{(   2,   3,  -6) (2.21943,3.32914,-8.23816)};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

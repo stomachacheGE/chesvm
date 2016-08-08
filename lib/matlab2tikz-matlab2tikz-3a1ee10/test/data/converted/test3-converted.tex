@@ -1,0 +1,62 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.60000,0.20000,0.00000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+unbounded coords=jump,
+xmin=  -4,
+xmax=   4,
+xtick={   0},
+xticklabels={{null}},
+ymin=  -1,
+ymax=   1,
+ytick={  -1,-0.8,-0.6,-0.4,-0.2,   0, 0.2, 0.4, 0.6, 0.8,   1},
+yticklabels={\empty},
+axis background/.style={fill=white!90!blue}
+]
+\addplot [color=mycolor1,dashed,line width=2.8pt,mark size=7.1pt,mark=*,mark options={solid,fill=black!50!mycolor1,draw=black},forget plot]
+  table[row sep=crcr]{%
+-3.14159	-1.22465e-16\\
+-2.82743	-0.309017\\
+ nan	 nan\\
+-2.19911	-0.809017\\
+-1.88496	-0.951057\\
+-1.5708	  -1\\
+ nan	 nan\\
+-0.942478	-0.809017\\
+-0.628319	-0.587785\\
+-0.314159	-0.309017\\
+ nan	 nan\\
+0.314159	0.309017\\
+0.628319	0.587785\\
+0.942478	0.809017\\
+1.25664	0.951057\\
+1.5708	   1\\
+1.88496	0.951057\\
+2.19911	0.809017\\
+2.51327	0.587785\\
+2.82743	0.309017\\
+3.14159	1.22465e-16\\
+};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

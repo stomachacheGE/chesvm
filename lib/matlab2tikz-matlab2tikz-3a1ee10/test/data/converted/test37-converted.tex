@@ -1,0 +1,59 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+xmin=   0,
+xmax=  25,
+ymin=   0,
+ymax= 250,
+axis background/.style={fill=white}
+]
+\addplot [color=red,only marks,mark=x,mark options={solid},forget plot]
+ plot [error bars/.cd, y dir = both, y explicit]
+ table[row sep=crcr, y error plus index=2, y error minus index=3]{%
+   1	10.3333	0.942809	0.942809\\
+   2	10.3333	2.49444	2.49444\\
+   3	  17	2.44949	2.44949\\
+   4	  11	1.63299	1.63299\\
+   5	54.3333	10.873	10.873\\
+   6	53.3333	16.3571	16.3571\\
+   7	126.333	51.1881	51.1881\\
+   8	 130	43.0116	43.0116\\
+   9	80.3333	31.8991	31.8991\\
+  10	39.6667	11.3235	11.3235\\
+  11	12.6667	0.942809	0.942809\\
+  12	  25	5.09902	5.09902\\
+  13	  22	4.96655	4.96655\\
+  14	16.6667	1.24722	1.24722\\
+  15	34.3333	11.8977	11.8977\\
+  16	29.6667	15.195	15.195\\
+  17	66.3333	20.4342	20.4342\\
+  18	91.3333	42.3504	42.3504\\
+  19	  63	19.6129	19.6129\\
+  20	 172	61.422	61.422\\
+  21	53.6667	13.8163	13.8163\\
+  22	12.6667	1.69967	1.69967\\
+  23	12.3333	2.49444	2.49444\\
+  24	8.66667	1.24722	1.24722\\
+};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

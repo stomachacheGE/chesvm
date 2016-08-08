@@ -1,0 +1,94 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+xmode=log,
+xmin= 0.1,
+xmax= 100,
+xminorticks=true,
+xmajorgrids,
+xminorgrids,
+ymode=log,
+ymin=   1,
+ymax=1e+50,
+yminorticks=true,
+ymajorgrids,
+yminorgrids,
+axis background/.style={fill=white}
+]
+\addplot [color=mycolor1,solid,mark=square,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+ 0.1	1.10517\\
+0.11514	1.12203\\
+0.132571	1.14176\\
+0.152642	1.16491\\
+0.175751	1.19214\\
+0.202359	1.22429\\
+0.232995	1.26238\\
+0.26827	1.3077\\
+0.308884	1.3619\\
+0.355648	1.42711\\
+0.409492	1.50605\\
+0.471487	1.60237\\
+0.542868	1.72093\\
+0.625055	1.86835\\
+0.719686	2.05379\\
+0.828643	2.29021\\
+0.954095	2.59632\\
+1.09854	2.99979\\
+1.26486	3.54258\\
+1.45635	4.29026\\
+1.67683	5.34859\\
+1.9307	6.89432\\
+2.223	9.23496\\
+2.55955	12.93\\
+2.94705	19.0497\\
+3.39322	29.7617\\
+3.90694	49.7465\\
+4.49843	89.8762\\
+5.17947	177.589\\
+5.96362	389.017\\
+6.86649	959.573\\
+7.90604	2713.63\\
+9.10298	8982.04\\
+10.4811	35636.7\\
+12.0679	174194\\
+13.895	1.08269e+06\\
+15.9986	8.87357e+06\\
+18.4207	1.00002e+08\\
+21.2095	1.6262e+09\\
+24.4205	4.03368e+10\\
+28.1177	1.62688e+12\\
+32.3746	1.14842e+14\\
+37.2759	1.54431e+16\\
+42.9193	4.36148e+18\\
+49.4171	2.8946e+21\\
+56.8987	5.13776e+24\\
+65.5129	2.83056e+28\\
+75.4312	5.74585e+32\\
+86.8511	5.23564e+37\\
+ 100	2.68812e+43\\
+};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

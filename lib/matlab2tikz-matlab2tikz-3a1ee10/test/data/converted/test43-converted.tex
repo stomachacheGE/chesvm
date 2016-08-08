@@ -1,0 +1,69 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.982\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+unbounded coords=jump,
+separate axis lines,
+every outer x axis line/.append style={white!40!black},
+every x tick label/.append style={font=\color{white!40!black}},
+xmin=   0,
+xmax=   1,
+every outer y axis line/.append style={white!40!black},
+every y tick label/.append style={font=\color{white!40!black}},
+ymin=   0,
+ymax=   1,
+axis background/.style={fill=white}
+]
+\addplot [color=white!40!black,dotted,forget plot]
+  table[row sep=crcr]{%
+-0.1	   0\\
+   0	   0\\
+   1	   0\\
+ 1.1	   0\\
+};
+\addplot [color=white!40!black,dotted,forget plot]
+  table[row sep=crcr]{%
+   0	-0.1\\
+   0	   0\\
+   0	   1\\
+   0	 1.1\\
+};
+\addplot [color=white,solid,forget plot]
+  table[row sep=crcr]{%
+   0	   0\\
+};
+\addplot [color=mycolor1,only marks,mark=o,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+ nan	 nan\\
+};
+\addplot [color=mycolor1,only marks,mark=x,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+ nan	 nan\\
+};
+\addplot [color=mycolor1,solid,forget plot]
+  table[row sep=crcr]{%
+ nan	 nan\\
+};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

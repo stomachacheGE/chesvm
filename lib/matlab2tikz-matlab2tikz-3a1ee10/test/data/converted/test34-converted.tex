@@ -1,0 +1,200 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{1.00000,0.00000,1.00000}%
+\definecolor{mycolor2}{rgb}{0.21783,0.72504,0.61926}%
+\definecolor{mycolor3}{rgb}{0.97630,0.98310,0.05380}%
+\definecolor{mycolor4}{rgb}{0.20810,0.16630,0.52920}%
+\definecolor{mycolor5}{rgb}{0.00000,1.00000,1.00000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.411\figureWidth,
+height=0.419\figureHeight,
+at={(0\figureWidth,0.581\figureHeight)},
+scale only axis,
+xmin=-6.25,
+xmax=6.25,
+ymin=   0,
+ymax= 100,
+axis background/.style={fill=white}
+]
+\addplot[ybar,bar width=0.333,bar shift=-0.222,draw=none,fill=mycolor1,area legend] plot table[row sep=crcr] {%
+  -5	  42\\
+  -4	  76\\
+  -3	  96\\
+  -2	  99\\
+  -1	  83\\
+   0	  51\\
+   1	  11\\
+   2	  32\\
+   3	  69\\
+   4	  93\\
+   5	 100\\
+};
+\addplot[ybar,bar width=0.333,draw=black,fill=mycolor2,area legend] plot table[row sep=crcr] {%
+  -5	 100\\
+  -4	   1\\
+  -3	 100\\
+  -2	   2\\
+  -1	 100\\
+   0	   3\\
+   1	 100\\
+   2	   4\\
+   3	 100\\
+   4	   4\\
+   5	 100\\
+};
+\addplot[ybar,bar width=0.333,bar shift=0.222,draw=black,fill=mycolor3,area legend] plot table[row sep=crcr] {%
+  -5	  66\\
+  -4	  99\\
+  -3	  84\\
+  -2	  27\\
+  -1	  43\\
+   0	  92\\
+   1	  95\\
+   2	  52\\
+   3	  17\\
+   4	  77\\
+   5	 100\\
+};
+\end{axis}
+
+\begin{axis}[%
+width=0.411\figureWidth,
+height=0.419\figureHeight,
+at={(0.54\figureWidth,0.581\figureHeight)},
+scale only axis,
+xmin=   0,
+xmax= 100,
+ymin= -10,
+ymax=  10,
+axis background/.style={fill=white}
+]
+\addplot[xbar,bar width=0.289,bar shift=-0.222,draw=black,fill=mycolor4,area legend] plot table[row sep=crcr] {%
+  42	  -5\\
+  76	  -4\\
+  96	  -3\\
+  99	  -2\\
+  83	  -1\\
+  51	   0\\
+  11	   1\\
+  32	   2\\
+  69	   3\\
+  93	   4\\
+ 100	   5\\
+};
+\addplot[xbar,bar width=0.289,draw=black,fill=mycolor2,area legend] plot table[row sep=crcr] {%
+ 100	  -5\\
+   1	  -4\\
+ 100	  -3\\
+   2	  -2\\
+ 100	  -1\\
+   3	   0\\
+ 100	   1\\
+   4	   2\\
+ 100	   3\\
+   4	   4\\
+ 100	   5\\
+};
+\addplot[xbar,bar width=0.289,bar shift=0.222,draw=black,fill=mycolor3,area legend] plot table[row sep=crcr] {%
+  66	  -5\\
+  99	  -4\\
+  84	  -3\\
+  27	  -2\\
+  43	  -1\\
+  92	   0\\
+  95	   1\\
+  52	   2\\
+  17	   3\\
+  77	   4\\
+ 100	   5\\
+};
+\end{axis}
+
+\begin{axis}[%
+width=0.411\figureWidth,
+height=0.419\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+bar width=0.8,
+xmin=   0,
+xmax=   6,
+xtick={1, 2, 3, 4, 5},
+ymin=   0,
+ymax=  20,
+axis background/.style={fill=white}
+]
+\addplot[ybar stacked,draw=black,fill=mycolor4,area legend] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   1\\
+   3	   1\\
+   4	   4\\
+   5	   4\\
+};
+\addplot[ybar stacked,draw=black,fill=mycolor2,area legend] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   2\\
+   3	   1\\
+   4	   5\\
+   5	   5\\
+};
+\addplot[ybar stacked,draw=black,fill=mycolor3,area legend] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   2\\
+   3	   1\\
+   4	   7\\
+   5	   8\\
+};
+\end{axis}
+
+\begin{axis}[%
+width=0.411\figureWidth,
+height=0.419\figureHeight,
+at={(0.54\figureWidth,0\figureHeight)},
+scale only axis,
+bar width=0.75,
+xmin=   0,
+xmax=  20,
+ymin=   0,
+ymax=   6,
+ytick={1, 2, 3, 4, 5},
+axis background/.style={fill=white}
+]
+\addplot[xbar stacked,draw=none,fill=mycolor5,area legend] plot table[row sep=crcr] {%
+   1	   1\\
+   1	   2\\
+   1	   3\\
+   4	   4\\
+   4	   5\\
+};
+\addplot[xbar stacked,draw=black,fill=mycolor2,area legend] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   2\\
+   1	   3\\
+   5	   4\\
+   5	   5\\
+};
+\addplot[xbar stacked,draw=black,fill=mycolor3,area legend] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   2\\
+   1	   3\\
+   7	   4\\
+   8	   5\\
+};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

@@ -1,0 +1,190 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{1.00000,0.00000,1.00000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=0.265\figureHeight,
+at={(0\figureWidth,0.735\figureHeight)},
+scale only axis,
+xmin=   0,
+xmax=  15,
+ymin=   0,
+ymax=  10,
+axis background/.style={fill=white},
+title style={font=\bfseries},
+title={setup},
+legend style={legend cell align=left,align=left,draw=white!15!black}
+]
+\addplot [color=red,solid,mark=asterisk,mark options={solid}]
+  table[row sep=crcr]{%
+   1	  10\\
+   2	   9\\
+   3	   8\\
+   4	   7\\
+   5	   6\\
+   6	   5\\
+   7	   4\\
+   8	   3\\
+   9	   2\\
+  10	   1\\
+};
+\addlegendentry{cross with points};
+
+\addplot [color=green,solid,mark=asterisk,mark options={solid}]
+  table[row sep=crcr]{%
+   1	   9\\
+   2	   9\\
+   3	   9\\
+   4	   9\\
+   5	   9\\
+   6	   9\\
+   7	   9\\
+   8	   9\\
+   9	   9\\
+  10	   9\\
+  11	   9\\
+  12	   9\\
+  13	   9\\
+  14	   9\\
+  15	   9\\
+};
+\addlegendentry{no cross};
+
+\addplot [color=blue,solid,mark=asterisk,mark options={solid}]
+  table[row sep=crcr]{%
+ 5.5	   1\\
+ 5.5	   9\\
+};
+\addlegendentry{cross no points};
+
+\addplot[const plot,color=mycolor1,solid,mark=asterisk,mark options={solid}] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   2\\
+   3	   3\\
+   4	   4\\
+   5	   5\\
+   6	   6\\
+   7	   7\\
+   8	   8\\
+   9	   9\\
+  10	  10\\
+};
+\addlegendentry{stairs};
+
+\addplot [color=black,dashed]
+  table[row sep=crcr]{%
+   2	   2\\
+ 8.5	   2\\
+ 8.5	 7.5\\
+   2	 7.5\\
+   2	   2\\
+};
+\addlegendentry{zoom area};
+
+\end{axis}
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=0.265\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+xmin=   0,
+xmax=  15,
+ymin=   0,
+ymax=  10,
+axis background/.style={fill=white},
+title style={font=\bfseries},
+title={zoom in, cleanfigure, zoom out}
+]
+\addplot [color=red,solid,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+   3	   8\\
+   4	   7\\
+   5	   6\\
+   6	   5\\
+   7	   4\\
+   8	   3\\
+   9	   2\\
+};
+\addplot [color=blue,solid,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+ 5.5	1.45\\
+ 5.5	8.05\\
+};
+\addplot[const plot,color=mycolor1,solid,mark=asterisk,mark options={solid},forget plot] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   2\\
+   3	   3\\
+   4	   4\\
+   5	   5\\
+   6	   6\\
+   7	   7\\
+   8	   8\\
+};
+\addplot [color=black,dashed,forget plot]
+  table[row sep=crcr]{%
+   2	   2\\
+ 8.5	   2\\
+ 8.5	 7.5\\
+   2	 7.5\\
+   2	   2\\
+};
+\end{axis}
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=0.265\figureHeight,
+at={(0\figureWidth,0.368\figureHeight)},
+scale only axis,
+xmin=   2,
+xmax= 8.5,
+ymin=   2,
+ymax= 7.5,
+axis background/.style={fill=white},
+title style={font=\bfseries},
+title={zoom in}
+]
+\addplot [color=red,solid,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+   3	   8\\
+   4	   7\\
+   5	   6\\
+   6	   5\\
+   7	   4\\
+   8	   3\\
+   9	   2\\
+};
+\addplot [color=blue,solid,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+ 5.5	1.45\\
+ 5.5	8.05\\
+};
+\addplot[const plot,color=mycolor1,solid,mark=asterisk,mark options={solid},forget plot] plot table[row sep=crcr] {%
+   1	   1\\
+   2	   2\\
+   3	   3\\
+   4	   4\\
+   5	   5\\
+   6	   6\\
+   7	   7\\
+   8	   8\\
+};
+\end{axis}
+\end{tikzpicture}%
+\end{document}
