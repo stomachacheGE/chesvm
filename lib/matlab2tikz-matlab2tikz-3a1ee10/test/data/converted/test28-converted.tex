@@ -1,0 +1,121 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+xmin=   0,
+xmax=  40,
+ymin=  -1,
+ymax=   1,
+axis background/.style={fill=white},
+legend style={legend cell align=left,align=left,draw=white!15!black}
+]
+\addplot[const plot,color=mycolor1,solid,forget plot] plot table[row sep=crcr] {%
+   1	2.44929e-16\\
+   2	0.316668\\
+   3	0.600742\\
+   4	0.822984\\
+   5	0.960518\\
+   6	0.999189\\
+   7	0.935016\\
+   8	0.774605\\
+   9	0.534466\\
+  10	0.239316\\
+  11	-0.0804666\\
+  12	-0.391967\\
+  13	-0.663123\\
+  14	-0.866025\\
+  15	-0.979791\\
+  16	-0.992709\\
+  17	-0.90345\\
+  18	-0.721202\\
+  19	-0.464723\\
+  20	-0.160411\\
+  21	0.160411\\
+  22	0.464723\\
+  23	0.721202\\
+  24	0.90345\\
+  25	0.992709\\
+  26	0.979791\\
+  27	0.866025\\
+  28	0.663123\\
+  29	0.391967\\
+  30	0.0804666\\
+  31	-0.239316\\
+  32	-0.534466\\
+  33	-0.774605\\
+  34	-0.935016\\
+  35	-0.999189\\
+  36	-0.960518\\
+  37	-0.822984\\
+  38	-0.600742\\
+  39	-0.316668\\
+  40	-2.44929e-16\\
+};
+\addplot[const plot,color=mycolor2,solid] plot table[row sep=crcr] {%
+   1	 0.2\\
+   2	0.189707\\
+   3	0.159889\\
+   4	0.113613\\
+   5	0.0556435\\
+   6	-0.00805319\\
+   7	-0.070921\\
+   8	-0.126489\\
+   9	-0.169038\\
+  10	-0.194188\\
+  11	-0.199351\\
+  12	-0.183996\\
+  13	-0.149702\\
+  14	-0.1\\
+  15	-0.0400051\\
+  16	0.0241073\\
+  17	0.0857385\\
+  18	0.138545\\
+  19	0.177091\\
+  20	0.19741\\
+  21	0.19741\\
+  22	0.177091\\
+  23	0.138545\\
+  24	0.0857385\\
+  25	0.0241073\\
+  26	-0.0400051\\
+  27	-0.1\\
+  28	-0.149702\\
+  29	-0.183996\\
+  30	-0.199351\\
+  31	-0.194188\\
+  32	-0.169038\\
+  33	-0.126489\\
+  34	-0.070921\\
+  35	-0.00805319\\
+  36	0.0556435\\
+  37	0.113613\\
+  38	0.159889\\
+  39	0.189707\\
+  40	 0.2\\
+};
+\addlegendentry{second entry};
+
+\end{axis}
+\end{tikzpicture}%
+\end{document}

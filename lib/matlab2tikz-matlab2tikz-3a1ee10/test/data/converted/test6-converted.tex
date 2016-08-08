@@ -1,0 +1,107 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=\figureWidth,
+height=0.97\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+xmin=  -4,
+xmax=   4,
+xtick={-3.14159,-1.5708,   0,1.5708,3.14159},
+xticklabels={{-pi},{-pi/2},{0},{pi/2},{pi}},
+xlabel={$\text{-}\pi\text{ }\leq\text{ }\Theta\text{ }\leq\text{ }\pi$},
+ymin=  -1,
+ymax=   1,
+ylabel={$\text{sin(}\Theta\text{)}$},
+axis background/.style={fill=white},
+title style={font=\bfseries,align=center},
+title={$\text{Plot of sin(}\Theta\text{)}$\\[1ex]subtitle\\[1ex]and here's one really long subtitle}
+]
+\addplot [color=mycolor1,solid,forget plot]
+  table[row sep=crcr]{%
+-3.14159	-1.22465e-16\\
+-3.04159	-0.0998334\\
+-2.94159	-0.198669\\
+-2.84159	-0.29552\\
+-2.74159	-0.389418\\
+-2.64159	-0.479426\\
+-2.54159	-0.564642\\
+-2.44159	-0.644218\\
+-2.34159	-0.717356\\
+-2.24159	-0.783327\\
+-2.14159	-0.841471\\
+-2.04159	-0.891207\\
+-1.94159	-0.932039\\
+-1.84159	-0.963558\\
+-1.74159	-0.98545\\
+-1.64159	-0.997495\\
+-1.54159	-0.999574\\
+-1.44159	-0.991665\\
+-1.34159	-0.973848\\
+-1.24159	-0.9463\\
+-1.14159	-0.909297\\
+-1.04159	-0.863209\\
+-0.941593	-0.808496\\
+-0.841593	-0.745705\\
+-0.741593	-0.675463\\
+-0.641593	-0.598472\\
+-0.541593	-0.515501\\
+-0.441593	-0.42738\\
+-0.341593	-0.334988\\
+-0.241593	-0.239249\\
+-0.141593	-0.14112\\
+-0.0415927	-0.0415807\\
+0.0584073	0.0583741\\
+0.158407	0.157746\\
+0.258407	0.255541\\
+0.358407	0.350783\\
+0.458407	0.44252\\
+0.558407	0.529836\\
+0.658407	0.611858\\
+0.758407	0.687766\\
+0.858407	0.756802\\
+0.958407	0.818277\\
+1.05841	0.871576\\
+1.15841	0.916166\\
+1.25841	0.951602\\
+1.35841	0.97753\\
+1.45841	0.993691\\
+1.55841	0.999923\\
+1.65841	0.996165\\
+1.75841	0.982453\\
+1.85841	0.958924\\
+1.95841	0.925815\\
+2.05841	0.883455\\
+2.15841	0.832267\\
+2.25841	0.772764\\
+2.35841	0.70554\\
+2.45841	0.631267\\
+2.55841	0.550686\\
+2.65841	0.464602\\
+2.75841	0.373877\\
+2.85841	0.279415\\
+2.95841	0.182163\\
+3.05841	0.0830894\\
+};
+\node[right, align=left, text=black]
+at (axis cs:-0.785,-0.707) {$\leftarrow\text{ sin(-}\pi\div\text{4)}$};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

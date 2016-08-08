@@ -1,0 +1,34 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.781\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+axis on top,
+xmin= 0.5,
+xmax=500.5,
+y dir=reverse,
+ymin= 0.5,
+ymax=480.5,
+hide axis
+]
+\addplot [forget plot] graphics [xmin= 0.5,xmax=500.5,ymin= 0.5,ymax=480.5] {test44-converted-1.png};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

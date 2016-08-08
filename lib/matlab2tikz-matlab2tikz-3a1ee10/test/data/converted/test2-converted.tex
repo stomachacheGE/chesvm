@@ -1,0 +1,53 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=\figureWidth,
+height=0.212\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+xmin=   0,
+xmax=6.28319,
+xminorticks=true,
+ymin=  -1,
+ymax=   1,
+ytick={\empty},
+axis background/.style={fill=white}
+]
+\addplot [color=mycolor1,solid,forget plot]
+  table[row sep=crcr]{%
+   0	   1\\
+0.490088	0.882291\\
+0.917345	0.60793\\
+1.31947	0.24869\\
+1.77186	-0.19971\\
+2.17398	-0.567269\\
+2.62637	-0.870184\\
+3.12903	-0.999921\\
+3.63168	-0.882291\\
+4.08407	-0.587785\\
+4.53646	-0.175023\\
+4.93858	0.224271\\
+5.34071	0.587785\\
+5.7931	0.882291\\
+6.28319	   1\\
+};
+\end{axis}
+\end{tikzpicture}%
+\end{document}

@@ -1,5 +1,5 @@
 img/
-results_VOC_2/
+results*/
 libsvm/
 pretrained_cnn/
 matlab_cnn_svm_lite/

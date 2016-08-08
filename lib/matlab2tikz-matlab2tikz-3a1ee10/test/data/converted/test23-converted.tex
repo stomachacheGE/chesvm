@@ -1,0 +1,706 @@
+% This file was created by matlab2tikz.
+%
+\documentclass[tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{grffile}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{patchplots}
+\usepackage{amsmath}
+
+\newlength\figureHeight \setlength{\figureHeight}{6cm}
+\newlength\figureWidth \setlength{\figureWidth}{10cm}
+\begin{document}
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}[%
+arrow1/.style={->,color=mycolor1,solid}
+]
+
+\begin{axis}[%
+width=0.951\figureWidth,
+height=\figureHeight,
+at={(0\figureWidth,0\figureHeight)},
+scale only axis,
+colormap={mymap}{[1pt] rgb(0pt)=(1,0,0); rgb(10pt)=(1,0.9375,0); rgb(11pt)=(0.96875,1,0); rgb(21pt)=(0.03125,1,0); rgb(22pt)=(0,1,0.0625); rgb(32pt)=(0,1,1); rgb(42pt)=(0,0.0625,1); rgb(43pt)=(0.03125,0,1); rgb(53pt)=(0.96875,0,1); rgb(54pt)=(1,0,0.9375); rgb(63pt)=(1,0,0.09375)},
+xmin=-2.04272,
+xmax=   2,
+ymin=-2.0111,
+ymax=2.0111,
+axis background/.style={fill=white}
+]
+\addplot[contour prepared, contour prepared format=matlab, contour/labels=false] table[row sep=crcr] {%
+%
+-0.4	  11\\
+-0.594131	-0.2\\
+-0.6	-0.20964\\
+-0.8	-0.223101\\
+-0.820423	-0.2\\
+-0.880935	   0\\
+-0.820423	 0.2\\
+-0.8	0.223101\\
+-0.6	0.20964\\
+-0.594131	 0.2\\
+-0.552138	   0\\
+-0.594131	-0.2\\
+-0.3	  19\\
+-0.4288	-0.4\\
+-0.6	-0.575414\\
+-0.8	-0.582515\\
+  -1	-0.447465\\
+-1.03788	-0.4\\
+-1.13315	-0.2\\
+-1.16246	   0\\
+-1.13315	 0.2\\
+-1.03788	 0.4\\
+  -1	0.447465\\
+-0.8	0.582515\\
+-0.6	0.575414\\
+-0.4288	 0.4\\
+-0.4	0.348476\\
+-0.361514	 0.2\\
+-0.345047	   0\\
+-0.361514	-0.2\\
+-0.4	-0.348476\\
+-0.4288	-0.4\\
+-0.2	  29\\
+-0.49888	-0.8\\
+-0.6	-0.862123\\
+-0.8	-0.86671\\
+-0.95768	-0.8\\
+  -1	-0.780792\\
+-1.19437	-0.6\\
+-1.2	-0.592525\\
+-1.3139	-0.4\\
+-1.37484	-0.2\\
+-1.39358	   0\\
+-1.37484	 0.2\\
+-1.3139	 0.4\\
+-1.2	0.592525\\
+-1.19437	 0.6\\
+  -1	0.780792\\
+-0.95768	 0.8\\
+-0.8	0.86671\\
+-0.6	0.862123\\
+-0.49888	 0.8\\
+-0.4	0.730201\\
+-0.327113	 0.6\\
+-0.257222	 0.4\\
+-0.221526	 0.2\\
+-0.210548	   0\\
+-0.221526	-0.2\\
+-0.257222	-0.4\\
+-0.327113	-0.6\\
+-0.4	-0.730201\\
+-0.49888	-0.8\\
+-0.1	  39\\
+-0.307156	  -1\\
+-0.4	-1.11379\\
+-0.6	-1.19701\\
+-0.8	-1.1998\\
+  -1	-1.1467\\
+-1.2	-1.02467\\
+-1.22866	  -1\\
+-1.4	-0.82534\\
+-1.42055	-0.8\\
+-1.54655	-0.6\\
+-1.6	-0.456523\\
+-1.62382	-0.4\\
+-1.67372	-0.2\\
+-1.68906	   0\\
+-1.67372	 0.2\\
+-1.62382	 0.4\\
+-1.6	0.456523\\
+-1.54655	 0.6\\
+-1.42055	 0.8\\
+-1.4	0.82534\\
+-1.22866	   1\\
+-1.2	1.02467\\
+  -1	1.1467\\
+-0.8	1.1998\\
+-0.6	1.19701\\
+-0.4	1.11379\\
+-0.307156	   1\\
+-0.2	0.80864\\
+-0.197388	 0.8\\
+-0.149182	 0.6\\
+-0.12214	 0.4\\
+-0.108329	 0.2\\
+-0.104081	   0\\
+-0.108329	-0.2\\
+-0.12214	-0.4\\
+-0.149182	-0.6\\
+-0.197388	-0.8\\
+-0.2	-0.80864\\
+-0.307156	  -1\\
+   0	  21\\
+   0	   2\\
+   0	 1.8\\
+   0	 1.6\\
+   0	 1.4\\
+   0	 1.2\\
+   0	   1\\
+   0	 0.8\\
+   0	 0.6\\
+   0	 0.4\\
+   0	 0.2\\
+   0	   0\\
+   0	-0.2\\
+   0	-0.4\\
+   0	-0.6\\
+   0	-0.8\\
+   0	  -1\\
+   0	-1.2\\
+   0	-1.4\\
+   0	-1.6\\
+   0	-1.8\\
+   0	  -2\\
+ 0.1	  39\\
+0.307156	  -1\\
+ 0.4	-1.11379\\
+ 0.6	-1.19701\\
+ 0.8	-1.1998\\
+   1	-1.1467\\
+ 1.2	-1.02467\\
+1.22866	  -1\\
+ 1.4	-0.82534\\
+1.42055	-0.8\\
+1.54655	-0.6\\
+ 1.6	-0.456523\\
+1.62382	-0.4\\
+1.67372	-0.2\\
+1.68906	   0\\
+1.67372	 0.2\\
+1.62382	 0.4\\
+ 1.6	0.456523\\
+1.54655	 0.6\\
+1.42055	 0.8\\
+ 1.4	0.82534\\
+1.22866	   1\\
+ 1.2	1.02467\\
+   1	1.1467\\
+ 0.8	1.1998\\
+ 0.6	1.19701\\
+ 0.4	1.11379\\
+0.307156	   1\\
+ 0.2	0.80864\\
+0.197388	 0.8\\
+0.149182	 0.6\\
+0.12214	 0.4\\
+0.108329	 0.2\\
+0.104081	   0\\
+0.108329	-0.2\\
+0.12214	-0.4\\
+0.149182	-0.6\\
+0.197388	-0.8\\
+ 0.2	-0.80864\\
+0.307156	  -1\\
+ 0.2	  29\\
+0.49888	-0.8\\
+ 0.6	-0.862123\\
+ 0.8	-0.86671\\
+0.95768	-0.8\\
+   1	-0.780792\\
+1.19437	-0.6\\
+ 1.2	-0.592525\\
+1.3139	-0.4\\
+1.37484	-0.2\\
+1.39358	   0\\
+1.37484	 0.2\\
+1.3139	 0.4\\
+ 1.2	0.592525\\
+1.19437	 0.6\\
+   1	0.780792\\
+0.95768	 0.8\\
+ 0.8	0.86671\\
+ 0.6	0.862123\\
+0.49888	 0.8\\
+ 0.4	0.730201\\
+0.327113	 0.6\\
+0.257222	 0.4\\
+0.221526	 0.2\\
+0.210548	   0\\
+0.221526	-0.2\\
+0.257222	-0.4\\
+0.327113	-0.6\\
+ 0.4	-0.730201\\
+0.49888	-0.8\\
+ 0.3	  19\\
+0.4288	-0.4\\
+ 0.6	-0.575414\\
+ 0.8	-0.582515\\
+   1	-0.447465\\
+1.03788	-0.4\\
+1.13315	-0.2\\
+1.16246	   0\\
+1.13315	 0.2\\
+1.03788	 0.4\\
+   1	0.447465\\
+ 0.8	0.582515\\
+ 0.6	0.575414\\
+0.4288	 0.4\\
+ 0.4	0.348476\\
+0.361514	 0.2\\
+0.345047	   0\\
+0.361514	-0.2\\
+ 0.4	-0.348476\\
+0.4288	-0.4\\
+ 0.4	  11\\
+0.594131	-0.2\\
+ 0.6	-0.20964\\
+ 0.8	-0.223101\\
+0.820423	-0.2\\
+0.880935	   0\\
+0.820423	 0.2\\
+ 0.8	0.223101\\
+ 0.6	0.20964\\
+0.594131	 0.2\\
+0.552138	   0\\
+0.594131	-0.2\\
+};
+\addplot [arrow1] coordinates{(  -2,  -2) (-2.00078,-2.00096)};
+\addplot [arrow1] coordinates{(  -2,-1.8) (-2.00167,-1.80136)};
+\addplot [arrow1] coordinates{(  -2,-1.6) (-2.0033,-1.60235)};
+\addplot [arrow1] coordinates{(  -2,-1.4) (-2.00602,-1.40369)};
+\addplot [arrow1] coordinates{(  -2,-1.2) (-2.01012,-1.20525)};
+\addplot [arrow1] coordinates{(  -2,  -1) (-2.01572,-1.00671)};
+\addplot [arrow1] coordinates{(  -2,-0.8) (-2.02253,-0.807621)};
+\addplot [arrow1] coordinates{(  -2,-0.6) (-2.02981,-0.607507)};
+\addplot [arrow1] coordinates{(  -2,-0.4) (-2.03641,-0.40608)};
+\addplot [arrow1] coordinates{(  -2,-0.2) (-2.04105,-0.203417)};
+\addplot [arrow1] coordinates{(  -2,   0) (-2.04272,   0)};
+\addplot [arrow1] coordinates{(  -2, 0.2) (-2.04105,0.203417)};
+\addplot [arrow1] coordinates{(  -2, 0.4) (-2.03641,0.40608)};
+\addplot [arrow1] coordinates{(  -2, 0.6) (-2.02981,0.607507)};
+\addplot [arrow1] coordinates{(  -2, 0.8) (-2.02253,0.807621)};
+\addplot [arrow1] coordinates{(  -2,   1) (-2.01572,1.00671)};
+\addplot [arrow1] coordinates{(  -2, 1.2) (-2.01012,1.20525)};
+\addplot [arrow1] coordinates{(  -2, 1.4) (-2.00602,1.40369)};
+\addplot [arrow1] coordinates{(  -2, 1.6) (-2.0033,1.60235)};
+\addplot [arrow1] coordinates{(  -2, 1.8) (-2.00167,1.80136)};
+\addplot [arrow1] coordinates{(  -2,   2) (-2.00078,2.00096)};
+\addplot [arrow1] coordinates{(-1.8,  -2) (-1.80101,-2.00185)};
+\addplot [arrow1] coordinates{(-1.8,-1.8) (-1.80215,-1.80262)};
+\addplot [arrow1] coordinates{(-1.8,-1.6) (-1.80425,-1.60452)};
+\addplot [arrow1] coordinates{(-1.8,-1.4) (-1.80774,-1.4071)};
+\addplot [arrow1] coordinates{(-1.8,-1.2) (-1.81301,-1.2101)};
+\addplot [arrow1] coordinates{(-1.8,  -1) (-1.8202,-1.01291)};
+\addplot [arrow1] coordinates{(-1.8,-0.8) (-1.82896,-0.814666)};
+\addplot [arrow1] coordinates{(-1.8,-0.6) (-1.83831,-0.614446)};
+\addplot [arrow1] coordinates{(-1.8,-0.4) (-1.8468,-0.411701)};
+\addplot [arrow1] coordinates{(-1.8,-0.2) (-1.85276,-0.206575)};
+\addplot [arrow1] coordinates{(-1.8,   0) (-1.85492,   0)};
+\addplot [arrow1] coordinates{(-1.8, 0.2) (-1.85276,0.206575)};
+\addplot [arrow1] coordinates{(-1.8, 0.4) (-1.8468,0.411701)};
+\addplot [arrow1] coordinates{(-1.8, 0.6) (-1.83831,0.614446)};
+\addplot [arrow1] coordinates{(-1.8, 0.8) (-1.82896,0.814666)};
+\addplot [arrow1] coordinates{(-1.8,   1) (-1.8202,1.01291)};
+\addplot [arrow1] coordinates{(-1.8, 1.2) (-1.81301,1.2101)};
+\addplot [arrow1] coordinates{(-1.8, 1.4) (-1.80774,1.4071)};
+\addplot [arrow1] coordinates{(-1.8, 1.6) (-1.80425,1.60452)};
+\addplot [arrow1] coordinates{(-1.8, 1.8) (-1.80215,1.80262)};
+\addplot [arrow1] coordinates{(-1.8,   2) (-1.80101,2.00185)};
+\addplot [arrow1] coordinates{(-1.6,  -2) (-1.60146,-2.00325)};
+\addplot [arrow1] coordinates{(-1.6,-1.8) (-1.60313,-1.8046)};
+\addplot [arrow1] coordinates{(-1.6,-1.6) (-1.60618,-1.60793)};
+\addplot [arrow1] coordinates{(-1.6,-1.4) (-1.61126,-1.41245)};
+\addplot [arrow1] coordinates{(-1.6,-1.2) (-1.61894,-1.21771)};
+\addplot [arrow1] coordinates{(-1.6,  -1) (-1.6294,-1.02266)};
+\addplot [arrow1] coordinates{(-1.6,-0.8) (-1.64215,-0.825733)};
+\addplot [arrow1] coordinates{(-1.6,-0.6) (-1.65577,-0.625347)};
+\addplot [arrow1] coordinates{(-1.6,-0.4) (-1.66811,-0.42053)};
+\addplot [arrow1] coordinates{(-1.6,-0.2) (-1.6768,-0.211537)};
+\addplot [arrow1] coordinates{(-1.6,   0) (-1.67993,   0)};
+\addplot [arrow1] coordinates{(-1.6, 0.2) (-1.6768,0.211537)};
+\addplot [arrow1] coordinates{(-1.6, 0.4) (-1.66811,0.42053)};
+\addplot [arrow1] coordinates{(-1.6, 0.6) (-1.65577,0.625347)};
+\addplot [arrow1] coordinates{(-1.6, 0.8) (-1.64215,0.825733)};
+\addplot [arrow1] coordinates{(-1.6,   1) (-1.6294,1.02266)};
+\addplot [arrow1] coordinates{(-1.6, 1.2) (-1.61894,1.21771)};
+\addplot [arrow1] coordinates{(-1.6, 1.4) (-1.61126,1.41245)};
+\addplot [arrow1] coordinates{(-1.6, 1.6) (-1.60618,1.60793)};
+\addplot [arrow1] coordinates{(-1.6, 1.8) (-1.60313,1.8046)};
+\addplot [arrow1] coordinates{(-1.6,   2) (-1.60146,2.00325)};
+\addplot [arrow1] coordinates{(-1.4,  -2) (-1.40186,-2.00519)};
+\addplot [arrow1] coordinates{(-1.4,-1.8) (-1.40397,-1.80734)};
+\addplot [arrow1] coordinates{(-1.4,-1.6) (-1.40783,-1.61265)};
+\addplot [arrow1] coordinates{(-1.4,-1.4) (-1.41427,-1.41986)};
+\addplot [arrow1] coordinates{(-1.4,-1.2) (-1.42401,-1.22824)};
+\addplot [arrow1] coordinates{(-1.4,  -1) (-1.43728,-1.03612)};
+\addplot [arrow1] coordinates{(-1.4,-0.8) (-1.45343,-0.841027)};
+\addplot [arrow1] coordinates{(-1.4,-0.6) (-1.47069,-0.640412)};
+\addplot [arrow1] coordinates{(-1.4,-0.4) (-1.48635,-0.432731)};
+\addplot [arrow1] coordinates{(-1.4,-0.2) (-1.49735,-0.218393)};
+\addplot [arrow1] coordinates{(-1.4,   0) (-1.50133,   0)};
+\addplot [arrow1] coordinates{(-1.4, 0.2) (-1.49735,0.218393)};
+\addplot [arrow1] coordinates{(-1.4, 0.4) (-1.48635,0.432731)};
+\addplot [arrow1] coordinates{(-1.4, 0.6) (-1.47069,0.640412)};
+\addplot [arrow1] coordinates{(-1.4, 0.8) (-1.45343,0.841027)};
+\addplot [arrow1] coordinates{(-1.4,   1) (-1.43728,1.03612)};
+\addplot [arrow1] coordinates{(-1.4, 1.2) (-1.42401,1.22824)};
+\addplot [arrow1] coordinates{(-1.4, 1.4) (-1.41427,1.41986)};
+\addplot [arrow1] coordinates{(-1.4, 1.6) (-1.40783,1.61265)};
+\addplot [arrow1] coordinates{(-1.4, 1.8) (-1.40397,1.80734)};
+\addplot [arrow1] coordinates{(-1.4,   2) (-1.40186,2.00519)};
+\addplot [arrow1] coordinates{(-1.2,  -2) (-1.20197,-2.00748)};
+\addplot [arrow1] coordinates{(-1.2,-1.8) (-1.20422,-1.81058)};
+\addplot [arrow1] coordinates{(-1.2,-1.6) (-1.20832,-1.61824)};
+\addplot [arrow1] coordinates{(-1.2,-1.4) (-1.21517,-1.42863)};
+\addplot [arrow1] coordinates{(-1.2,-1.2) (-1.22551,-1.24072)};
+\addplot [arrow1] coordinates{(-1.2,  -1) (-1.23961,-1.05208)};
+\addplot [arrow1] coordinates{(-1.2,-0.8) (-1.25677,-0.85915)};
+\addplot [arrow1] coordinates{(-1.2,-0.6) (-1.27512,-0.658263)};
+\addplot [arrow1] coordinates{(-1.2,-0.4) (-1.29175,-0.44719)};
+\addplot [arrow1] coordinates{(-1.2,-0.2) (-1.30345,-0.226518)};
+\addplot [arrow1] coordinates{(-1.2,   0) (-1.30767,   0)};
+\addplot [arrow1] coordinates{(-1.2, 0.2) (-1.30345,0.226518)};
+\addplot [arrow1] coordinates{(-1.2, 0.4) (-1.29175,0.44719)};
+\addplot [arrow1] coordinates{(-1.2, 0.6) (-1.27512,0.658263)};
+\addplot [arrow1] coordinates{(-1.2, 0.8) (-1.25677,0.85915)};
+\addplot [arrow1] coordinates{(-1.2,   1) (-1.23961,1.05208)};
+\addplot [arrow1] coordinates{(-1.2, 1.2) (-1.22551,1.24072)};
+\addplot [arrow1] coordinates{(-1.2, 1.4) (-1.21517,1.42863)};
+\addplot [arrow1] coordinates{(-1.2, 1.6) (-1.20832,1.61824)};
+\addplot [arrow1] coordinates{(-1.2, 1.8) (-1.20422,1.81058)};
+\addplot [arrow1] coordinates{(-1.2,   2) (-1.20197,2.00748)};
+\addplot [arrow1] coordinates{(  -1,  -2) (-1.00159,-2.00968)};
+\addplot [arrow1] coordinates{(  -1,-1.8) (-1.0034,-1.81369)};
+\addplot [arrow1] coordinates{(  -1,-1.6) (-1.00671,-1.6236)};
+\addplot [arrow1] coordinates{(  -1,-1.4) (-1.01222,-1.43704)};
+\addplot [arrow1] coordinates{(  -1,-1.2) (-1.02055,-1.25268)};
+\addplot [arrow1] coordinates{(  -1,  -1) (-1.03191,-1.06738)};
+\addplot [arrow1] coordinates{(  -1,-0.8) (-1.04574,-0.876535)};
+\addplot [arrow1] coordinates{(  -1,-0.6) (-1.06052,-0.675388)};
+\addplot [arrow1] coordinates{(  -1,-0.4) (-1.07392,-0.46106)};
+\addplot [arrow1] coordinates{(  -1,-0.2) (-1.08335,-0.234313)};
+\addplot [arrow1] coordinates{(  -1,   0) (-1.08675,   0)};
+\addplot [arrow1] coordinates{(  -1, 0.2) (-1.08335,0.234313)};
+\addplot [arrow1] coordinates{(  -1, 0.4) (-1.07392,0.46106)};
+\addplot [arrow1] coordinates{(  -1, 0.6) (-1.06052,0.675388)};
+\addplot [arrow1] coordinates{(  -1, 0.8) (-1.04574,0.876535)};
+\addplot [arrow1] coordinates{(  -1,   1) (-1.03191,1.06738)};
+\addplot [arrow1] coordinates{(  -1, 1.2) (-1.02055,1.25268)};
+\addplot [arrow1] coordinates{(  -1, 1.4) (-1.01222,1.43704)};
+\addplot [arrow1] coordinates{(  -1, 1.6) (-1.00671,1.6236)};
+\addplot [arrow1] coordinates{(  -1, 1.8) (-1.0034,1.81369)};
+\addplot [arrow1] coordinates{(  -1,   2) (-1.00159,2.00968)};
+\addplot [arrow1] coordinates{(-0.8,  -2) (-0.800586,-2.0111)};
+\addplot [arrow1] coordinates{(-0.8,-1.8) (-0.801253,-1.8157)};
+\addplot [arrow1] coordinates{(-0.8,-1.6) (-0.802474,-1.62706)};
+\addplot [arrow1] coordinates{(-0.8,-1.4) (-0.804507,-1.44248)};
+\addplot [arrow1] coordinates{(-0.8,-1.2) (-0.807582,-1.26041)};
+\addplot [arrow1] coordinates{(-0.8,  -1) (-0.811772,-1.07727)};
+\addplot [arrow1] coordinates{(-0.8,-0.8) (-0.816873,-0.88776)};
+\addplot [arrow1] coordinates{(-0.8,-0.6) (-0.822325,-0.686444)};
+\addplot [arrow1] coordinates{(-0.8,-0.4) (-0.827268,-0.470015)};
+\addplot [arrow1] coordinates{(-0.8,-0.2) (-0.830745,-0.239345)};
+\addplot [arrow1] coordinates{(-0.8,   0) (-0.832,   0)};
+\addplot [arrow1] coordinates{(-0.8, 0.2) (-0.830745,0.239345)};
+\addplot [arrow1] coordinates{(-0.8, 0.4) (-0.827268,0.470015)};
+\addplot [arrow1] coordinates{(-0.8, 0.6) (-0.822325,0.686444)};
+\addplot [arrow1] coordinates{(-0.8, 0.8) (-0.816873,0.88776)};
+\addplot [arrow1] coordinates{(-0.8,   1) (-0.811772,1.07727)};
+\addplot [arrow1] coordinates{(-0.8, 1.2) (-0.807582,1.26041)};
+\addplot [arrow1] coordinates{(-0.8, 1.4) (-0.804507,1.44248)};
+\addplot [arrow1] coordinates{(-0.8, 1.6) (-0.802474,1.62706)};
+\addplot [arrow1] coordinates{(-0.8, 1.8) (-0.801253,1.8157)};
+\addplot [arrow1] coordinates{(-0.8,   2) (-0.800586,2.0111)};
+\addplot [arrow1] coordinates{(-0.6,  -2) (-0.599064,-2.01101)};
+\addplot [arrow1] coordinates{(-0.6,-1.8) (-0.597999,-1.81558)};
+\addplot [arrow1] coordinates{(-0.6,-1.6) (-0.596051,-1.62685)};
+\addplot [arrow1] coordinates{(-0.6,-1.4) (-0.592805,-1.44215)};
+\addplot [arrow1] coordinates{(-0.6,-1.2) (-0.587897,-1.25995)};
+\addplot [arrow1] coordinates{(-0.6,  -1) (-0.581208,-1.07668)};
+\addplot [arrow1] coordinates{(-0.6,-0.8) (-0.573065,-0.887089)};
+\addplot [arrow1] coordinates{(-0.6,-0.6) (-0.564361,-0.685783)};
+\addplot [arrow1] coordinates{(-0.6,-0.4) (-0.556471,-0.46948)};
+\addplot [arrow1] coordinates{(-0.6,-0.2) (-0.550921,-0.239044)};
+\addplot [arrow1] coordinates{(-0.6,   0) (-0.548918,   0)};
+\addplot [arrow1] coordinates{(-0.6, 0.2) (-0.550921,0.239044)};
+\addplot [arrow1] coordinates{(-0.6, 0.4) (-0.556471,0.46948)};
+\addplot [arrow1] coordinates{(-0.6, 0.6) (-0.564361,0.685783)};
+\addplot [arrow1] coordinates{(-0.6, 0.8) (-0.573065,0.887089)};
+\addplot [arrow1] coordinates{(-0.6,   1) (-0.581208,1.07668)};
+\addplot [arrow1] coordinates{(-0.6, 1.2) (-0.587897,1.25995)};
+\addplot [arrow1] coordinates{(-0.6, 1.4) (-0.592805,1.44215)};
+\addplot [arrow1] coordinates{(-0.6, 1.6) (-0.596051,1.62685)};
+\addplot [arrow1] coordinates{(-0.6, 1.8) (-0.597999,1.81558)};
+\addplot [arrow1] coordinates{(-0.6,   2) (-0.599064,2.01101)};
+\addplot [arrow1] coordinates{(-0.4,  -2) (-0.397384,-2.00897)};
+\addplot [arrow1] coordinates{(-0.4,-1.8) (-0.394405,-1.81268)};
+\addplot [arrow1] coordinates{(-0.4,-1.6) (-0.388957,-1.62187)};
+\addplot [arrow1] coordinates{(-0.4,-1.4) (-0.379878,-1.43432)};
+\addplot [arrow1] coordinates{(-0.4,-1.2) (-0.366155,-1.24881)};
+\addplot [arrow1] coordinates{(-0.4,  -1) (-0.347449,-1.06243)};
+\addplot [arrow1] coordinates{(-0.4,-0.8) (-0.324677,-0.870914)};
+\addplot [arrow1] coordinates{(-0.4,-0.6) (-0.300337,-0.66985)};
+\addplot [arrow1] coordinates{(-0.4,-0.4) (-0.278272,-0.456575)};
+\addplot [arrow1] coordinates{(-0.4,-0.2) (-0.262752,-0.231792)};
+\addplot [arrow1] coordinates{(-0.4,   0) (-0.257151,   0)};
+\addplot [arrow1] coordinates{(-0.4, 0.2) (-0.262752,0.231792)};
+\addplot [arrow1] coordinates{(-0.4, 0.4) (-0.278272,0.456575)};
+\addplot [arrow1] coordinates{(-0.4, 0.6) (-0.300337,0.66985)};
+\addplot [arrow1] coordinates{(-0.4, 0.8) (-0.324677,0.870914)};
+\addplot [arrow1] coordinates{(-0.4,   1) (-0.347449,1.06243)};
+\addplot [arrow1] coordinates{(-0.4, 1.2) (-0.366155,1.24881)};
+\addplot [arrow1] coordinates{(-0.4, 1.4) (-0.379878,1.43432)};
+\addplot [arrow1] coordinates{(-0.4, 1.6) (-0.388957,1.62187)};
+\addplot [arrow1] coordinates{(-0.4, 1.8) (-0.394405,1.81268)};
+\addplot [arrow1] coordinates{(-0.4,   2) (-0.397384,2.00897)};
+\addplot [arrow1] coordinates{(-0.2,  -2) (-0.196062,-2.00505)};
+\addplot [arrow1] coordinates{(-0.2,-1.8) (-0.191579,-1.80715)};
+\addplot [arrow1] coordinates{(-0.2,-1.6) (-0.183378,-1.61233)};
+\addplot [arrow1] coordinates{(-0.2,-1.4) (-0.169712,-1.41935)};
+\addplot [arrow1] coordinates{(-0.2,-1.2) (-0.149055,-1.22752)};
+\addplot [arrow1] coordinates{(-0.2,  -1) (-0.120898,-1.0352)};
+\addplot [arrow1] coordinates{(-0.2,-0.8) (-0.0866205,-0.839977)};
+\addplot [arrow1] coordinates{(-0.2,-0.6) (-0.0499843,-0.639378)};
+\addplot [arrow1] coordinates{(-0.2,-0.4) (-0.0167704,-0.431894)};
+\addplot [arrow1] coordinates{(-0.2,-0.2) (0.00659085,-0.217923)};
+\addplot [arrow1] coordinates{(-0.2,   0) (0.015022,   0)};
+\addplot [arrow1] coordinates{(-0.2, 0.2) (0.00659085,0.217923)};
+\addplot [arrow1] coordinates{(-0.2, 0.4) (-0.0167704,0.431894)};
+\addplot [arrow1] coordinates{(-0.2, 0.6) (-0.0499843,0.639378)};
+\addplot [arrow1] coordinates{(-0.2, 0.8) (-0.0866205,0.839977)};
+\addplot [arrow1] coordinates{(-0.2,   1) (-0.120898,1.0352)};
+\addplot [arrow1] coordinates{(-0.2, 1.2) (-0.149055,1.22752)};
+\addplot [arrow1] coordinates{(-0.2, 1.4) (-0.169712,1.41935)};
+\addplot [arrow1] coordinates{(-0.2, 1.6) (-0.183378,1.61233)};
+\addplot [arrow1] coordinates{(-0.2, 1.8) (-0.191579,1.80715)};
+\addplot [arrow1] coordinates{(-0.2,   2) (-0.196062,2.00505)};
+\addplot [arrow1] coordinates{(   0,  -2) (0.00444038,  -2)};
+\addplot [arrow1] coordinates{(   0,-1.8) (0.00949476,-1.8)};
+\addplot [arrow1] coordinates{(   0,-1.6) (0.0187415,-1.6)};
+\addplot [arrow1] coordinates{(   0,-1.4) (0.0341492,-1.4)};
+\addplot [arrow1] coordinates{(   0,-1.2) (0.05744,-1.2)};
+\addplot [arrow1] coordinates{(   0,  -1) (0.0891874,  -1)};
+\addplot [arrow1] coordinates{(   0,-0.8) (0.127835,-0.8)};
+\addplot [arrow1] coordinates{(   0,-0.6) (0.169142,-0.6)};
+\addplot [arrow1] coordinates{(   0,-0.4) (0.206591,-0.4)};
+\addplot [arrow1] coordinates{(   0,-0.2) (0.232931,-0.2)};
+\addplot [arrow1] coordinates{(   0,   0) (0.242437,   0)};
+\addplot [arrow1] coordinates{(   0, 0.2) (0.232931, 0.2)};
+\addplot [arrow1] coordinates{(   0, 0.4) (0.206591, 0.4)};
+\addplot [arrow1] coordinates{(   0, 0.6) (0.169142, 0.6)};
+\addplot [arrow1] coordinates{(   0, 0.8) (0.127835, 0.8)};
+\addplot [arrow1] coordinates{(   0,   1) (0.0891874,   1)};
+\addplot [arrow1] coordinates{(   0, 1.2) (0.05744, 1.2)};
+\addplot [arrow1] coordinates{(   0, 1.4) (0.0341492, 1.4)};
+\addplot [arrow1] coordinates{(   0, 1.6) (0.0187415, 1.6)};
+\addplot [arrow1] coordinates{(   0, 1.8) (0.00949476, 1.8)};
+\addplot [arrow1] coordinates{(   0,   2) (0.00444038,   2)};
+\addplot [arrow1] coordinates{( 0.2,  -2) (0.203938,-1.99495)};
+\addplot [arrow1] coordinates{( 0.2,-1.8) (0.208421,-1.79285)};
+\addplot [arrow1] coordinates{( 0.2,-1.6) (0.216622,-1.58767)};
+\addplot [arrow1] coordinates{( 0.2,-1.4) (0.230288,-1.38065)};
+\addplot [arrow1] coordinates{( 0.2,-1.2) (0.250945,-1.17248)};
+\addplot [arrow1] coordinates{( 0.2,  -1) (0.279102,-0.964802)};
+\addplot [arrow1] coordinates{( 0.2,-0.8) (0.313379,-0.760023)};
+\addplot [arrow1] coordinates{( 0.2,-0.6) (0.350016,-0.560622)};
+\addplot [arrow1] coordinates{( 0.2,-0.4) (0.38323,-0.368106)};
+\addplot [arrow1] coordinates{( 0.2,-0.2) (0.406591,-0.182077)};
+\addplot [arrow1] coordinates{( 0.2,   0) (0.415022,   0)};
+\addplot [arrow1] coordinates{( 0.2, 0.2) (0.406591,0.182077)};
+\addplot [arrow1] coordinates{( 0.2, 0.4) (0.38323,0.368106)};
+\addplot [arrow1] coordinates{( 0.2, 0.6) (0.350016,0.560622)};
+\addplot [arrow1] coordinates{( 0.2, 0.8) (0.313379,0.760023)};
+\addplot [arrow1] coordinates{( 0.2,   1) (0.279102,0.964802)};
+\addplot [arrow1] coordinates{( 0.2, 1.2) (0.250945,1.17248)};
+\addplot [arrow1] coordinates{( 0.2, 1.4) (0.230288,1.38065)};
+\addplot [arrow1] coordinates{( 0.2, 1.6) (0.216622,1.58767)};
+\addplot [arrow1] coordinates{( 0.2, 1.8) (0.208421,1.79285)};
+\addplot [arrow1] coordinates{( 0.2,   2) (0.203938,1.99495)};
+\addplot [arrow1] coordinates{( 0.4,  -2) (0.402616,-1.99103)};
+\addplot [arrow1] coordinates{( 0.4,-1.8) (0.405595,-1.78732)};
+\addplot [arrow1] coordinates{( 0.4,-1.6) (0.411043,-1.57813)};
+\addplot [arrow1] coordinates{( 0.4,-1.4) (0.420122,-1.36568)};
+\addplot [arrow1] coordinates{( 0.4,-1.2) (0.433845,-1.15119)};
+\addplot [arrow1] coordinates{( 0.4,  -1) (0.452551,-0.937565)};
+\addplot [arrow1] coordinates{( 0.4,-0.8) (0.475323,-0.729086)};
+\addplot [arrow1] coordinates{( 0.4,-0.6) (0.499663,-0.53015)};
+\addplot [arrow1] coordinates{( 0.4,-0.4) (0.521728,-0.343425)};
+\addplot [arrow1] coordinates{( 0.4,-0.2) (0.537248,-0.168208)};
+\addplot [arrow1] coordinates{( 0.4,   0) (0.542849,   0)};
+\addplot [arrow1] coordinates{( 0.4, 0.2) (0.537248,0.168208)};
+\addplot [arrow1] coordinates{( 0.4, 0.4) (0.521728,0.343425)};
+\addplot [arrow1] coordinates{( 0.4, 0.6) (0.499663,0.53015)};
+\addplot [arrow1] coordinates{( 0.4, 0.8) (0.475323,0.729086)};
+\addplot [arrow1] coordinates{( 0.4,   1) (0.452551,0.937565)};
+\addplot [arrow1] coordinates{( 0.4, 1.2) (0.433845,1.15119)};
+\addplot [arrow1] coordinates{( 0.4, 1.4) (0.420122,1.36568)};
+\addplot [arrow1] coordinates{( 0.4, 1.6) (0.411043,1.57813)};
+\addplot [arrow1] coordinates{( 0.4, 1.8) (0.405595,1.78732)};
+\addplot [arrow1] coordinates{( 0.4,   2) (0.402616,1.99103)};
+\addplot [arrow1] coordinates{( 0.6,  -2) (0.600936,-1.98899)};
+\addplot [arrow1] coordinates{( 0.6,-1.8) (0.602001,-1.78442)};
+\addplot [arrow1] coordinates{( 0.6,-1.6) (0.603949,-1.57315)};
+\addplot [arrow1] coordinates{( 0.6,-1.4) (0.607195,-1.35785)};
+\addplot [arrow1] coordinates{( 0.6,-1.2) (0.612103,-1.14005)};
+\addplot [arrow1] coordinates{( 0.6,  -1) (0.618792,-0.923324)};
+\addplot [arrow1] coordinates{( 0.6,-0.8) (0.626935,-0.712911)};
+\addplot [arrow1] coordinates{( 0.6,-0.6) (0.635639,-0.514217)};
+\addplot [arrow1] coordinates{( 0.6,-0.4) (0.643529,-0.33052)};
+\addplot [arrow1] coordinates{( 0.6,-0.2) (0.649079,-0.160956)};
+\addplot [arrow1] coordinates{( 0.6,   0) (0.651082,   0)};
+\addplot [arrow1] coordinates{( 0.6, 0.2) (0.649079,0.160956)};
+\addplot [arrow1] coordinates{( 0.6, 0.4) (0.643529,0.33052)};
+\addplot [arrow1] coordinates{( 0.6, 0.6) (0.635639,0.514217)};
+\addplot [arrow1] coordinates{( 0.6, 0.8) (0.626935,0.712911)};
+\addplot [arrow1] coordinates{( 0.6,   1) (0.618792,0.923324)};
+\addplot [arrow1] coordinates{( 0.6, 1.2) (0.612103,1.14005)};
+\addplot [arrow1] coordinates{( 0.6, 1.4) (0.607195,1.35785)};
+\addplot [arrow1] coordinates{( 0.6, 1.6) (0.603949,1.57315)};
+\addplot [arrow1] coordinates{( 0.6, 1.8) (0.602001,1.78442)};
+\addplot [arrow1] coordinates{( 0.6,   2) (0.600936,1.98899)};
+\addplot [arrow1] coordinates{( 0.8,  -2) (0.799414,-1.9889)};
+\addplot [arrow1] coordinates{( 0.8,-1.8) (0.798747,-1.7843)};
+\addplot [arrow1] coordinates{( 0.8,-1.6) (0.797526,-1.57294)};
+\addplot [arrow1] coordinates{( 0.8,-1.4) (0.795493,-1.35752)};
+\addplot [arrow1] coordinates{( 0.8,-1.2) (0.792418,-1.13959)};
+\addplot [arrow1] coordinates{( 0.8,  -1) (0.788228,-0.922733)};
+\addplot [arrow1] coordinates{( 0.8,-0.8) (0.783127,-0.71224)};
+\addplot [arrow1] coordinates{( 0.8,-0.6) (0.777675,-0.513556)};
+\addplot [arrow1] coordinates{( 0.8,-0.4) (0.772732,-0.329985)};
+\addplot [arrow1] coordinates{( 0.8,-0.2) (0.769255,-0.160655)};
+\addplot [arrow1] coordinates{( 0.8,   0) (0.768,   0)};
+\addplot [arrow1] coordinates{( 0.8, 0.2) (0.769255,0.160655)};
+\addplot [arrow1] coordinates{( 0.8, 0.4) (0.772732,0.329985)};
+\addplot [arrow1] coordinates{( 0.8, 0.6) (0.777675,0.513556)};
+\addplot [arrow1] coordinates{( 0.8, 0.8) (0.783127,0.71224)};
+\addplot [arrow1] coordinates{( 0.8,   1) (0.788228,0.922733)};
+\addplot [arrow1] coordinates{( 0.8, 1.2) (0.792418,1.13959)};
+\addplot [arrow1] coordinates{( 0.8, 1.4) (0.795493,1.35752)};
+\addplot [arrow1] coordinates{( 0.8, 1.6) (0.797526,1.57294)};
+\addplot [arrow1] coordinates{( 0.8, 1.8) (0.798747,1.7843)};
+\addplot [arrow1] coordinates{( 0.8,   2) (0.799414,1.9889)};
+\addplot [arrow1] coordinates{(   1,  -2) (0.998411,-1.99032)};
+\addplot [arrow1] coordinates{(   1,-1.8) (0.996602,-1.78631)};
+\addplot [arrow1] coordinates{(   1,-1.6) (0.993294,-1.5764)};
+\addplot [arrow1] coordinates{(   1,-1.4) (0.98778,-1.36296)};
+\addplot [arrow1] coordinates{(   1,-1.2) (0.979446,-1.14732)};
+\addplot [arrow1] coordinates{(   1,  -1) (0.968086,-0.932616)};
+\addplot [arrow1] coordinates{(   1,-0.8) (0.954257,-0.723465)};
+\addplot [arrow1] coordinates{(   1,-0.6) (0.939475,-0.524612)};
+\addplot [arrow1] coordinates{(   1,-0.4) (0.926075,-0.33894)};
+\addplot [arrow1] coordinates{(   1,-0.2) (0.91665,-0.165687)};
+\addplot [arrow1] coordinates{(   1,   0) (0.913248,   0)};
+\addplot [arrow1] coordinates{(   1, 0.2) (0.91665,0.165687)};
+\addplot [arrow1] coordinates{(   1, 0.4) (0.926075,0.33894)};
+\addplot [arrow1] coordinates{(   1, 0.6) (0.939475,0.524612)};
+\addplot [arrow1] coordinates{(   1, 0.8) (0.954257,0.723465)};
+\addplot [arrow1] coordinates{(   1,   1) (0.968086,0.932616)};
+\addplot [arrow1] coordinates{(   1, 1.2) (0.979446,1.14732)};
+\addplot [arrow1] coordinates{(   1, 1.4) (0.98778,1.36296)};
+\addplot [arrow1] coordinates{(   1, 1.6) (0.993294,1.5764)};
+\addplot [arrow1] coordinates{(   1, 1.8) (0.996602,1.78631)};
+\addplot [arrow1] coordinates{(   1,   2) (0.998411,1.99032)};
+\addplot [arrow1] coordinates{( 1.2,  -2) (1.19803,-1.99252)};
+\addplot [arrow1] coordinates{( 1.2,-1.8) (1.19578,-1.78942)};
+\addplot [arrow1] coordinates{( 1.2,-1.6) (1.19168,-1.58176)};
+\addplot [arrow1] coordinates{( 1.2,-1.4) (1.18483,-1.37137)};
+\addplot [arrow1] coordinates{( 1.2,-1.2) (1.17449,-1.15928)};
+\addplot [arrow1] coordinates{( 1.2,  -1) (1.16039,-0.947922)};
+\addplot [arrow1] coordinates{( 1.2,-0.8) (1.14323,-0.74085)};
+\addplot [arrow1] coordinates{( 1.2,-0.6) (1.12488,-0.541737)};
+\addplot [arrow1] coordinates{( 1.2,-0.4) (1.10825,-0.35281)};
+\addplot [arrow1] coordinates{( 1.2,-0.2) (1.09655,-0.173482)};
+\addplot [arrow1] coordinates{( 1.2,   0) (1.09233,   0)};
+\addplot [arrow1] coordinates{( 1.2, 0.2) (1.09655,0.173482)};
+\addplot [arrow1] coordinates{( 1.2, 0.4) (1.10825,0.35281)};
+\addplot [arrow1] coordinates{( 1.2, 0.6) (1.12488,0.541737)};
+\addplot [arrow1] coordinates{( 1.2, 0.8) (1.14323,0.74085)};
+\addplot [arrow1] coordinates{( 1.2,   1) (1.16039,0.947922)};
+\addplot [arrow1] coordinates{( 1.2, 1.2) (1.17449,1.15928)};
+\addplot [arrow1] coordinates{( 1.2, 1.4) (1.18483,1.37137)};
+\addplot [arrow1] coordinates{( 1.2, 1.6) (1.19168,1.58176)};
+\addplot [arrow1] coordinates{( 1.2, 1.8) (1.19578,1.78942)};
+\addplot [arrow1] coordinates{( 1.2,   2) (1.19803,1.99252)};
+\addplot [arrow1] coordinates{( 1.4,  -2) (1.39814,-1.99481)};
+\addplot [arrow1] coordinates{( 1.4,-1.8) (1.39603,-1.79266)};
+\addplot [arrow1] coordinates{( 1.4,-1.6) (1.39217,-1.58735)};
+\addplot [arrow1] coordinates{( 1.4,-1.4) (1.38573,-1.38014)};
+\addplot [arrow1] coordinates{( 1.4,-1.2) (1.37599,-1.17176)};
+\addplot [arrow1] coordinates{( 1.4,  -1) (1.36272,-0.963879)};
+\addplot [arrow1] coordinates{( 1.4,-0.8) (1.34657,-0.758973)};
+\addplot [arrow1] coordinates{( 1.4,-0.6) (1.32931,-0.559588)};
+\addplot [arrow1] coordinates{( 1.4,-0.4) (1.31365,-0.367269)};
+\addplot [arrow1] coordinates{( 1.4,-0.2) (1.30265,-0.181607)};
+\addplot [arrow1] coordinates{( 1.4,   0) (1.29867,   0)};
+\addplot [arrow1] coordinates{( 1.4, 0.2) (1.30265,0.181607)};
+\addplot [arrow1] coordinates{( 1.4, 0.4) (1.31365,0.367269)};
+\addplot [arrow1] coordinates{( 1.4, 0.6) (1.32931,0.559588)};
+\addplot [arrow1] coordinates{( 1.4, 0.8) (1.34657,0.758973)};
+\addplot [arrow1] coordinates{( 1.4,   1) (1.36272,0.963879)};
+\addplot [arrow1] coordinates{( 1.4, 1.2) (1.37599,1.17176)};
+\addplot [arrow1] coordinates{( 1.4, 1.4) (1.38573,1.38014)};
+\addplot [arrow1] coordinates{( 1.4, 1.6) (1.39217,1.58735)};
+\addplot [arrow1] coordinates{( 1.4, 1.8) (1.39603,1.79266)};
+\addplot [arrow1] coordinates{( 1.4,   2) (1.39814,1.99481)};
+\addplot [arrow1] coordinates{( 1.6,  -2) (1.59854,-1.99675)};
+\addplot [arrow1] coordinates{( 1.6,-1.8) (1.59687,-1.7954)};
+\addplot [arrow1] coordinates{( 1.6,-1.6) (1.59382,-1.59207)};
+\addplot [arrow1] coordinates{( 1.6,-1.4) (1.58874,-1.38755)};
+\addplot [arrow1] coordinates{( 1.6,-1.2) (1.58106,-1.18229)};
+\addplot [arrow1] coordinates{( 1.6,  -1) (1.5706,-0.977344)};
+\addplot [arrow1] coordinates{( 1.6,-0.8) (1.55785,-0.774267)};
+\addplot [arrow1] coordinates{( 1.6,-0.6) (1.54423,-0.574653)};
+\addplot [arrow1] coordinates{( 1.6,-0.4) (1.53189,-0.37947)};
+\addplot [arrow1] coordinates{( 1.6,-0.2) (1.5232,-0.188463)};
+\addplot [arrow1] coordinates{( 1.6,   0) (1.52007,   0)};
+\addplot [arrow1] coordinates{( 1.6, 0.2) (1.5232,0.188463)};
+\addplot [arrow1] coordinates{( 1.6, 0.4) (1.53189,0.37947)};
+\addplot [arrow1] coordinates{( 1.6, 0.6) (1.54423,0.574653)};
+\addplot [arrow1] coordinates{( 1.6, 0.8) (1.55785,0.774267)};
+\addplot [arrow1] coordinates{( 1.6,   1) (1.5706,0.977344)};
+\addplot [arrow1] coordinates{( 1.6, 1.2) (1.58106,1.18229)};
+\addplot [arrow1] coordinates{( 1.6, 1.4) (1.58874,1.38755)};
+\addplot [arrow1] coordinates{( 1.6, 1.6) (1.59382,1.59207)};
+\addplot [arrow1] coordinates{( 1.6, 1.8) (1.59687,1.7954)};
+\addplot [arrow1] coordinates{( 1.6,   2) (1.59854,1.99675)};
+\addplot [arrow1] coordinates{( 1.8,  -2) (1.79899,-1.99815)};
+\addplot [arrow1] coordinates{( 1.8,-1.8) (1.79785,-1.79738)};
+\addplot [arrow1] coordinates{( 1.8,-1.6) (1.79575,-1.59548)};
+\addplot [arrow1] coordinates{( 1.8,-1.4) (1.79226,-1.3929)};
+\addplot [arrow1] coordinates{( 1.8,-1.2) (1.78699,-1.1899)};
+\addplot [arrow1] coordinates{( 1.8,  -1) (1.7798,-0.987087)};
+\addplot [arrow1] coordinates{( 1.8,-0.8) (1.77104,-0.785334)};
+\addplot [arrow1] coordinates{( 1.8,-0.6) (1.76169,-0.585554)};
+\addplot [arrow1] coordinates{( 1.8,-0.4) (1.7532,-0.388299)};
+\addplot [arrow1] coordinates{( 1.8,-0.2) (1.74724,-0.193425)};
+\addplot [arrow1] coordinates{( 1.8,   0) (1.74508,   0)};
+\addplot [arrow1] coordinates{( 1.8, 0.2) (1.74724,0.193425)};
+\addplot [arrow1] coordinates{( 1.8, 0.4) (1.7532,0.388299)};
+\addplot [arrow1] coordinates{( 1.8, 0.6) (1.76169,0.585554)};
+\addplot [arrow1] coordinates{( 1.8, 0.8) (1.77104,0.785334)};
+\addplot [arrow1] coordinates{( 1.8,   1) (1.7798,0.987087)};
+\addplot [arrow1] coordinates{( 1.8, 1.2) (1.78699,1.1899)};
+\addplot [arrow1] coordinates{( 1.8, 1.4) (1.79226,1.3929)};
+\addplot [arrow1] coordinates{( 1.8, 1.6) (1.79575,1.59548)};
+\addplot [arrow1] coordinates{( 1.8, 1.8) (1.79785,1.79738)};
+\addplot [arrow1] coordinates{( 1.8,   2) (1.79899,1.99815)};
+\addplot [arrow1] coordinates{(   2,  -2) (1.99922,-1.99904)};
+\addplot [arrow1] coordinates{(   2,-1.8) (1.99833,-1.79864)};
+\addplot [arrow1] coordinates{(   2,-1.6) (1.9967,-1.59765)};
+\addplot [arrow1] coordinates{(   2,-1.4) (1.99398,-1.39631)};
+\addplot [arrow1] coordinates{(   2,-1.2) (1.98988,-1.19475)};
+\addplot [arrow1] coordinates{(   2,  -1) (1.98428,-0.99329)};
+\addplot [arrow1] coordinates{(   2,-0.8) (1.97747,-0.792379)};
+\addplot [arrow1] coordinates{(   2,-0.6) (1.97019,-0.592493)};
+\addplot [arrow1] coordinates{(   2,-0.4) (1.96359,-0.39392)};
+\addplot [arrow1] coordinates{(   2,-0.2) (1.95895,-0.196583)};
+\addplot [arrow1] coordinates{(   2,   0) (1.95728,   0)};
+\addplot [arrow1] coordinates{(   2, 0.2) (1.95895,0.196583)};
+\addplot [arrow1] coordinates{(   2, 0.4) (1.96359,0.39392)};
+\addplot [arrow1] coordinates{(   2, 0.6) (1.97019,0.592493)};
+\addplot [arrow1] coordinates{(   2, 0.8) (1.97747,0.792379)};
+\addplot [arrow1] coordinates{(   2,   1) (1.98428,0.99329)};
+\addplot [arrow1] coordinates{(   2, 1.2) (1.98988,1.19475)};
+\addplot [arrow1] coordinates{(   2, 1.4) (1.99398,1.39631)};
+\addplot [arrow1] coordinates{(   2, 1.6) (1.9967,1.59765)};
+\addplot [arrow1] coordinates{(   2, 1.8) (1.99833,1.79864)};
+\addplot [arrow1] coordinates{(   2,   2) (1.99922,1.99904)};
+\end{axis}
+\end{tikzpicture}%
+\end{document}
