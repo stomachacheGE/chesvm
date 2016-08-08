@@ -67,7 +67,7 @@ $ matlab
 
 ### Graphical User Interface
 
-![](https://github.com/stomachacheGE/chesvm/blob/today_1/GUI/GUI.png)
+![](https://github.com/stomachacheGE/chesvm/blob/master/GUI/GUI.png)
 
 The package provides a GUI, with which users may play with trained models to test images. Before using the GUI, make sure at least some models are already trained and live in the result folder. Otherwise, the GUI is unable to make predictions. Start the GUI by following commands:
 
