@@ -4,7 +4,7 @@ function [train_datas, test_datas]= esvm_initialize_features(datasets_info, feat
 datasets_params = params.datasets_params;
 feat_params = params.features_params;
 
-if strcmp(feat_name,'cnn')% MatConvNet
+if strcmp(feat_name,'cnn') || strcmp(feat_name,'cnnhog')% MatConvNet
     cnn_params = feat_params.cnn_params;
     mcnpath = fullfile('.', 'lib','matconvnet-1.0-beta18','matlab');
     run(fullfile(mcnpath,'vl_setupnn.m'));
@@ -66,11 +66,16 @@ for j=1:length(datasets_info)
             data.img_size = [size(img,1) size(img,2)];
             if strcmp(feat_name,'cnn')
                 data.feature = double(esvm_extract_cnn_feature(img, convnet, cnn_params.layer));
-            else
+            elseif strcmp(feat_name,'hog')
                 hog_params = feat_params.hog_params;
                 img = imresize(double(img),[hog_params.height hog_params.width]);
                 [data.feature data.hog_size] = esvm_extract_hog_feature(double(img), feat_params.hog_params);                     
-
+            elseif strcmp(feat_name,'cnnhog')
+                cnn_feature = double(esvm_extract_cnn_feature(img, convnet, cnn_params.layer));
+                hog_params = feat_params.hog_params;
+                img = imresize(double(img),[hog_params.height hog_params.width]);
+                [hog_feature data.hog_size] = esvm_extract_hog_feature(double(img), feat_params.hog_params);   
+                data.feature = horzcat(cnn_feature, hog_feature);
             end
 
             data.cls_name = cls;
