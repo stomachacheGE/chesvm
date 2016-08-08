@@ -47,7 +47,7 @@ default_params.features_params.hog_params.sbin = 8;
 
 ### Train models
 
-After correct setups and configurations, you may start to train your models. The main interface used to train models is `esvm_train(feature, algorithm, calibration, hard_negative)`.
+After correct setups and configurations, you may start to train your models. The main interface used to train models is the function `esvm_train(feature, algorithm, calibration, hard_negative)`.
 
 ```sh
 $ matlab
@@ -77,7 +77,7 @@ $ matlab
 >> GUI;
 ```
 
-The GUI is quite straightforward once you open the interface. The `TRY MY LUCK` button simply choose a random image in your test set and make predictions. 
+The GUI is quite straightforward once you open the interface. The `Try My Luck` button simply choose a random image in your test set and make predictions. 
 
-Note if, by any chance, you want the images I used for my project and the trained modles, you may contact me by [email](mailto:liangchengfu001@gmail.com).
+Note if, by any chance, you want the images I used for my project and the trained models, you may contact me by [email](mailto:liangchengfu001@gmail.com).
 
