@@ -1,11 +1,16 @@
-function prediction = esvm_predict_svm(model, test_datas )
-
+function prediction = esvm_predict_svm(model, test_datas)
+% Make predictions using trained SVM model.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 test_datas = [horzcat(test_datas{:})];
 
 features_cell = cellfun(@(x) x.feature, test_datas, 'UniformOutput', false);
 features = cat(1, features_cell{:});
-%features = double(features);
 
 labels_cell = cellfun(@(x) x.label, test_datas, 'UniformOutput', false);
 labels = cat(1, labels_cell{:});

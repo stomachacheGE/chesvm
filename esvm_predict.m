@@ -1,6 +1,11 @@
 function prediction = esvm_predict(models, test_datas, feat_name, hard_negative, params)
-
-
+% Make predictions using trained exemplar-SVM models.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
 models_dir = fullfile('.', params.datasets_params.results_folder,'models');
@@ -26,7 +31,6 @@ if ~exist(esvm_res_cal_dir,'dir')
     mkdir(esvm_res_cal_dir);
 end
 
-
 if ~exist(esvm_res_dir,'dir')
     mkdir(esvm_res_dir);
 end
@@ -45,6 +49,7 @@ num_test_images = 0;
 for i = 1:length(test_datas)
     num_test_images = num_test_images + numel(test_datas{i});
 end
+
 %get number of models
 num_models = 0;
 for i = 1:length(models)
@@ -53,6 +58,7 @@ end
 
 counter = 0;
 if hard_negative
+    % The single file which contains all exempalr-SVM models
     filer_1 = sprintf('%s/%s_models_in_matrix.mat', models_dir, feat_name);
 else
     filer_1 = sprintf('%s/%s_models_in_matrix_wo_hn.mat', models_dir, feat_name);
@@ -113,12 +119,9 @@ for i = 1:length(test_datas)
 
   for j = 1:length(test_datas{i})
       
-      
       res = zeros(size(models));
-      
       filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-
-      
+   
       if ~exist(filer,'file')
           temp = cell(length(models),1);
           for m = 1:length(models)
@@ -130,17 +133,16 @@ for i = 1:length(test_datas)
             standarized_inputs(row,col) = 0;
             res_per_class = sum(standarized_inputs  .* Betas_cell{m}, 2) + Biases_cell{m};
 
-             [res(m), Index_J_temp(m)] = max(res_per_class);
-             %[sorted,~] = sort(res_per_class);
-             %res(m) = mean(sorted(1:floor(length(res_per_class)/8)));
-             %res(m) = mean(sorted(1:10));
-             temp{m} = res_per_class;
+            [res(m), Index_J_temp(m)] = max(res_per_class);
+            temp{m} = res_per_class;
           end
           %normalize sum of scores to 1
-          %res_max = max(res);
           pos_score_idx = find(res>0);
           [~, Index_I] = max(res);
           if ~isempty(pos_score_idx)
+              % If the scores contain both positive and negative socres,
+              % let the negative scores be 0 and normalize over positive
+              % socres.
               pos_scores = res(pos_score_idx);
               res = res/sum(pos_scores);
               neg_score_idx = find(res<0);
@@ -181,12 +183,6 @@ for i = 1:length(test_datas)
 end
 
 scores = [vertcat(scores{:})];
-
-%normalize the sum of scores to 1
-%sum_scores_per_test_data = sum(scores,2);
-%sum_scores_per_test_data = repmat(sum_scores_per_test_data,1,size(scores,2));
-
-%scores = scores./sum_scores_per_test_data;
 [~, indexes] = max(scores,[],2);
 
 prediction.ids = indexes;

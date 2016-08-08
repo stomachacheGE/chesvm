@@ -1,9 +1,16 @@
 function [train_datas, test_datas]= esvm_initialize_features(datasets_info, feat_name, algo_name ,params)
-
+% Extract features out of images in the trainig set and store them to disk.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 datasets_params = params.datasets_params;
 feat_params = params.features_params;
 
+% Load pre-trained CNN model
 if strcmp(feat_name,'cnn') || strcmp(feat_name,'cnnhog')% MatConvNet
     cnn_params = feat_params.cnn_params;
     mcnpath = fullfile('.', 'lib','matconvnet-1.0-beta18','matlab');
@@ -45,21 +52,9 @@ for j=1:length(datasets_info)
     test_datas{j} = cell(1, length(datasets_info{j}.test_image_ids));
 
     for i=1:length(img_ids)
-        
-
-            %filer = fullfile(res_dir, sprintf('%s-%s-not-resized.mat',feat_name,img_ids{i}));
         filer = fullfile(res_dir, sprintf('%s-%s.mat',feat_name,img_ids{i}));
-
-        
-        %filers = fullfile(res_dir, sprintf('cnn-%s-not-resized.mat',img_ids{i}));
-        %if exist(filers,'file')
-        %   delete(filers);
-        %end
-        
-        %if exist(filer,'file')
-        %   delete(filer);
-        %end
-
+        % If feature file does not exist, extract and store it.
+        % Otherwise, load it to the program.
         if ~exist(filer,'file')
             %fprintf(1,' Calculating features...');
             img = imread(img_files{i});
@@ -101,7 +96,7 @@ for j=1:length(datasets_info)
             end
         end
         
-        
+        % add corresponding image filename to the feature struct.
         if i <= length(datasets_info{j}.train_image_ids)
             data.img_filer = datasets_info{j}.train_image_files{i};
             train_datas{j}{i} = data;
@@ -110,20 +105,11 @@ for j=1:length(datasets_info)
             test_datas{j}{i-length(datasets_info{j}.train_image_ids)} = data;
         end
 
-
-
         if counter == length(img_ids)
             fprintf(1, ' *********Extracting %s features for %s finished. Total: %d *********\n',...
                         feat_name, cls, counter);
         end
-
-
-
     end
 end
-
-%concantenate all cell array contents to a cell array
-%train_datas = [horzcat(train_datas{:})];
-%test_datas = [horzcat(test_datas{:})];
 
 end

@@ -1,4 +1,11 @@
 function cal_mat = esvm_perform_calibration(models, train_set, feat_name, hard_negative, params)
+% fit sigmoid function for each exemplar-SVM and put all learned parameters into a matrix
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
 esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
@@ -17,7 +24,6 @@ if ~exist(esvm_res_dir, 'dir')
     mkdir(esvm_res_dir)
 end
 
-
 if ~exist(filer,'file')
 
     num_models = 0;
@@ -27,101 +33,69 @@ if ~exist(filer,'file')
 
     counter = 1;
     cal_mat = cell(1, length(models));
+    
     for i=1:length(models)
 
         cls_cal_mat = cell(1,length(models{i}));
         cal_pos_features = cellfun(@(x)x.feature, train_set{i}, 'UniformOutput', false);
         cal_pos_features = [vertcat(cal_pos_features{:})];
         
-
-        
         for j=1:length(models{i})
 
             m = load(models{i}{j});
             m = m.m;
-            %{
-            cal_feature_filers = train_set{i}{j}.feat_filers;
-            %neg_img_filers = train_set{qq}.img_filers;
-            cal_features = cell(1,length(cal_feature_filers));
-
-            for filer_i = 1:length(cal_feature_filers)
-                 temp = load(cal_feature_filers{filer_i});
-                 cal_features{filer_i} = temp.data.feature;
-            end
-           
-            cal_features = [vertcat(cal_features{:})]; 
-            
-            num_neg = int16(train_set{i}{j}.num_neg);
-            cal_features = cal_features(1:size(cal_features,1)-num_neg,:);
-             %}
-            %[~, all_pos_scores] = predict(m.svm_model, cal_pos_features);
-            %all_pos_scores = all_pos_scores(:,2)';
-
-            %[sorted_pos_scores, indexes] = sort(all_pos_scores, 'descend');
-            %exclude the biggest score, which is the exemplar itself
-            
-            %num_pos = length(sorted_pos_scores);
             num_neg = length(m.cal_set);
-            %if strcmp(feat_name,'cnn')
-            %idx = int16(1:num_neg);
-            %idxs = int16(floor(num_pos / num_neg)) * idx;           
-            %pos_scores = sorted_pos_scores(idxs);
             
-            %pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
-            
-
- 
             cal_neg_feat_filers = m.cal_set;
             cal_neg_features = cell(num_neg,1);
+            
             for c = 1:num_neg
                 temp = load(cal_neg_feat_filers{c});
                 cal_neg_features{c} = temp.data.feature;
             end
+            
             cal_neg_features = [vertcat(cal_neg_features{:})];
 
             [~, all_pos_scores] = predict(m.svm_model, cal_pos_features);
             all_pos_scores = all_pos_scores(:,2)';
-
             [sorted_pos_scores, indexes] = sort(all_pos_scores, 'descend');
-            %exclude the biggest score, which is the exemplar itself
-           
+ 
             [~, neg_scores] = predict(m.svm_model, cal_neg_features);
             neg_scores = neg_scores(:,2)';
-            
             [neg_scores, neg_indexes] = sort(neg_scores, 'ascend');
      
-            
+            % delete the positive scores which are smaller than
+            % the maximum of the negative scores
             [~, del_idxs] = find(sorted_pos_scores<max(neg_scores));
             pos_scores = sorted_pos_scores;
             pos_scores(del_idxs) = [];
-            %pos_scores = [repmat(pos_scores(1),1,5) pos_scores];
-            %duplicate = length(neg_scores) - length(pos_scores);
-            %pos_scores
+
+            % recover 2 positive scores if the above step returns none or
+            % only one positive score
             if numel(pos_scores) == 0 || numel(pos_scores) == 1
                 pos_scores = sorted_pos_scores(1:2);
                 neg_scores = neg_scores(1:end-2);
             end
-             pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
-             
-
             
+            % assume probabilites of positive scores are distributed from 0.5 to 1,
+            % and those of negative score from 0 to 0.3
+            pos_prob = 1 - 0.5 * abs(pos_scores(1) - pos_scores) / (pos_scores(1) - pos_scores(end));
             neg_prob = 0.3 * (1 - 1 * abs(neg_scores(end) - neg_scores) / (neg_scores(end) - neg_scores(1)));
             
             scores = horzcat(pos_scores, neg_scores);
             prob = horzcat(pos_prob, neg_prob);
             
+            % fit sigmoid function given scores and probabilities
             m.sigmoid_coef = fit_sigmoid(scores, prob);
             cls_cal_mat{j} = m.sigmoid_coef; 
             counter = counter + 1;
-
 
           if mod(counter,50) == 0
           fprintf(1,'Getting sigmoid coefficients %d/%d \n', counter, num_models);
           end
         end
         cal_mat{i} = [vertcat(cls_cal_mat{:})];
-    end
-    
+    end   
     save(filer, 'cal_mat');
 else
     cal_mat = load(filer);

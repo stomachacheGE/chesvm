@@ -1,5 +1,12 @@
+function esvm_train(feature, algorithm, calibration, hard_negative)
 % This is the main interface of the package. Make sure all parameters in
 % esvm_get_default_params are set correctly before you run this function.
+%
+% [feature]: String, supports 'cnn', 'hog', 'cnnhog'.
+% [algorithm]: String, supports 'svm', 'esvm'.
+% [calibration]: Boolean, decide whether calibration should be used.  
+% [hard_negative]: Boolean, decide whether hard negative mining should be
+%                  used for trainig exemplar-SVMs.
 %
 % By Liangcheng Fu.
 %
@@ -7,22 +14,17 @@
 % HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
 % Package homepage: https://github.com/stomachacheGE/chesvm/
 
-clear;
-
-addpath(genpath(pwd));
-
 params = esvm_get_default_params;
 
 datasets_info = esvm_get_datasets_info(params.datasets_params);
 
-use_feature = 'hog';
-use_algorithm = 'esvm';
-calibration = false;
-hard_negative = false;
+use_feature = feature;
+use_algorithm = algorithm;
+calibration = calibration;
+hard_negative = hard_negative;
 
 [train_datas, test_datas] = esvm_initialize_features(datasets_info, ...
                                                      use_feature,use_algorithm,params);
-
 if strcmp(use_algorithm,'svm')
     linearSVMmodel = esvm_train_svm(train_datas, use_feature, params);
     prediction = esvm_predict_svm(linearSVMmodel, test_datas);
@@ -51,3 +53,6 @@ for i = 1:length(res.classes)
                 upper(res.classes{i}), res.acc_per_cls(i));
 end
 
+
+
+end

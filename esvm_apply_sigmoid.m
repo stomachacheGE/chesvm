@@ -1,5 +1,12 @@
 function prediction = esvm_apply_sigmoid(cal_matrix, test_datas, feat_name, hard_negative, params)
-
+% apply the learned sigmoid function to the predictions and return new
+% pridiction scores.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
 esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
@@ -48,7 +55,6 @@ for i = 1:length(test_datas)
   end
 
   for j = 1:length(test_datas{i})
-      
 
       filer = sprintf('%s/%s_%s_score.mat',cls_res_dir_wo_cal, feat_name, test_datas{i}{j}.img_id);
       filer_1 = sprintf('%s/%s_%s_score_sigmoid.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
@@ -59,45 +65,14 @@ for i = 1:length(test_datas)
           scores = result_1.result.scores;
           Index_J_temp = zeros(1, length(scores));
           res = zeros(1, length(scores));
-          %outliers = cell(1,length(scores));
+
           for m = 1:length(scores)
-             %res_per_class = zeros(1,length(scores{m}));
-
+             % use the learned sigmoid function to get probabilities
              res_per_class = 1 ./ (1 + exp(- cal_matrix{m}(:,1) .* scores{m} + cal_matrix{m}(:,2)));
-
-             %[~, Index_J_temp(m)] = max(res_per_class);
-             %sorted_res_per_class = sort(res_per_class, 'descend');
-             %num_exemplar_per_class = size(cal_matrix{i},1);
-             %num_to_count = int16(num_exemplar_per_class / 40);
-             %res(m) = sum(sorted_res_per_class(1:num_to_count)) / num_to_count;
-             %res(m) = sum(sorted_res_per_class(1:10)) / 10;
-             %detect outlier, then find which class has bigger outlier mean and
-             %regard it as the correct class
-             %[~, ~, outliers{m}] = deleteoutliers(res_per_class, 0.0001);
-             %res(m) = mean(res_per_class);
-             %[sorted,~] = sort(res_per_class);
-             %res(m) = mean(sorted(1:floor(length(res_per_class)/8)));
-             %res(m) = mean(sorted(1:10));
-         
-             
-%             if strcmp(feat_name,'hog')
-%                 [~, ~, outliers{m}] = deleteoutliers(res_per_class, 0.0001);
-%                 res(m) = mean(res_per_class);  
-%             else
-                [res(m), Index_J_temp(m)] = max(res_per_class);
-            %end
-            
-            temp{m} = res_per_class;
+             [res(m), Index_J_temp(m)] = max(res_per_class);            
+             temp{m} = res_per_class;
           end
           
-%           if strcmp(feat_name,'hog')
-%               num_outliers = cellfun(@(x) mean(x), outliers, 'UniformOutput', false);
-%               num_outliers = [horzcat(num_outliers{:})];
-%               [~,max_idx] = max(num_outliers);
-%               res(max_idx) = max(temp{max_idx});
-%           end
-          %normalize sum of scores to 1
-          %res_max = max(res);
           pos_score_idx = find(res>0);
           [~, Index_I] = max(res);
           if ~isempty(pos_score_idx)
@@ -139,12 +114,6 @@ for i = 1:length(test_datas)
 end
 
 scores = [vertcat(scores{:})];
-
-%normalize the sum of scores to 1
-%sum_scores_per_test_data = sum(scores,2);
-%sum_scores_per_test_data = repmat(sum_scores_per_test_data,1,size(scores,2));
-
-%scores = scores./sum_scores_per_test_data;
 [~, indexes] = max(scores,[],2);
 
 prediction.ids = indexes;

@@ -1,28 +1,11 @@
 function varargout = GUI(varargin)
-% GUI MATLAB code for GUI.fig
-%      GUI, by itself, creates a new GUI or raises the existing
-%      singleton*.
+% The graphical user interface for interacting with trained exemplar-SVMs.
 %
-%      H = GUI returns the handle to a new GUI or the handle to
-%      the existing singleton*.
+% By Liangcheng Fu.
 %
-%      GUI('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GUI.M with the given input arguments.
-%
-%      GUI('Property','Value',...) creates a new GUI or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before GUI_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to GUI_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help GUI
-
-% Last Modified by GUIDE v2.5 25-Jun-2016 16:59:56
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -59,7 +42,7 @@ handles.output = hObject;
 %addpath(genpath(pwd))
 
 % Load data set info 
-params = esvm_get_default_params_1;
+params = esvm_get_default_params;
 datasets_info = esvm_get_datasets_info(params.datasets_params);
 classes = cellfun(@(x) x.cls_name, datasets_info, 'UniformOutput', false);
 handles.datasets_info = datasets_info;

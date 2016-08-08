@@ -1,5 +1,13 @@
 function esvm_show_classification(cls_idx, idx, feat_name, hard_negative, datasets_info, params)
-
+%% THIS FUNCTION IS DEPRECIATED AND PROBABLY NOT WORK.
+% Show the retrieved most-similar-exempalrs for a test image which is
+% specified by cls_idx and idx.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 classes = cellfun(@(x) x.cls_name, datasets_info, 'UniformOutput', false);
 
 num_imgs = cellfun(@(x) length(x.train_image_ids) + length(x.test_image_ids), datasets_info, 'UniformOutput', false);

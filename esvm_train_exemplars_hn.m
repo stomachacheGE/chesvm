@@ -1,13 +1,12 @@
 function new_models = ...
     esvm_train_exemplars_hn(models, neg_set, cal_set, feat_name, params)
-% Train models with hard negatives mined from neg_set
-% [models]: a cell array of initialized exemplar models
-% [neg_set]: a virtual set of images to mine from
-% [feat_name]: the name of feature used
-% [params]: parameters used for training
-
-%Return:
-%[new_models]: a cell array of the filename of generated models
+% Train exemplar-SVM models with hard negatives mining.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 models_root_dir = fullfile('.', params.datasets_params.results_folder,'models');
 models_hn_dir = fullfile(models_root_dir, 'hard_negative');
@@ -25,14 +24,12 @@ end
 if ~exist(models_dir, 'dir')
     mkdir(models_dir);
 end
-
+% The single file which contains all exempalr-SVM models
 filer_1 = sprintf('%s/%s_models_in_matrix.mat', models_root_dir, feat_name);
 
-
 new_models = cell(size(models));
-
-%get the number of models
 num_models = 0;
+
 for i = 1:length(models)
     num_models = num_models + numel(models{i});
 end
@@ -40,11 +37,7 @@ end
 counter = 1;
 
 for qq = 1:length(models)
-    
-    %get the models of a specific class
     cls_models = models{qq};
-    %clear cls_new_models;
-    %initialize a cell array of models of a specific calss
     cls_new_models = cell(size(cls_models));
     
     for i = 1:length(cls_models)
@@ -68,20 +61,17 @@ for qq = 1:length(models)
           % Add training set and training set's mining queue 
           m.neg_set = neg_set{qq}{i};
           m.mining_queue = esvm_initialize_mining_queue(m.neg_set);
-
-          % Add mining_params, and params.dataset_params to this exemplar
           m.mining_params = params.training_params;
           if ~isfield(m,'cal_set')
             m.cal_set = cal_set{qq}{i}.neg_filer;
           end
-          % Append '-svm' to the mode to create the models name
+
           m.models_name = sprintf('%s_%s_%s_%s.mat',feat_name,algo_name,m.cls_name,m.img_id);
           m.iteration = 1;
           % Set a flag to terminate iteration when no negative support
           % vectors can be found
           m.no_negatives_found = false;
-          
-          % The mining queue is the ordering in which we process new images  
+
           keep_going = 1;
 
           while keep_going == 1
@@ -130,24 +120,15 @@ for qq = 1:length(models)
               fprintf(1,' ### End of training for this model... \n');
               break;
             end
-
             m.iteration = m.iteration + 1;
-          end %iteratiion
-          %fprintf(1,'Training model %d/%d, model_id = %d, class = %s finished \n', counter, ...
-                                        %num_models,m.img_id, m.cls_name);
+          end 
       else
           if mod(counter,50) == 0
           fprintf(1,'Load model %d/%d, model_id = %s, class = %s \n', counter, ...
                                         num_models,m.img_id, m.cls_name);
           end
-          
-          %clear m;
-          %load m from model file
-          %load(filer2final);
       end
-      
       counter = counter + 1;
-      %append the generated model filename to cls_new_models
       cls_new_models{i} = filer2final;
     end
     new_models{qq} = cls_new_models;
