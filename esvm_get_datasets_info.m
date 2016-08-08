@@ -1,7 +1,18 @@
 function datasets = esvm_get_datasets_info(params)
+% Get the image set information and store it to datasets_info.mat.
+% Note that this file should be manually deleted if any modifications 
+% are made to the image set.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 data_dir = fullfile('.', params.img_folder, params.dataset_dir);
 
+% If the dasesets_info.mat file exists, load it.
+% Otherwise, retrieve the information and store it.
 if exist([data_dir '/datasets_info.mat'], 'file')
     load([data_dir '/datasets_info.mat']);
     for i = 1:length(datasets)
@@ -15,7 +26,6 @@ else
     d = d(cat(1, d.isdir)); % remove non dirs
 
     datasets = cell(1,length(d)); 
-
     counter = 0;
 
     %loop over each class folder
@@ -27,9 +37,7 @@ else
         train_img_dir = dir(fullfile('.', params.img_folder, ...
                                        params.dataset_dir, cls_name,...
                                        'train', ['*.' params.file_ext]));
-
         if params.rename %rename image name
-
           for id = 1:length(train_img_dir)
             old_file = fullfile('.', params.img_folder, ...
                                        params.dataset_dir, cls_name,...
@@ -40,10 +48,7 @@ else
             if ~strcmp(old_file,new_file)
                 movefile(old_file, new_file);  
             end
-            
             counter = counter + 1;
-
-            
           end
 
           train_img_dir = dir(fullfile('.', params.img_folder, ...
@@ -61,9 +66,7 @@ else
         test_img_dir = dir(fullfile('.', params.img_folder, ...
                                        params.dataset_dir, cls_name,...
                                        'test', ['*.' params.file_ext]));
-
         if params.rename %rename image name
-
           for id = 1:length(test_img_dir)
             old_file = fullfile('.', params.img_folder, ...
                                        params.dataset_dir, cls_name,...
@@ -74,10 +77,8 @@ else
             if ~strcmp(old_file,new_file)
                 movefile(old_file, new_file);      
             end
-            counter = counter + 1;
-          
+            counter = counter + 1;          
           end
-
           test_img_dir = dir(fullfile('.', params.img_folder, ...
                                        params.dataset_dir, cls_name,...
                                        'test', ['*.' params.file_ext]));     
@@ -93,16 +94,8 @@ else
         fprintf(1,'Find image class %s, #train:%d; #test:%d \n', datasets{i}.cls_name,...
                                           length(datasets{i}.train_image_ids), length(datasets{i}.test_image_ids));
 
-    end
-    
- %   for i=1:length(datasets)
- %       q = 1:length(datasets)
-        
- %       for j = 1:length(datasets{i})
-            
-    
-
-    %store the gt .txt file to disk
+    end   
+    %store the datasets_info.mat file to disk
     filer = sprintf([data_dir '/datasets_info.mat']);
     fprintf(1,'Saving datasets info into file %s\n',filer);
     save(filer, 'datasets');

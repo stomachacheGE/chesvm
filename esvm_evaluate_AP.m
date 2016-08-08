@@ -1,69 +1,102 @@
-function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_feature, params)
+function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_feature, cal, hard_negative, params)
 
     datasets_params = params.datasets_params;
 
     classifi_res_dir = fullfile('.', datasets_params.results_folder,'classifications');
     ground_truth_dir = fullfile(classifi_res_dir, 'ground_truth');
-    lin_svm_res_dir = fullfile(classifi_res_dir, 'linsvm');
-    esvm_res_dir = fullfile(classifi_res_dir, 'esvm');
+    lin_svm_root_res_dir = fullfile(classifi_res_dir, 'linsvm');
+    esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
+
     
     if ~exist(classifi_res_dir, 'dir')
         mkdir(classifi_res_dir)
     end
 
     if ~exist(ground_truth_dir, 'dir')
-
-        %mkdir(classifi_res_dir);
         mkdir(ground_truth_dir);
-        mkdir(lin_svm_res_dir);
-        mkdir(esvm_res_dir);
+    end
+    
+    if ~exist(lin_svm_root_res_dir,'dir')
+        mkdir(lin_svm_root_res_dir);
+    end
 
-        labels = unique(cellfun(@(x) x{1}.label, test_datas));
+    if hard_negative
+        esvm_res_hn_dir = fullfile(esvm_res_root_dir, 'hard_negative');
+    else
+        esvm_res_hn_dir = fullfile(esvm_res_root_dir, 'wo_hard_negative');
+    end
+    
+    if cal
+        esvm_res_cal_dir = fullfile(esvm_res_hn_dir, 'calibration');
+    else
+        esvm_res_cal_dir = fullfile(esvm_res_hn_dir, 'wo_calibration');
+    end
+    
+    esvm_res_dir = fullfile(esvm_res_cal_dir, use_feature);
+    lin_svm_res_dir = fullfile(lin_svm_root_res_dir, use_feature);
+    
+    if strcmp(use_algorithm,'esvm')
+        if ~exist(esvm_res_hn_dir,'dir')
+            mkdir(esvm_res_hn_dir);
+        end
 
-        fprintf(1,'Writing Classification Ground-truth Files.\n');
-       %% create ground_truth .txt files
-        %initialize ground-truth pairs with -1
-        for i =1: length(labels);
+        if ~exist(esvm_res_cal_dir,'dir')
+            mkdir(esvm_res_cal_dir);
+        end
 
-            %find the corresponding class name of this label
-            idx = 1;
-            while(idx <= length(test_datas))
-                if test_datas{idx}{1}.label == labels(i)
-                    break;
-                else
-                    idx = idx + 1;
-                end
-            end
-
-            cls_name = test_datas{idx}{1}.cls_name;
-            %store the gt .txt file to disk
-            gt_filer = sprintf('%s/%s_gt.txt',...
-                        ground_truth_dir,cls_name);
-            
-            fid = fopen(gt_filer,'w');
-
-            for mm = 1:length(test_datas)
-                for j = 1:length(test_datas{mm})
-                  if test_datas{mm}{j}.label == i
-                      fprintf(fid,'%s 1 \n',test_datas{mm}{j}.img_id);
-                  else
-                      fprintf(fid,'%s -1 \n',test_datas{mm}{j}.img_id);
-                  end
-                end
-            end
-            fclose(fid);      
+        if ~exist(esvm_res_dir,'dir')
+            mkdir(esvm_res_dir);
+        end
+    
+    else
+        if ~exist(lin_svm_res_dir,'dir')
+            mkdir(lin_svm_res_dir);
         end
     end
+    labels = unique(cellfun(@(x) x{1}.label, test_datas));
+
+    fprintf(1,'Writing Classification Ground-truth Files.\n');
+   %% create ground_truth .txt files
+    %initialize ground-truth pairs with -1
+    for i =1: length(labels);
+
+        %find the corresponding class name of this label
+        idx = 1;
+        while(idx <= length(test_datas))
+            if test_datas{idx}{1}.label == labels(i)
+                break;
+            else
+                idx = idx + 1;
+            end
+        end
+
+        cls_name = test_datas{idx}{1}.cls_name;
+        %store the gt .txt file to disk
+        gt_filer = sprintf('%s/%s_gt.txt',...
+                    ground_truth_dir,cls_name);
+
+        fid = fopen(gt_filer,'w');
+
+        for mm = 1:length(test_datas)
+            for j = 1:length(test_datas{mm})
+              if test_datas{mm}{j}.label == i
+                  fprintf(fid,'%s 1 \n',test_datas{mm}{j}.img_id);
+              else
+                  fprintf(fid,'%s -1 \n',test_datas{mm}{j}.img_id);
+              end
+            end
+        end
+        fclose(fid);      
+    end
+
 
     if strcmp(use_algorithm, 'svm')
         ap_res_filer = [lin_svm_res_dir '/' use_feature '_' use_algorithm '.txt'];
     else
         ap_res_filer = [esvm_res_dir '/' use_feature '_' use_algorithm '.txt'];
-    end
-    
+    end     
 
-       
-    
+      
     %if ap result file does not exist, evaluate and store the results
     if ~exist(ap_res_filer,'file')
         
@@ -88,13 +121,15 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
             cls_name = test_datas{idx}{1}.cls_name;
 
-            if strcmp(use_algorithm, 'svm')       
+            if strcmp(use_algorithm, 'svm')   
+
                 res_filer = sprintf('%s/%s_%s_res.txt',...
                         lin_svm_res_dir,cls_name, use_feature);
             else
                 res_filer = sprintf('%s/%s_%s_res.txt',...
                         esvm_res_dir,cls_name, use_feature);
             end
+        
 
             if ~exist(res_filer,'file')
 
@@ -149,15 +184,16 @@ function ap_res = esvm_evaluate_AP(predictions, test_datas, use_algorithm, use_f
 
 end
 
-function [rec,prec,ap] = VOCevalcls(cls, feat_name, result_dir, ground_truth_dir,draw)
+function [rec,prec,ap] = VOCevalcls(cls, feat_name, result_dir, ground_truth_dir, draw)
 
+draw = false;
 % load test set
 
 gt_filer = sprintf('%s/%s_gt.txt',ground_truth_dir,cls);
 [gtids,gt]=textread(gt_filer,'%s %d');
 
-% load results
 res_filer = sprintf('%s/%s_%s_res.txt',result_dir,cls,feat_name);
+
 [ids,confidence]=textread(res_filer,'%s %f');
 
 % map results to ground truth images

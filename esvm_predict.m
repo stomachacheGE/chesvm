@@ -1,12 +1,34 @@
-function prediction = esvm_predict(models, test_datas, feat_name, params)
-
-
+function prediction = esvm_predict(models, test_datas, feat_name, hard_negative, params)
+% Make predictions using trained exemplar-SVM models.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 classifi_res_dir = fullfile('.', params.datasets_params.results_folder,'classifications');
-esvm_res_dir = fullfile(classifi_res_dir, 'esvm');
+models_dir = fullfile('.', params.datasets_params.results_folder,'models');
+esvm_res_root_dir = fullfile(classifi_res_dir, 'esvm');
 
+if hard_negative
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'hard_negative', 'wo_calibration');
+else
+    esvm_res_cal_dir = fullfile(esvm_res_root_dir, 'wo_hard_negative', 'wo_calibration');
+end
+
+esvm_res_dir = fullfile(esvm_res_cal_dir, feat_name);
+    
 if ~exist(classifi_res_dir,'dir')
     mkdir(classifi_res_dir);
+end
+
+if ~exist(esvm_res_root_dir,'dir')
+    mkdir(esvm_res_root_dir);
+end
+
+if ~exist(esvm_res_cal_dir,'dir')
+    mkdir(esvm_res_cal_dir);
 end
 
 if ~exist(esvm_res_dir,'dir')
@@ -16,6 +38,7 @@ end
 for i = 1:length(test_datas)
   
   cls_res_dir = fullfile(esvm_res_dir, test_datas{i}{1}.cls_name);
+  
   if ~exist(cls_res_dir, 'dir')
         mkdir(cls_res_dir);
   end
@@ -26,6 +49,7 @@ num_test_images = 0;
 for i = 1:length(test_datas)
     num_test_images = num_test_images + numel(test_datas{i});
 end
+
 %get number of models
 num_models = 0;
 for i = 1:length(models)
@@ -33,6 +57,61 @@ for i = 1:length(models)
 end
 
 counter = 0;
+if hard_negative
+    % The single file which contains all exempalr-SVM models
+    filer_1 = sprintf('%s/%s_models_in_matrix.mat', models_dir, feat_name);
+else
+    filer_1 = sprintf('%s/%s_models_in_matrix_wo_hn.mat', models_dir, feat_name);
+end
+
+if ~exist(filer_1,'file')
+    fprintf(1,'Extracting models into one file... \n');
+    Mus_cell = cell(1,length(models));
+    Sigmas_cell = cell(1,length(models));
+    Biases_cell = cell(1,length(models));
+    Betas_cell = cell(1,length(models));
+    
+    for i=1:length(models)
+        num_per_class = length(models{i});
+        Mus = cell(num_per_class,1);
+        Sigmas = cell(num_per_class,1);
+        Biases = cell(num_per_class,1);
+        Betas = cell(num_per_class,1);
+        for j=1:length(models{i})
+            m = load(models{i}{j});
+            model = m.m.svm_model;
+            Mus{j} = model.Mu;
+            Sigmas{j} = model.Sigma;
+            Biases{j} = model.Bias;
+            Betas{j} = model.Beta';
+        end
+
+        Mus = [vertcat(Mus{:})];
+        Sigmas = [vertcat(Sigmas{:})];
+        Betas = [vertcat(Betas{:})];
+        Biases = [vertcat(Biases{:})];
+
+        Mus_cell{i} = Mus;
+        Sigmas_cell{i} = Sigmas;
+        Biases_cell{i} = Biases;
+        Betas_cell{i} = Betas;
+        
+        all_in_one.Mus_cell = Mus_cell;
+        all_in_one.Sigmas_cell = Sigmas_cell;
+        all_in_one.Biases_cell = Biases_cell;
+        all_in_one.Betas_cell = Betas_cell;
+        
+        save(filer_1, 'all_in_one');
+    end
+else
+    fprintf(1,'Loading all-in-one models from file... \n');
+    temp = load(filer_1);
+    temp = temp.all_in_one;
+    Mus_cell = temp.Mus_cell;
+    Biases_cell = temp.Biases_cell;
+    Sigmas_cell = temp.Sigmas_cell;
+    Betas_cell = temp.Betas_cell;
+end
 
 for i = 1:length(test_datas)
   
@@ -40,65 +119,38 @@ for i = 1:length(test_datas)
 
   for j = 1:length(test_datas{i})
       
-      model_counter = 0;
-      
       res = zeros(size(models));
-      
       filer = sprintf('%s/%s_%s_score.mat',cls_res_dir, feat_name, test_datas{i}{j}.img_id);
-      
+   
       if ~exist(filer,'file')
           temp = cell(length(models),1);
           for m = 1:length(models)
+            res_per_class = zeros(size(models{m}));
+            input = test_datas{i}{j}.feature;
+            standarized_inputs = (repmat(input, size(Mus_cell{m},1), 1) - Mus_cell{m} ) ./ Sigmas_cell{m};
+            %replace any entry which is finite with 0
+            [row, col] = find(~isfinite(standarized_inputs));
+            standarized_inputs(row,col) = 0;
+            res_per_class = sum(standarized_inputs  .* Betas_cell{m}, 2) + Biases_cell{m};
 
-             res_per_class = zeros(size(models{m}));
-             
-             for n = 1:length(models{m}) 
-                  %model = models{m}{n};
-                  model = load(models{m}{n});
-                  model = model.m;
-                  if strcmp(feat_name,'cnn');
-                      x_test = test_datas{i}{j}.feature;
-                      %fprintf(1,'loading cnn feature\n');
-                      %x = x.data.feature;
-                  else
-                      %img = imread(test_datas{i}{j}.img_filer);
-                     % img = imresize(double(img), model.img_size);
-                      %fprintf(1,'%d size img is [%d %d] \n',index, size(img,1),size(img,2));
-                      %[x_test, ~] = params.features_params.hog_extractor(img);
-                      %fprintf(1,'loading hog feature\n');
-                      x_test = test_datas{i}{j}.feature;
-                  end  
-                  %res_per_class(n) = model.w * x_test' - model.b;
-                  [~, res] = predict(model.svm_model, x_test);
-                  res_per_class(n) = res(1,2) + model.self_bias;
-                  model_counter = model_counter + 1;
-
-                    if mod(model_counter,50) == 0
-                    fprintf(1,'Predicting test image %s on models: %d/%d \n',  ...
-                                                    test_datas{i}{j}.img_id,model_counter, num_models);
-                    end
-             end   
-
-             [res(m), Index_J_temp(m)] = max(res_per_class);
-             %[sorted,~] = sort(res_per_class);
-             %res(m) = mean(sorted(1:floor(length(res_per_class)/8)));
-             %res(m) = mean(sorted(1:10));
-             temp{m} = res_per_class;
+            [res(m), Index_J_temp(m)] = max(res_per_class);
+            temp{m} = res_per_class;
           end
           %normalize sum of scores to 1
-          %res_max = max(res);
           pos_score_idx = find(res>0);
           [~, Index_I] = max(res);
           if ~isempty(pos_score_idx)
+              % If the scores contain both positive and negative socres,
+              % let the negative scores be 0 and normalize over positive
+              % socres.
               pos_scores = res(pos_score_idx);
               res = res/sum(pos_scores);
               neg_score_idx = find(res<0);
               res(neg_score_idx) = 0;
           else
               res = -res;
-              res = res / sum(res);
-              res = fliplr(res);
-              
+              res = ones(1,size(res,1)) ./ res;
+              res = res/sum(res);
           end 
           result.res = res;
           result.i = Index_I;
@@ -131,12 +183,6 @@ for i = 1:length(test_datas)
 end
 
 scores = [vertcat(scores{:})];
-
-%normalize the sum of scores to 1
-%sum_scores_per_test_data = sum(scores,2);
-%sum_scores_per_test_data = repmat(sum_scores_per_test_data,1,size(scores,2));
-
-%scores = scores./sum_scores_per_test_data;
 [~, indexes] = max(scores,[],2);
 
 prediction.ids = indexes;

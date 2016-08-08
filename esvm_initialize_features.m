@@ -1,10 +1,17 @@
 function [train_datas, test_datas]= esvm_initialize_features(datasets_info, feat_name, algo_name ,params)
-
+% Extract features out of images in the trainig set and store them to disk.
+%
+% By Liangcheng Fu.
+%
+% This file is part of the chesvm package, which train exemplar-SVMs using
+% HoG and CNN features. Inspired by exemplarsvm from Tomasz Malisiewicz.
+% Package homepage: https://github.com/stomachacheGE/chesvm/
 
 datasets_params = params.datasets_params;
 feat_params = params.features_params;
 
-if strcmp(feat_name,'cnn')% MatConvNet
+% Load pre-trained CNN model
+if strcmp(feat_name,'cnn') || strcmp(feat_name,'cnnhog')% MatConvNet
     cnn_params = feat_params.cnn_params;
     mcnpath = fullfile('.', 'lib','matconvnet-1.0-beta18','matlab');
     run(fullfile(mcnpath,'vl_setupnn.m'));
@@ -19,17 +26,22 @@ for j=1:length(datasets_info)
     
     cls = datasets_info{j}.cls_name;
     feat_res_dir = fullfile('.', datasets_params.results_folder,'features');
-    res_dir = fullfile('.', datasets_params.results_folder,'features', cls);
+    res_feat_dir = fullfile('.', datasets_params.results_folder,'features', feat_name);
+    res_dir = fullfile('.', datasets_params.results_folder,'features', feat_name, cls);
 
 
     if ~exist(feat_res_dir, 'dir')
         mkdir(feat_res_dir);
-        mkdir(res_dir);
-    else
-        if ~exist(res_dir,'dir')
-           mkdir(res_dir);
-        end
     end
+    
+    if ~exist(res_feat_dir, 'dir')
+    mkdir(res_feat_dir);
+    end
+
+    if ~exist(res_dir,'dir')
+       mkdir(res_dir);
+    end
+
 
     img_files = [datasets_info{j}.train_image_files datasets_info{j}.test_image_files];
     img_ids = [datasets_info{j}.train_image_ids datasets_info{j}.test_image_ids];
@@ -40,38 +52,25 @@ for j=1:length(datasets_info)
     test_datas{j} = cell(1, length(datasets_info{j}.test_image_ids));
 
     for i=1:length(img_ids)
-        
-        if strcmp(feat_name, 'hog')
-            %filer = fullfile(res_dir, sprintf('%s-%s-not-resized.mat',feat_name,img_ids{i}));
-            filer = fullfile(res_dir, sprintf('%s-%s-80-56.mat',feat_name,img_ids{i}));
-        else
-            filer = fullfile(res_dir, sprintf('%s-%s.mat',feat_name,img_ids{i}));
-        end
-        
-        %filers = fullfile(res_dir, sprintf('cnn-%s-not-resized.mat',img_ids{i}));
-        %if exist(filers,'file')
-        %   delete(filers);
-        %end
-        
-        %if exist(filer,'file')
-        %   delete(filer);
-        %end
-
+        filer = fullfile(res_dir, sprintf('%s-%s.mat',feat_name,img_ids{i}));
+        % If feature file does not exist, extract and store it.
+        % Otherwise, load it to the program.
         if ~exist(filer,'file')
             %fprintf(1,' Calculating features...');
             img = imread(img_files{i});
             data.img_size = [size(img,1) size(img,2)];
             if strcmp(feat_name,'cnn')
                 data.feature = double(esvm_extract_cnn_feature(img, convnet, cnn_params.layer));
-            else
+            elseif strcmp(feat_name,'hog')
                 hog_params = feat_params.hog_params;
-                if strcmp(algo_name, 'svm')
-                    img = imresize(double(img),[hog_params.height hog_params.width]);
-                    [data.feature data.hog_size] = esvm_extract_hog_feature(img, feat_params.hog_params);
-                else
-                    img = imresize(double(img),[hog_params.height hog_params.width]);
-                    [data.feature data.hog_size] = esvm_extract_hog_feature(double(img), feat_params.hog_params);                     
-                end
+                img = imresize(double(img),[hog_params.height hog_params.width]);
+                [data.feature data.hog_size] = esvm_extract_hog_feature(double(img), feat_params.hog_params);                     
+            elseif strcmp(feat_name,'cnnhog')
+                cnn_feature = double(esvm_extract_cnn_feature(img, convnet, cnn_params.layer));
+                hog_params = feat_params.hog_params;
+                img = imresize(double(img),[hog_params.height hog_params.width]);
+                [hog_feature data.hog_size] = esvm_extract_hog_feature(double(img), feat_params.hog_params);   
+                data.feature = horzcat(cnn_feature, hog_feature);
             end
 
             data.cls_name = cls;
@@ -97,7 +96,7 @@ for j=1:length(datasets_info)
             end
         end
         
-        
+        % add corresponding image filename to the feature struct.
         if i <= length(datasets_info{j}.train_image_ids)
             data.img_filer = datasets_info{j}.train_image_files{i};
             train_datas{j}{i} = data;
@@ -106,20 +105,11 @@ for j=1:length(datasets_info)
             test_datas{j}{i-length(datasets_info{j}.train_image_ids)} = data;
         end
 
-
-
         if counter == length(img_ids)
             fprintf(1, ' *********Extracting %s features for %s finished. Total: %d *********\n',...
                         feat_name, cls, counter);
         end
-
-
-
     end
 end
-
-%concantenate all cell array contents to a cell array
-%train_datas = [horzcat(train_datas{:})];
-%test_datas = [horzcat(test_datas{:})];
 
 end
